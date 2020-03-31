@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Project Template" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="release">
+				<Option output="bin/release/Project Template" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add directory="include" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="-lmingw32 -lSDL2main -lSDL2 -lSDL2_ttf -lSDL2_image" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+		</Compiler>
+		<Unit filename="src/MainApp/MainApp.cpp" />
+		<Unit filename="src/MainApp/MainApp.hpp" />
+		<Unit filename="src/MainApp/MessageHandler.cpp" />
+		<Unit filename="src/MainApp/MessageHandler.hpp" />
+		<Unit filename="src/MainUiManager/Init.cpp" />
+		<Unit filename="src/MainUiManager/InitFont.cpp" />
+		<Unit filename="src/MainUiManager/InitRenderer.cpp" />
+		<Unit filename="src/MainUiManager/InitSDL.cpp" />
+		<Unit filename="src/MainUiManager/InitTextures.cpp" />
+		<Unit filename="src/MainUiManager/InitWindow.cpp" />
+		<Unit filename="src/MainUiManager/Input.cpp" />
+		<Unit filename="src/MainUiManager/MainUiManager.cpp" />
+		<Unit filename="src/MainUiManager/MainUiManager.hpp" />
+		<Unit filename="src/MainUiManager/Render.cpp" />
+		<Unit filename="src/MainUiManager/Texture.cpp" />
+		<Unit filename="src/MainUiManager/Texture.hpp" />
+		<Unit filename="src/Message/Message.cpp" />
+		<Unit filename="src/Message/Message.hpp" />
+		<Unit filename="src/Message/SceneTransitMessage.cpp" />
+		<Unit filename="src/Message/SceneTransitMessage.hpp" />
+		<Unit filename="src/Scene/GameScene.cpp" />
+		<Unit filename="src/Scene/GameScene.hpp" />
+		<Unit filename="src/Scene/GameSceneDraw.cpp" />
+		<Unit filename="src/Scene/GameSceneInput.cpp" />
+		<Unit filename="src/Scene/GameSceneUpdate.cpp" />
+		<Unit filename="src/Scene/MenuScene.cpp" />
+		<Unit filename="src/Scene/MenuScene.hpp" />
+		<Unit filename="src/Scene/MenuSceneDraw.cpp" />
+		<Unit filename="src/Scene/MenuSceneInput.cpp" />
+		<Unit filename="src/Scene/MenuSceneUpdate.cpp" />
+		<Unit filename="src/Scene/Scene.cpp" />
+		<Unit filename="src/Scene/Scene.hpp" />
+		<Unit filename="src/Timer.cpp" />
+		<Unit filename="src/Timer.hpp" />
+		<Unit filename="src/basicmath.cpp" />
+		<Unit filename="src/basicmath.hpp" />
+		<Unit filename="src/main.cpp" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
