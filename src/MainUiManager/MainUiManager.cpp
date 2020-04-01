@@ -23,6 +23,7 @@ MainUiManager::~MainUiManager() {}
 Uint32 MainUiManager::getUiTick() {
     return uiTick;
 }
+
 void MainUiManager::sleep(float duration) {
     SDL_Delay(duration*1000);
 }
@@ -32,6 +33,9 @@ void MainUiManager::draw(Scene* scene) {
     SDL_RenderClear(renderer);
 
     scene->draw(this);
+
+    // Set background to blue
+    SDL_SetRenderDrawColor(renderer, 0x08, 0x10, 0x20, 0xFF);
 
     //Update screen
     SDL_RenderPresent(renderer);

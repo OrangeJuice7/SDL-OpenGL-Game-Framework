@@ -25,9 +25,6 @@ class MenuScene : public Scene {
         //void handleMouseRDownEvent(int mousePosX, int mousePosY);
         //void handleMouseLUpEvent(int mousePosX, int mousePosY);
         //void handleMouseRUpEvent(int mousePosX, int mousePosY);
-
-        // Draws to the uiManager (called by the uiManager)
-        //void draw(MainUiManager *uiManager);
 };
 
 #endif // MENU_SCENE_HPP

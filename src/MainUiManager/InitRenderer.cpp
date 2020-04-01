@@ -9,9 +9,6 @@ bool MainUiManager::initRenderer() {
         return false;
     }
 
-    // Set background to blue
-    SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x10, 0xFF);
-
     Texture::setRenderer(renderer);
     return true;
 }

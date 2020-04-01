@@ -92,6 +92,12 @@ void Widget::renderText(MainUiManager *uiManager, const char *text, SDL_Color co
 }
 
 void Widget::draw(MainUiManager *uiManager) const {
+	if (getClickable()) {
+        if (getActive()) uiManager->setDrawColor(0x60, 0x60, 0x00, 0xFF);
+        else             uiManager->setDrawColor(0x00, 0x40, 0x60, 0xFF);
+        uiManager->drawFillRect(screenRect);
+    }
+
 	if (drawFunc) drawFunc(this, uiManager);
 
 	// call draw for all the children
