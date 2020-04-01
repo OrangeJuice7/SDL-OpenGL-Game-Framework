@@ -1,4 +1,4 @@
-#include "MenuScene.hpp"
+/*#include "MenuScene.hpp"
 
 #include <cstdio>
 #include "../MainUiManager/MainUiManager.hpp"
@@ -20,4 +20,4 @@ void MenuScene::draw(MainUiManager *uiManager) {
     if (paused) {
         uiManager->renderTextToScreen("-- PAUSED --", white, 900, 680);
     }
-}
+}*/

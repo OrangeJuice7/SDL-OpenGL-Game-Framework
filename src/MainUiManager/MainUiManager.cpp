@@ -1,17 +1,19 @@
 #include "MainUiManager.hpp"
 
-#include <cstdio>
 #include "../Scene/Scene.hpp"
 
 MainUiManager::MainUiManager()
         : WINDOW_TITLE("[PROJECT TITLE]")
         , SCREEN_WIDTH(1080)
-        , SCREEN_HEIGHT(720) {
+        , SCREEN_HEIGHT(720)
+        , SCREEN_RECT{0, 0, SCREEN_WIDTH, SCREEN_HEIGHT} {
 
     mainWindow = NULL;
     renderer = NULL;
 
     mainFont = NULL;
+
+    mousePosX = mousePosY = 0;
 
     uiTick = 0;
     fps = 0;

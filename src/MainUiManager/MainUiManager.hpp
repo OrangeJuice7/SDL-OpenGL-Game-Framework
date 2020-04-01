@@ -16,6 +16,8 @@ class MainUiManager {
 
         Uint32 uiTick;
 
+        int mousePosX, mousePosY;
+
         bool initSDL();
         bool initWindow(); // requires initSDL()
         bool initRenderer();
@@ -32,6 +34,7 @@ class MainUiManager {
         const char *WINDOW_TITLE;
         const int SCREEN_WIDTH;
         const int SCREEN_HEIGHT;
+        const SDL_Rect SCREEN_RECT;
 
         float fps; // For display purposes only; is written to by MainApp.
 
@@ -41,7 +44,7 @@ class MainUiManager {
         void deinit();
 
         Uint32 getUiTick();
-        void sleep(float duration); // in seconds
+        void sleep(float duration); // in seconds, capped at millisecond precision
 
         // Collect hardware inputs and pass them to scene for interpretation
         void getInputs(Scene* scene);

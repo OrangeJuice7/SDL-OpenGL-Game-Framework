@@ -1,4 +1,4 @@
-#include "GameScene.hpp"
+/*#include "GameScene.hpp"
 
 #include <cstdio>
 #include "../MainUiManager/MainUiManager.hpp"
@@ -20,4 +20,4 @@ void GameScene::draw(MainUiManager *uiManager) {
     if (paused) {
         uiManager->renderTextToScreen("-- PAUSED --", white, 900, 680);
     }
-}
+}*/

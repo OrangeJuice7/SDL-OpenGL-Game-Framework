@@ -5,6 +5,9 @@
 
 class MenuScene : public Scene {
     protected:
+        /**  UI  **/
+        void loadWidgets();
+
         /**  Model  **/
         void updateOneTick();
 
@@ -24,7 +27,7 @@ class MenuScene : public Scene {
         //void handleMouseRUpEvent(int mousePosX, int mousePosY);
 
         // Draws to the uiManager (called by the uiManager)
-        void draw(MainUiManager *uiManager);
+        //void draw(MainUiManager *uiManager);
 };
 
 #endif // MENU_SCENE_HPP
