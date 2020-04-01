@@ -37,11 +37,17 @@ void Scene::doTick() {
     ++modelTick;
 }
 
-void Scene::handleMouseMoveEvent(int mousePosX, int mousePosY) {
+void Scene::updateFromMouse(int mousePosX, int mousePosY) {
     if (activeWidget) {
-        if (activeWidget->checkOn(mousePosX, mousePosY)) // Active Widget remains active
+        Widget* pWidget = activeWidget->checkOn(mousePosX, mousePosY);
+        if (pWidget == activeWidget) // Active Widget remains active
             return;
-        else { // Active Widget is no longer active
+        else if (pWidget) { // It's now a child widget that is active
+            activeWidget->deactivate();
+            pWidget->activate();
+            activeWidget = pWidget;
+            return;
+        } else { // Active Widget is no longer active
             activeWidget->deactivate();
             activeWidget = nullptr;
         }
@@ -60,9 +66,8 @@ void Scene::handleMouseMoveEvent(int mousePosX, int mousePosY) {
 	// Check for Model intercepts
 	//
 }
-void Scene::handleMouseLDownEvent(int mousePosX, int mousePosY) {
+void Scene::handleMouseLDownEvent() {
     // If we have an activeWidget, just activate it and we are done
-    // (NOTE: Does not handle cases where Widgets can move about)
     if (activeWidget) {
         activeWidget->click();
         return;
@@ -88,5 +93,5 @@ void Scene::draw(MainUiManager *uiManager) {
 // Do nothing
 void Scene::handleKeyDownEvent(SDL_Keycode key) {}
 void Scene::handleKeyUpEvent(SDL_Keycode key) {}
-void Scene::handleMouseRDownEvent(int mousePosX, int mousePosY) {}
+void Scene::handleMouseRDownEvent() {}
 void Scene::updateOneTick() {}

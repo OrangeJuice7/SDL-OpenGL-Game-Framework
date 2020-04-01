@@ -34,7 +34,7 @@ void MenuScene::loadWidgets() {
 		} ) );
 
     loadWidget( new Widget(
-		{20, 20, 160, 20},
+		{0, 20, 160, 20},
 		Widget::HORZALIGN_CENTER,
 		Widget::VERTALIGN_TOP,
 		false, [](){},

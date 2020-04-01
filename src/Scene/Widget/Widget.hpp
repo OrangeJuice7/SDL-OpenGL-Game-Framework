@@ -2,6 +2,7 @@
 #define WIDGET_HPP
 
 #include <functional>
+#include <forward_list>
 #include <SDL.h> // for SDL_Rect
 class MainUiManager;
 
@@ -14,6 +15,7 @@ class Widget {
     public:
 		// Alignment: what does the (x,y) position actually refer to
 		// e.g. top-left alignment means (x,y) is the position of the top-left corner of the widget from the top-left corner of the screen
+		// (For Center alignment, +x/+y is right/down, to be consistent with SDL's coordinate system.)
 		enum HorizontalAlignment {
 			HORZALIGN_LEFT,
 			HORZALIGN_CENTER,
@@ -46,7 +48,9 @@ class Widget {
 		bool active;
 
 		// Child widgets
-		// std::deque<Widget> children; // How to populate this list?
+		// Note: Child widgets should lie fully within the bounds of their parents. Otherwise, they should be separate widgets.
+		// Note: Children are only destroyed when the parents are; no way to delete them individually yet
+		std::forward_list<Widget*> children;
 
 		// The function that this widget executes on draw
 		// If set to nullptr, doesn't draw anything
@@ -68,6 +72,8 @@ class Widget {
 
 		bool getActive() const;
 		bool getClickable() const;
+
+		void addChild(Widget* widget);
 
 		/**  Mouse input  **/
 

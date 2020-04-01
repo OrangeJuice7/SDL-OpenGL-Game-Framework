@@ -11,7 +11,7 @@ class Scene {
         /**  UI  **/
         // Use a WidgetManager?
         std::vector<Widget*> widgets;
-        Widget* activeWidget;// (NOTE: Is not accurate when Widgets can move about, or with Scene transitions)
+        Widget* activeWidget;
 
         void loadWidget(Widget* widget);
         //virtual void loadWidgets(); // doesn't work in the constructor
@@ -36,15 +36,16 @@ class Scene {
         virtual ~Scene();
 
         /**  UI  **/
+        // Basically updates the active elements e.g. activeWidget
+        virtual void updateFromMouse(int mousePosX, int mousePosY);
 
         // Sends Messages to MainApp
         virtual void handleKeyDownEvent(SDL_Keycode key);
         virtual void handleKeyUpEvent(SDL_Keycode key);
-        virtual void handleMouseMoveEvent(int mousePosX, int mousePosY);
-        virtual void handleMouseLDownEvent(int mousePosX, int mousePosY);
-        virtual void handleMouseRDownEvent(int mousePosX, int mousePosY);
-        //virtual void handleMouseLUpEvent(int mousePosX, int mousePosY);
-        //virtual void handleMouseRUpEvent(int mousePosX, int mousePosY);
+        virtual void handleMouseLDownEvent();
+        virtual void handleMouseRDownEvent();
+        //virtual void handleMouseLUpEvent();
+        //virtual void handleMouseRUpEvent();
 
         // Draws to the uiManager (called by the uiManager)
         void draw(MainUiManager *uiManager);

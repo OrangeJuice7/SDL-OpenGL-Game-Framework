@@ -20,11 +20,6 @@ class MenuScene : public Scene {
         // Sends Messages to MainApp
         void handleKeyDownEvent(SDL_Keycode key);
         void handleKeyUpEvent(SDL_Keycode key);
-        //void handleMouseMoveEvent(int mousePosX, int mousePosY);
-        //void handleMouseLDownEvent(int mousePosX, int mousePosY);
-        //void handleMouseRDownEvent(int mousePosX, int mousePosY);
-        //void handleMouseLUpEvent(int mousePosX, int mousePosY);
-        //void handleMouseRUpEvent(int mousePosX, int mousePosY);
 };
 
 #endif // MENU_SCENE_HPP

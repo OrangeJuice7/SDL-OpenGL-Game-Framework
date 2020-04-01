@@ -27,14 +27,13 @@ void MainUiManager::getInputs(Scene* scene) {
 
             case SDL_MOUSEMOTION:
                 SDL_GetMouseState(&mousePosX, &mousePosY);
-                scene->handleMouseMoveEvent(mousePosX, mousePosY);
                 break;
 
             case SDL_MOUSEBUTTONDOWN:
                 switch (event.button.button) {
                     default: break; // Ignore other mouse buttons
-                    case SDL_BUTTON_LEFT : scene->handleMouseLDownEvent(mousePosX, mousePosY); break;
-                    case SDL_BUTTON_RIGHT: scene->handleMouseRDownEvent(mousePosX, mousePosY); break;
+                    case SDL_BUTTON_LEFT : scene->handleMouseLDownEvent(); break;
+                    case SDL_BUTTON_RIGHT: scene->handleMouseRDownEvent(); break;
                 }
                 break;
 
@@ -47,4 +46,7 @@ void MainUiManager::getInputs(Scene* scene) {
                 break;
         }
     }
+
+    // Update the scene with the current mouse position (called every frame because even if the mouse position doesn't change, the scene may)
+    scene->updateFromMouse(mousePosX, mousePosY);
 }

@@ -20,7 +20,10 @@ Widget::Widget(
     this->active = false;
 }
 Widget::~Widget() {
-    //clear children
+    for (Widget* child : children) {
+		delete child;
+	}
+	children.clear();
 }
 
 bool Widget::getActive() const {
@@ -28,6 +31,9 @@ bool Widget::getActive() const {
 }
 bool Widget::getClickable() const {
     return clickable;
+}
+void Widget::addChild(Widget* widget) {
+    children.push_front(widget);
 }
 
 void Widget::calcScreenRect(const SDL_Rect &psRect) {
@@ -39,12 +45,12 @@ void Widget::calcScreenRect(const SDL_Rect &psRect) {
 	};
 	switch (horzAlign) {
 		case HORZALIGN_LEFT  : screenRect.x += rect.x; break;
-		case HORZALIGN_CENTER: screenRect.x += psRect.w/2 - rect.x - rect.w/2; break;
+		case HORZALIGN_CENTER: screenRect.x += psRect.w/2 + rect.x - rect.w/2; break;
 		case HORZALIGN_RIGHT : screenRect.x += psRect.w   - rect.x - rect.w  ; break;
 	}
 	switch (vertAlign) {
 		case VERTALIGN_TOP   : screenRect.y += rect.y; break;
-		case VERTALIGN_CENTER: screenRect.y += psRect.h/2 - rect.y - rect.h/2; break;
+		case VERTALIGN_CENTER: screenRect.y += psRect.h/2 + rect.y - rect.h/2; break;
 		case VERTALIGN_BOTTOM: screenRect.y += psRect.h   - rect.y - rect.h  ; break;
 	}
 }
@@ -61,10 +67,10 @@ Widget* Widget::checkOn(int x, int y) {
 	// (Future: do further checks in the case where this widget is not rectangular)
 
 	// Check children
-	/*for (Widget child : children) {
-		Widget* childCheck = child.checkOn(screenRect, x, y);
+	for (Widget* child : children) {
+		Widget* childCheck = child->checkOn(x, y);
 		if (childCheck != nullptr) return childCheck;
-	}*/
+	}
 
 	return getClickable() ? this : nullptr; // ignore non-clickable widgets
 }
@@ -83,9 +89,9 @@ void Widget::update(const SDL_Rect &psRect) {
     calcScreenRect(psRect);
 
 	// update all the children
-	/*for (Widget child : children) {
-		child.update(screenRect);
-	}*/
+	for (Widget* child : children) {
+		child->update(screenRect);
+	}
 }
 
 void Widget::renderText(MainUiManager *uiManager, const char *text, SDL_Color color) const {
@@ -104,7 +110,7 @@ void Widget::draw(MainUiManager *uiManager) const {
 	if (drawFunc) drawFunc(this, uiManager);
 
 	// call draw for all the children
-	/*for (Widget child : children) {
-		child.draw(uiManager);
-	}*/
+	for (Widget* child : children) {
+		child->draw(uiManager);
+	}
 }
