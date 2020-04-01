@@ -35,8 +35,9 @@ class Widget {
 		VerticalAlignment vertAlign;
 
 		// The function that this widget executes on click.
-		// Is set to nullptr if this widget is not clickable
+		// Set to nullptr if this widget does nothing when clicked
 		std::function<void()> funcOnClick;
+		bool clickable;
 
 		// Whether this widget can be dragged around on mouse hold
 		// bool draggable;
@@ -59,6 +60,7 @@ class Widget {
 			SDL_Rect rect,
 			HorizontalAlignment horzAlign,
 			VerticalAlignment vertAlign,
+			bool clickable,
 			std::function<void()> funcOnClick,
 			std::function<void(const Widget*, MainUiManager*)> drawFunc );
 

@@ -23,7 +23,7 @@ void MenuScene::loadWidgets() {
 		{40, 20, 240, 20},
 		Widget::HORZALIGN_LEFT,
 		Widget::VERTALIGN_TOP,
-		/*funcOnClick*/ []() {
+		true, /*funcOnClick*/ []() {
 			MessageHandler::postMessage( new SceneTransitMessage( new GameScene() ) );
 		},
 		/*drawFunc*/ [](const Widget* widget, MainUiManager* uiManager) {
@@ -37,7 +37,7 @@ void MenuScene::loadWidgets() {
 		{20, 20, 160, 20},
 		Widget::HORZALIGN_CENTER,
 		Widget::VERTALIGN_TOP,
-		/*funcOnClick*/ nullptr,
+		false, [](){},
 		/*drawFunc*/ [&](const Widget* widget, MainUiManager* uiManager) {
 			widget->renderText(uiManager, "MENU SCENE", textColor);
 		} ) );
@@ -46,7 +46,7 @@ void MenuScene::loadWidgets() {
 		{20, 80, 160, 20},
 		Widget::HORZALIGN_RIGHT,
 		Widget::VERTALIGN_BOTTOM,
-		/*funcOnClick*/ nullptr,
+		false, [](){},
 		/*drawFunc*/ [&](const Widget* widget, MainUiManager* uiManager) {
 			if (!paused) return;
 			widget->renderText(uiManager, "-- PAUSED --", white);
@@ -56,7 +56,7 @@ void MenuScene::loadWidgets() {
 		{20, 60, 160, 20},
 		Widget::HORZALIGN_RIGHT,
 		Widget::VERTALIGN_BOTTOM,
-		/*funcOnClick*/ nullptr,
+		false, [](){},
 		/*drawFunc*/ [&](const Widget* widget, MainUiManager* uiManager) {
 			char msg[256];
 			sprintf(msg, "UiTick: %u", uiManager->getUiTick());
@@ -67,7 +67,7 @@ void MenuScene::loadWidgets() {
 		{20, 40, 160, 20},
 		Widget::HORZALIGN_RIGHT,
 		Widget::VERTALIGN_BOTTOM,
-		/*funcOnClick*/ nullptr,
+		false, [](){},
 		/*drawFunc*/ [&](const Widget* widget, MainUiManager* uiManager) {
 			char msg[256];
 			sprintf(msg, "ModelTick: %u", modelTick);
@@ -78,7 +78,7 @@ void MenuScene::loadWidgets() {
 		{20, 20, 160, 20},
 		Widget::HORZALIGN_RIGHT,
 		Widget::VERTALIGN_BOTTOM,
-		/*funcOnClick*/ nullptr,
+		false, [](){},
 		/*drawFunc*/ [&](const Widget* widget, MainUiManager* uiManager) {
 			char msg[256];
 			sprintf(msg, "FPS: %.2f", uiManager->fps);

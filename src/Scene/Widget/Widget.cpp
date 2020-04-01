@@ -6,14 +6,17 @@ Widget::Widget(
 		SDL_Rect rect,
 		HorizontalAlignment horzAlign,
 		VerticalAlignment vertAlign,
+		bool clickable,
 		std::function<void()> funcOnClick,
 		std::function<void(const Widget*, MainUiManager*)> drawFunc ) {
 
     this->rect = rect;
     this->horzAlign = horzAlign;
     this->vertAlign = vertAlign;
+    this->clickable = clickable;
     this->funcOnClick = funcOnClick;
     this->drawFunc = drawFunc;
+
     this->active = false;
 }
 Widget::~Widget() {
@@ -24,7 +27,7 @@ bool Widget::getActive() const {
 	return active;
 }
 bool Widget::getClickable() const {
-    return (drawFunc != nullptr);
+    return clickable;
 }
 
 void Widget::calcScreenRect(const SDL_Rect &psRect) {
