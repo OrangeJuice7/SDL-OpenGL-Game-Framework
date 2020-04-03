@@ -2,6 +2,7 @@
 
 #include <cstdio>
 #include <SDL.h>
+#include "Model/MenuModelManager.hpp"
 #include "Widget/Widget.hpp"
 #include "../MainApp/MessageHandler.hpp"
 #include "../Message/SceneTransitMessage.hpp"
@@ -9,7 +10,7 @@
 #include "GameScene.hpp"
 
 MenuScene::MenuScene()
-        : Scene() {
+        : Scene(new MenuModelManager()) {
 
     loadWidgets();
 }
@@ -70,7 +71,7 @@ void MenuScene::loadWidgets() {
 		false, [](){},
 		/*drawFunc*/ [&](const Widget* widget, MainUiManager* uiManager) {
 			char msg[256];
-			sprintf(msg, "ModelTick: %u", modelTick);
+			sprintf(msg, "ModelTick: %u", modelManager->getModelTick());
 			widget->renderText(uiManager, msg, textColor);
 		} ) );
 

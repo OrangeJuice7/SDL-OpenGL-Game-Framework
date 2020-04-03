@@ -1,9 +1,11 @@
 #ifndef SCENE_HPP
 #define SCENE_HPP
 
+#include <cstdint>
 #include <SDL.h>
 #include <vector>
 class MainUiManager;
+class ModelManager;
 class Widget;
 
 class Scene {
@@ -20,19 +22,14 @@ class Scene {
         void drawGui(MainUiManager *uiManager);
 
         /**  Model  **/
-        //
+        ModelManager* modelManager; // Scene-specific managers?
 
-        //int cameraX, cameraY;
-
-        //virtual void drawModel(MainUiManager *uiManager);
-
-        Uint32 modelTick;
+        /**  Misc  **/
         bool paused;
 
-        virtual void updateOneTick();
-
     public:
-        Scene();
+        // modelManager should be a new ModelManager, created when constructing Scene's derived class
+        Scene(ModelManager* modelManager);
         virtual ~Scene();
 
         /**  UI  **/
@@ -51,7 +48,7 @@ class Scene {
         void draw(MainUiManager *uiManager);
 
         /**  Model  **/
-        Uint32 getModelTick();
+        uint32_t getModelTick();
         void doTick();
 };
 

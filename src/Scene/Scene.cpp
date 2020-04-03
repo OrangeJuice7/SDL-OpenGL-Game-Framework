@@ -2,16 +2,19 @@
 
 #include "../MainUiManager/MainUiManager.hpp"
 #include "Widget/Widget.hpp"
+#include "Model/ModelManager.hpp"
 
-Scene::Scene() {
+Scene::Scene(ModelManager* modelManager) {
     //loadWidgets(); // virtual members should not be called in constructors
 
     activeWidget = nullptr;
 
-	modelTick = 0;
+    this->modelManager = modelManager;
+
     paused = false;
 }
 Scene::~Scene() {
+	delete modelManager;
 	unloadWidgets();
 }
 
@@ -26,15 +29,16 @@ void Scene::unloadWidgets() {
 	widgets.clear();
 }
 
-Uint32 Scene::getModelTick() {
-    return modelTick;
+uint32_t Scene::getModelTick() {
+    return modelManager->getModelTick();
 }
 
 void Scene::doTick() {
-    if (paused) return;
+    // Update Widgets?
 
-    updateOneTick();
-    ++modelTick;
+    if (!paused) {
+        modelManager->doTick();
+    }
 }
 
 void Scene::updateFromMouse(int mousePosX, int mousePosY) {
@@ -64,7 +68,7 @@ void Scene::updateFromMouse(int mousePosX, int mousePosY) {
 	}
 
 	// Check for Model intercepts
-	//
+	modelManager->pickActiveEntity(mousePosX, mousePosY);
 }
 void Scene::handleMouseLDownEvent() {
     // If we have an activeWidget, just activate it and we are done
@@ -74,7 +78,7 @@ void Scene::handleMouseLDownEvent() {
     }
 
 	// Check for Model intercepts
-	//
+	modelManager->click();
 }
 
 void Scene::drawGui(MainUiManager *uiManager) {
@@ -87,11 +91,10 @@ void Scene::drawGui(MainUiManager *uiManager) {
 }
 void Scene::draw(MainUiManager *uiManager) {
     drawGui(uiManager);
-    //drawModel(uiManager);
+    modelManager->draw(uiManager);
 }
 
 // Do nothing
 void Scene::handleKeyDownEvent(SDL_Keycode key) {}
 void Scene::handleKeyUpEvent(SDL_Keycode key) {}
 void Scene::handleMouseRDownEvent() {}
-void Scene::updateOneTick() {}

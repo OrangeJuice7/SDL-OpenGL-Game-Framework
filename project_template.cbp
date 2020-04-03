@@ -52,6 +52,12 @@
 		<Unit filename="src/Scene/MenuScene.hpp" />
 		<Unit filename="src/Scene/MenuSceneInput.cpp" />
 		<Unit filename="src/Scene/MenuSceneUpdate.cpp" />
+		<Unit filename="src/Scene/Model/GameModelManager.cpp" />
+		<Unit filename="src/Scene/Model/GameModelManager.hpp" />
+		<Unit filename="src/Scene/Model/MenuModelManager.cpp" />
+		<Unit filename="src/Scene/Model/MenuModelManager.hpp" />
+		<Unit filename="src/Scene/Model/ModelManager.cpp" />
+		<Unit filename="src/Scene/Model/ModelManager.hpp" />
 		<Unit filename="src/Scene/Scene.cpp" />
 		<Unit filename="src/Scene/Scene.hpp" />
 		<Unit filename="src/Scene/Widget/Widget.cpp" />
