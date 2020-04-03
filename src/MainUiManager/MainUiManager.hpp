@@ -38,7 +38,7 @@ class MainUiManager {
 
         float fps; // For display purposes only; is written to by MainApp.
 
-        MainUiManager();
+        MainUiManager(const char *windowTitle, int screenWidth, int screenHeight);
         ~MainUiManager();
         bool init();
         void deinit();

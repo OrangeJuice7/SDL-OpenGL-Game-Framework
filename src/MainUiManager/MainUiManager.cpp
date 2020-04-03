@@ -2,10 +2,10 @@
 
 #include "../Scene/Scene.hpp"
 
-MainUiManager::MainUiManager()
-        : WINDOW_TITLE("[PROJECT TITLE]")
-        , SCREEN_WIDTH(1080)
-        , SCREEN_HEIGHT(720)
+MainUiManager::MainUiManager(const char *windowTitle, int screenWidth, int screenHeight)
+        : WINDOW_TITLE(windowTitle)
+        , SCREEN_WIDTH(screenWidth)
+        , SCREEN_HEIGHT(screenHeight)
         , SCREEN_RECT{0, 0, SCREEN_WIDTH, SCREEN_HEIGHT} {
 
     mainWindow = NULL;
