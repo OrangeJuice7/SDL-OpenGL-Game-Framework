@@ -20,7 +20,7 @@ void MenuScene::loadWidgets() {
 	const static SDL_Color white = {255, 255, 255, 255};
 	const static SDL_Color textColor = {255, 200, 200, 255};
 
-	loadWidget( new Widget(
+	widgetManager.loadWidget( new Widget(
 		{40, 20, 240, 20},
 		Widget::HORZALIGN_LEFT,
 		Widget::VERTALIGN_TOP,
@@ -34,7 +34,7 @@ void MenuScene::loadWidgets() {
 			widget->renderText(uiManager, "Click here to go to game", textColor);
 		} ) );
 
-    loadWidget( new Widget(
+    widgetManager.loadWidget( new Widget(
 		{0, 20, 160, 20},
 		Widget::HORZALIGN_CENTER,
 		Widget::VERTALIGN_TOP,
@@ -43,7 +43,7 @@ void MenuScene::loadWidgets() {
 			widget->renderText(uiManager, "MENU SCENE", textColor);
 		} ) );
 
-    loadWidget( new Widget(
+    widgetManager.loadWidget( new Widget(
 		{20, 80, 160, 20},
 		Widget::HORZALIGN_RIGHT,
 		Widget::VERTALIGN_BOTTOM,
@@ -53,7 +53,7 @@ void MenuScene::loadWidgets() {
 			widget->renderText(uiManager, "-- PAUSED --", white);
 		} ) );
 
-    loadWidget( new Widget(
+    widgetManager.loadWidget( new Widget(
 		{20, 60, 160, 20},
 		Widget::HORZALIGN_RIGHT,
 		Widget::VERTALIGN_BOTTOM,
@@ -64,7 +64,7 @@ void MenuScene::loadWidgets() {
 			widget->renderText(uiManager, msg, textColor);
 		} ) );
 
-    loadWidget( new Widget(
+    widgetManager.loadWidget( new Widget(
 		{20, 40, 160, 20},
 		Widget::HORZALIGN_RIGHT,
 		Widget::VERTALIGN_BOTTOM,
@@ -75,7 +75,7 @@ void MenuScene::loadWidgets() {
 			widget->renderText(uiManager, msg, textColor);
 		} ) );
 
-    loadWidget( new Widget(
+    widgetManager.loadWidget( new Widget(
 		{20, 20, 160, 20},
 		Widget::HORZALIGN_RIGHT,
 		Widget::VERTALIGN_BOTTOM,

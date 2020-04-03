@@ -47,11 +47,9 @@
 		<Unit filename="src/Scene/GameScene.cpp" />
 		<Unit filename="src/Scene/GameScene.hpp" />
 		<Unit filename="src/Scene/GameSceneInput.cpp" />
-		<Unit filename="src/Scene/GameSceneUpdate.cpp" />
 		<Unit filename="src/Scene/MenuScene.cpp" />
 		<Unit filename="src/Scene/MenuScene.hpp" />
 		<Unit filename="src/Scene/MenuSceneInput.cpp" />
-		<Unit filename="src/Scene/MenuSceneUpdate.cpp" />
 		<Unit filename="src/Scene/Model/GameModelManager.cpp" />
 		<Unit filename="src/Scene/Model/GameModelManager.hpp" />
 		<Unit filename="src/Scene/Model/MenuModelManager.cpp" />
@@ -62,6 +60,8 @@
 		<Unit filename="src/Scene/Scene.hpp" />
 		<Unit filename="src/Scene/Widget/Widget.cpp" />
 		<Unit filename="src/Scene/Widget/Widget.hpp" />
+		<Unit filename="src/Scene/Widget/WidgetManager.cpp" />
+		<Unit filename="src/Scene/Widget/WidgetManager.hpp" />
 		<Unit filename="src/Timer.cpp" />
 		<Unit filename="src/Timer.hpp" />
 		<Unit filename="src/basicmath.cpp" />

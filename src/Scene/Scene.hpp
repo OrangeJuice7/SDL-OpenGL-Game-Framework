@@ -3,28 +3,15 @@
 
 #include <cstdint>
 #include <SDL.h>
-#include <vector>
+#include "Widget/WidgetManager.hpp"
 class MainUiManager;
 class ModelManager;
-class Widget;
 
 class Scene {
     protected:
-        /**  UI  **/
-        // Use a WidgetManager?
-        std::vector<Widget*> widgets;
-        Widget* activeWidget;
+        WidgetManager widgetManager;
+        ModelManager* modelManager;
 
-        void loadWidget(Widget* widget);
-        //virtual void loadWidgets(); // doesn't work in the constructor
-        void unloadWidgets();
-
-        void drawGui(MainUiManager *uiManager);
-
-        /**  Model  **/
-        ModelManager* modelManager; // Scene-specific managers?
-
-        /**  Misc  **/
         bool paused;
 
     public:

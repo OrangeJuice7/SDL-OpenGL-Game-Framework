@@ -1,5 +1,5 @@
-#ifndef GAME_MODEL_MANAGER_HPP
-#define GAME_MODEL_MANAGER_HPP
+#ifndef MENU_MODEL_MANAGER_HPP
+#define MENU_MODEL_MANAGER_HPP
 
 #include "ModelManager.hpp"
 
@@ -14,4 +14,4 @@ class MenuModelManager : public ModelManager {
         void draw(MainUiManager *uiManager);
 };
 
-#endif // GAME_MODEL_MANAGER_HPP
+#endif // MENU_MODEL_MANAGER_HPP

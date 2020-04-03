@@ -34,7 +34,7 @@ void GameScene::loadWidgets() {
 			else                     textColor = {200, 255, 200, 255};
 			widget->renderText(uiManager, "Click here to go to main menu", textColor);
 		} );
-	loadWidget(newWidget);
+	widgetManager.loadWidget(newWidget);
 
     newWidget = new Widget(
 		{0, 20, 160, 20},
@@ -44,7 +44,7 @@ void GameScene::loadWidgets() {
 		/*drawFunc*/ [&](const Widget* widget, MainUiManager* uiManager) {
 			widget->renderText(uiManager, "GAME SCENE", textColor);
 		} );
-	loadWidget(newWidget);
+	widgetManager.loadWidget(newWidget);
 
     newWidget = new Widget(
 		{0,-40, 240, 180},
@@ -62,7 +62,7 @@ void GameScene::loadWidgets() {
 		/*drawFunc*/ [&](const Widget* widget, MainUiManager* uiManager) {
 			widget->renderText(uiManager, "test2", textColor);
 		} ) );
-	loadWidget(newWidget);
+	widgetManager.loadWidget(newWidget);
 
     newWidget = new Widget(
 		{20, 80, 160, 20},
@@ -73,7 +73,7 @@ void GameScene::loadWidgets() {
 			if (!paused) return;
 			widget->renderText(uiManager, "-- PAUSED --", white);
 		} );
-	loadWidget(newWidget);
+	widgetManager.loadWidget(newWidget);
 
     newWidget = new Widget(
 		{20, 60, 160, 20},
@@ -85,7 +85,7 @@ void GameScene::loadWidgets() {
 			sprintf(msg, "UiTick: %u", uiManager->getUiTick());
 			widget->renderText(uiManager, msg, textColor);
 		} );
-	loadWidget(newWidget);
+	widgetManager.loadWidget(newWidget);
 
     newWidget = new Widget(
 		{20, 40, 160, 20},
@@ -97,7 +97,7 @@ void GameScene::loadWidgets() {
 			sprintf(msg, "ModelTick: %u", modelManager->getModelTick());
 			widget->renderText(uiManager, msg, textColor);
 		} );
-	loadWidget(newWidget);
+	widgetManager.loadWidget(newWidget);
 
     newWidget = new Widget(
 		{20, 20, 160, 20},
@@ -109,5 +109,5 @@ void GameScene::loadWidgets() {
 			sprintf(msg, "FPS: %.2f", uiManager->fps);
 			widget->renderText(uiManager, msg, textColor);
 		} );
-	loadWidget(newWidget);
+	widgetManager.loadWidget(newWidget);
 }

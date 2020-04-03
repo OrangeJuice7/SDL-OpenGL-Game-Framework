@@ -8,9 +8,6 @@ class GameScene : public Scene {
         /**  UI  **/
         void loadWidgets();
 
-        /**  Model  **/
-        void updateOneTick();
-
     public:
         GameScene();
         ~GameScene();
