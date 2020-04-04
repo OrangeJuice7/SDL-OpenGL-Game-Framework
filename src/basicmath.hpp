@@ -3,6 +3,7 @@
 
 #include <cstdlib> // for rand()
 #include <cmath>
+#include <algorithm> // for min and max
 
 const float PI = 3.14159265358979;
 const float TWO_PI = PI*2;

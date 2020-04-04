@@ -28,12 +28,15 @@ void Scene::doTick() {
 void Scene::handleKeyDownEvent(SDL_Keycode key) {}
 void Scene::handleKeyUpEvent(SDL_Keycode key) {}
 
-void Scene::updateFromMouse(int mousePosX, int mousePosY) {
+void Scene::updateFromMouse(const SDL_Rect &screenRect, int mousePosX, int mousePosY) {
 	// Check for Widget intercepts
     if ( widgetManager.pickActiveWidget(mousePosX, mousePosY) ) return;
 
 	// Check for Model intercepts
-	modelManager->pickActiveEntity(mousePosX, mousePosY);
+	{   float gameX, gameY;
+        modelManager->screenToGameCoords(screenRect, gameX, gameY, mousePosX, mousePosY);
+        modelManager->pickActiveEntity(gameX, gameY);
+	}
 }
 void Scene::handleMouseLDownEvent() {
     // If we have an activeWidget, just activate it and we are done
@@ -45,6 +48,6 @@ void Scene::handleMouseLDownEvent() {
 void Scene::handleMouseRDownEvent() {}
 
 void Scene::draw(MainUiManager *uiManager) {
-    widgetManager.draw(uiManager);
-    modelManager->draw(uiManager);
+    modelManager->draw(uiManager); // draw model first
+    widgetManager.draw(uiManager); // draw widgets on top
 }

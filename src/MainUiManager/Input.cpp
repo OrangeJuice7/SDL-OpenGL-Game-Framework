@@ -48,5 +48,5 @@ void MainUiManager::getInputs(Scene* scene) {
     }
 
     // Update the scene with the current mouse position (called every frame because even if the mouse position doesn't change, the scene may)
-    scene->updateFromMouse(mousePosX, mousePosY);
+    scene->updateFromMouse(SCREEN_RECT, mousePosX, mousePosY);
 }

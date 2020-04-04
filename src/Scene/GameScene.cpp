@@ -17,8 +17,10 @@ GameScene::GameScene()
 GameScene::~GameScene() {}
 
 void GameScene::loadWidgets() {
+	GameModelManager* model = dynamic_cast<GameModelManager*>(modelManager);
+
 	Widget* newWidget;
-	const static SDL_Color white = {255, 255, 255, 255};
+	const static SDL_Color     white = {255, 255, 255, 255};
 	const static SDL_Color textColor = {200, 255, 200, 255};
 
     newWidget = new Widget(
@@ -47,11 +49,13 @@ void GameScene::loadWidgets() {
 	widgetManager.loadWidget(newWidget);
 
     newWidget = new Widget(
-		{0,-40, 240, 180},
-		Widget::HORZALIGN_CENTER,
+		{10,-40, 240, 180},
+		Widget::HORZALIGN_LEFT,
 		Widget::VERTALIGN_CENTER,
-		true, [](){},
-		/*drawFunc*/ [&](const Widget* widget, MainUiManager* uiManager) {
+		true, /*funcOnClick*/ [model]() {
+			model->spawnParticleExplosion(100, 4, 1, .1f, .2f);
+		},
+		/*drawFunc*/ [](const Widget* widget, MainUiManager* uiManager) {
 			widget->renderText(uiManager, "test", textColor);
 		} );
     newWidget->addChild( new Widget(
@@ -59,7 +63,16 @@ void GameScene::loadWidgets() {
 		Widget::HORZALIGN_CENTER,
 		Widget::VERTALIGN_CENTER,
 		true, [](){},
-		/*drawFunc*/ [&](const Widget* widget, MainUiManager* uiManager) {
+		/*drawFunc*/ [](const Widget* widget, MainUiManager* uiManager) {
+			// Circle test
+			/*SDL_Rect rect = widget->getScreenRect();
+			int x = rect.x + rect.w/2;
+			int y = rect.y + rect.h/2;
+
+			uiManager->setDrawColor(textColor);
+			uiManager->drawLineCircle(x, y, uiManager->getUiTick()%60 );
+			uiManager->drawLineCircle(x, y, (uiManager->getUiTick()*4)%200 );*/
+
 			widget->renderText(uiManager, "test2", textColor);
 		} ) );
 	widgetManager.loadWidget(newWidget);
@@ -69,7 +82,7 @@ void GameScene::loadWidgets() {
 		Widget::HORZALIGN_RIGHT,
 		Widget::VERTALIGN_BOTTOM,
 		false, [](){},
-		/*drawFunc*/ [&](const Widget* widget, MainUiManager* uiManager) {
+		/*drawFunc*/ [this](const Widget* widget, MainUiManager* uiManager) {
 			if (!paused) return;
 			widget->renderText(uiManager, "-- PAUSED --", white);
 		} );
@@ -80,7 +93,7 @@ void GameScene::loadWidgets() {
 		Widget::HORZALIGN_RIGHT,
 		Widget::VERTALIGN_BOTTOM,
 		false, [](){},
-		/*drawFunc*/ [&](const Widget* widget, MainUiManager* uiManager) {
+		/*drawFunc*/ [](const Widget* widget, MainUiManager* uiManager) {
 			char msg[256];
 			sprintf(msg, "UiTick: %u", uiManager->getUiTick());
 			widget->renderText(uiManager, msg, textColor);
@@ -92,9 +105,9 @@ void GameScene::loadWidgets() {
 		Widget::HORZALIGN_RIGHT,
 		Widget::VERTALIGN_BOTTOM,
 		false, [](){},
-		/*drawFunc*/ [&](const Widget* widget, MainUiManager* uiManager) {
+		/*drawFunc*/ [model](const Widget* widget, MainUiManager* uiManager) {
 			char msg[256];
-			sprintf(msg, "ModelTick: %u", modelManager->getModelTick());
+			sprintf(msg, "ModelTick: %u", model->getModelTick());
 			widget->renderText(uiManager, msg, textColor);
 		} );
 	widgetManager.loadWidget(newWidget);
@@ -104,7 +117,7 @@ void GameScene::loadWidgets() {
 		Widget::HORZALIGN_RIGHT,
 		Widget::VERTALIGN_BOTTOM,
 		false, [](){},
-		/*drawFunc*/ [&](const Widget* widget, MainUiManager* uiManager) {
+		/*drawFunc*/ [](const Widget* widget, MainUiManager* uiManager) {
 			char msg[256];
 			sprintf(msg, "FPS: %.2f", uiManager->fps);
 			widget->renderText(uiManager, msg, textColor);

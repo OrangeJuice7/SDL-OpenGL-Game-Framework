@@ -21,7 +21,7 @@ class Scene {
 
         /**  UI  **/
         // Basically updates the active elements e.g. activeWidget
-        virtual void updateFromMouse(int mousePosX, int mousePosY);
+        virtual void updateFromMouse(const SDL_Rect &screenRect, int mousePosX, int mousePosY);
 
         // Sends Messages to MainApp
         virtual void handleKeyDownEvent(SDL_Keycode key);

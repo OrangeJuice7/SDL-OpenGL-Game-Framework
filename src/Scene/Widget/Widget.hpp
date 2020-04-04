@@ -70,8 +70,9 @@ class Widget {
 
 		virtual ~Widget();
 
-		bool getActive() const;
-		bool getClickable() const;
+        const SDL_Rect& getScreenRect() const;
+        bool getActive() const;
+        bool getClickable() const;
 
 		void addChild(Widget* widget);
 
@@ -87,12 +88,12 @@ class Widget {
         void click();
 
 		/**  Update  **/
+		// psRect: Parent screen rect, also taken from the top-left corner
 		void update(const SDL_Rect &psRect);
 
 		/**  Draw  **/
 		void renderText(MainUiManager *uiManager, const char *text, SDL_Color color) const;
 
-		// psRect: Parent screen rect, also taken from the top-left corner
         void draw(MainUiManager *uiManager) const;
 };
 
