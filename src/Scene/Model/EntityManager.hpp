@@ -139,7 +139,8 @@ void EntityManager<TEntity>::draw(
 
     // Implement draw-culling some time
     for (TEntity &entity : entities) {
-        entity.draw(gameToScreenCoords, gameToScreenLength, uiManager);
+        if (entity.isWithinScreen(gameToScreenCoords, uiManager))
+            entity.draw(gameToScreenCoords, gameToScreenLength, uiManager);
     }
 }
 

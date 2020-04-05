@@ -47,6 +47,18 @@ void Entity::doTick() {
     y += yvel;
 }
 
+bool Entity::isWithinScreen(
+        std::function<void(int&, int&, float, float)> gameToScreenCoords,
+        MainUiManager *uiManager) const {
+
+    // Bounding box check
+    int bx, bX, by, bY;
+    gameToScreenCoords(bx, by, x - radius, y + radius);
+    gameToScreenCoords(bX, bY, x + radius, y - radius);
+
+    return (bX >= 0 && bx < uiManager->SCREEN_RECT.w &&
+            bY >= 0 && by < uiManager->SCREEN_RECT.h );
+}
 void Entity::draw(
         std::function<void(int&, int&, float, float)> gameToScreenCoords,
         std::function<float(float)> gameToScreenLength,

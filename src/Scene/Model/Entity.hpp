@@ -38,6 +38,10 @@ class Entity {
         void applyForce(float forceX, float forceY);
 
         virtual void doTick();
+
+        bool isWithinScreen(
+                std::function<void(int&, int&, float, float)> gameToScreenCoords,
+                MainUiManager *uiManager) const;
         virtual void draw(
                 std::function<void(int&, int&, float, float)> gameToScreenCoords,
                 std::function<float(float)> gameToScreenLength,
