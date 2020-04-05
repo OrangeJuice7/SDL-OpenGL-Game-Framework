@@ -1,7 +1,7 @@
 #ifndef MESSAGE_HANDLER_HPP_INCLUDED
 #define MESSAGE_HANDLER_HPP_INCLUDED
 
-#include <deque>
+#include <list>
 class Message;
 class MainApp;
 
@@ -10,7 +10,7 @@ class MessageHandler {
         // Singleton. Memory should be freed when the app closes
         static MessageHandler* instance;
 
-        std::deque<Message*> messages;
+        std::list<Message*> messages;
 
         MessageHandler();
         ~MessageHandler();
