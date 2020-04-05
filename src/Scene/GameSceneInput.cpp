@@ -7,6 +7,19 @@
 #include "../Message/SceneTransitMessage.hpp"
 #include "MenuScene.hpp"
 
+void GameScene::updateFromMouse(const SDL_Rect &screenRect, const MouseState &mouseState) {
+    // Pan camera
+    {   float panAmount = cameraMoveRate / modelManager->getModelScale(); // convert pixels per frame to game coords per frame
+             if (mouseState.x <=              moveCameraScreenBorder) modelManager->moveCamera(-panAmount,0);
+        else if (mouseState.x >= screenRect.w-moveCameraScreenBorder) modelManager->moveCamera( panAmount,0);
+             if (mouseState.y <=              moveCameraScreenBorder) modelManager->moveCamera(0, panAmount);
+        else if (mouseState.y >= screenRect.h-moveCameraScreenBorder) modelManager->moveCamera(0,-panAmount);
+    }
+
+    // Update like normal
+    Scene::updateFromMouse(screenRect, mouseState);
+}
+
 void GameScene::handleKeyDownEvent(SDL_Keycode key) {
     switch (key) {
         default:

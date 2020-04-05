@@ -13,6 +13,15 @@ ModelManager::~ModelManager() {}
 uint32_t ModelManager::getModelTick() {
     return modelTick;
 }
+float ModelManager::getModelScale() {
+    return modelScale;
+}
+float ModelManager::getCameraX() {
+    return cameraX;
+}
+float ModelManager::getCameraY() {
+    return cameraY;
+}
 
 void ModelManager::updateOneTick() {}
 void ModelManager::doTick() {

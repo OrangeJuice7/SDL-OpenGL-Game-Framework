@@ -13,6 +13,8 @@ GameScene::GameScene()
         : Scene(new GameModelManager()) {
 
     cameraScaleFactor = 1.2f;
+    cameraMoveRate = 20;
+    moveCameraScreenBorder = 5;
 
     loadWidgets();
 }

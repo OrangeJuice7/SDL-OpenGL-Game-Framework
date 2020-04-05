@@ -12,6 +12,8 @@ GameModelManager::GameModelManager()
 GameModelManager::~GameModelManager() {}
 
 void GameModelManager::updateOneTick() {
+    spawnParticleExplosion(2, 0, 0, .1f, .2f);
+
     // Update the entities individually
     particles.doTick();
 

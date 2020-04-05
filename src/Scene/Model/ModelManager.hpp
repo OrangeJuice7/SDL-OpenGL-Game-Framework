@@ -25,6 +25,9 @@ class ModelManager {
         virtual ~ModelManager();
 
         uint32_t getModelTick();
+        float getModelScale();
+        float getCameraX();
+        float getCameraY();
 
         // Wraps updateOneTick() in some admin
         void doTick();
