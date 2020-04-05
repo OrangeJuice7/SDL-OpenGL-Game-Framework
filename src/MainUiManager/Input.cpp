@@ -32,13 +32,17 @@ void MainUiManager::getInputs(Scene* scene) {
             case SDL_MOUSEBUTTONDOWN:
                 switch (event.button.button) {
                     default: break; // Ignore other mouse buttons
-                    case SDL_BUTTON_LEFT : scene->handleMouseLDownEvent(); break;
-                    case SDL_BUTTON_RIGHT: scene->handleMouseRDownEvent(); break;
+                    case SDL_BUTTON_LEFT : isLMouseDown = true; scene->handleMouseLDownEvent(); break;
+                    case SDL_BUTTON_RIGHT: isRMouseDown = true; scene->handleMouseRDownEvent(); break;
                 }
                 break;
 
             case SDL_MOUSEBUTTONUP:
-                //
+                switch (event.button.button) {
+                    default: break; // Ignore other mouse buttons
+                    case SDL_BUTTON_LEFT : isLMouseDown = false; scene->handleMouseLUpEvent(); break;
+                    case SDL_BUTTON_RIGHT: isRMouseDown = false; scene->handleMouseRUpEvent(); break;
+                }
                 break;
 
             case SDL_MOUSEWHEEL:
@@ -48,5 +52,5 @@ void MainUiManager::getInputs(Scene* scene) {
     }
 
     // Update the scene with the current mouse position (called every frame because even if the mouse position doesn't change, the scene may)
-    scene->updateFromMouse(SCREEN_RECT, mousePosX, mousePosY);
+    scene->updateFromMouse(SCREEN_RECT, mousePosX, mousePosY, isLMouseDown, isRMouseDown);
 }

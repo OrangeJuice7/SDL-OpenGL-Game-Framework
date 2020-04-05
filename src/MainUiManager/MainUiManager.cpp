@@ -14,6 +14,7 @@ MainUiManager::MainUiManager(const char *windowTitle, int screenWidth, int scree
     mainFont = NULL;
 
     mousePosX = mousePosY = 0;
+    isLMouseDown = isRMouseDown = false;
 
     uiTick = 0;
     fps = 0;

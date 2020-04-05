@@ -21,6 +21,7 @@ class WidgetManager {
         bool pickActiveWidget(int x, int y);
         // returns true if there is an activeWidget
         bool click();
+        bool releaseMouse();
 
         void draw(MainUiManager *uiManager);
 };

@@ -16,7 +16,9 @@ class MainUiManager {
 
         Uint32 uiTick;
 
+        // Mouse state
         int mousePosX, mousePosY;
+        bool isLMouseDown, isRMouseDown;
 
         bool initSDL();
         bool initWindow(); // requires initSDL()

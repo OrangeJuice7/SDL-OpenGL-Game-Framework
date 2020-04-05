@@ -3,11 +3,39 @@
 #include "../../MainUiManager/MainUiManager.hpp"
 
 Widget::Widget(
+        SDL_Rect rect,
+        HorizontalAlignment horzAlign,
+        VerticalAlignment vertAlign,
+        std::function<void(const Widget*, MainUiManager*)> drawFunc )
+
+        : Widget(rect, horzAlign, vertAlign, false, nullptr, nullptr, drawFunc) {}
+
+Widget::Widget(
+        SDL_Rect rect,
+        HorizontalAlignment horzAlign,
+        VerticalAlignment vertAlign,
+        std::function<void()> funcOnClick,
+        std::function<void(const Widget*, MainUiManager*)> drawFunc )
+
+        : Widget(rect, horzAlign, vertAlign, true, funcOnClick, nullptr, drawFunc) {}
+
+Widget::Widget(
+        SDL_Rect rect,
+        HorizontalAlignment horzAlign,
+        VerticalAlignment vertAlign,
+        std::function<void()> funcOnClick,
+        std::function<void()> funcOnRelease,
+        std::function<void(const Widget*, MainUiManager*)> drawFunc )
+
+        : Widget(rect, horzAlign, vertAlign, true, funcOnClick, funcOnRelease, drawFunc) {}
+
+Widget::Widget(
 		SDL_Rect rect,
 		HorizontalAlignment horzAlign,
 		VerticalAlignment vertAlign,
 		bool clickable,
 		std::function<void()> funcOnClick,
+		std::function<void()> funcOnRelease,
 		std::function<void(const Widget*, MainUiManager*)> drawFunc ) {
 
     this->rect = rect;
@@ -15,6 +43,7 @@ Widget::Widget(
     this->vertAlign = vertAlign;
     this->clickable = clickable;
     this->funcOnClick = funcOnClick;
+    this->funcOnRelease = funcOnRelease;
     this->drawFunc = drawFunc;
 
     this->active = false;
@@ -86,6 +115,9 @@ void Widget::deactivate() {
 }
 void Widget::click() {
 	if (funcOnClick) funcOnClick();
+}
+void Widget::releaseMouse() {
+	if (funcOnRelease) funcOnRelease();
 }
 
 void Widget::update(const SDL_Rect &psRect) {

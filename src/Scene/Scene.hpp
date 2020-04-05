@@ -21,15 +21,15 @@ class Scene {
 
         /**  UI  **/
         // Basically updates the active elements e.g. activeWidget
-        virtual void updateFromMouse(const SDL_Rect &screenRect, int mousePosX, int mousePosY);
+        virtual void updateFromMouse(const SDL_Rect &screenRect, int mousePosX, int mousePosY, bool LMouseDown, bool RMouseDown);
 
-        // Sends Messages to MainApp
+        // May send Messages to MainApp
         virtual void handleKeyDownEvent(SDL_Keycode key);
         virtual void handleKeyUpEvent(SDL_Keycode key);
         virtual void handleMouseLDownEvent();
         virtual void handleMouseRDownEvent();
-        //virtual void handleMouseLUpEvent();
-        //virtual void handleMouseRUpEvent();
+        virtual void handleMouseLUpEvent();
+        virtual void handleMouseRUpEvent();
 
         // Draws to the uiManager (called by the uiManager)
         void draw(MainUiManager *uiManager);

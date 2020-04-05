@@ -57,6 +57,13 @@ bool WidgetManager::click() {
     }
     return false;
 }
+bool WidgetManager::releaseMouse() {
+    if (activeWidget) {
+        activeWidget->releaseMouse();
+        return true;
+    }
+    return false;
+}
 
 void WidgetManager::draw(MainUiManager *uiManager) {
     for (Widget* widget : widgets) {

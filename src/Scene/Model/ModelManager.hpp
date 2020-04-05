@@ -36,6 +36,7 @@ class ModelManager {
         // (x,y) in game coordinates
         virtual void pickActiveEntity(float x, float y);
         virtual void click();
+        virtual void releaseMouse();
 
         virtual void draw(MainUiManager *uiManager);
 };

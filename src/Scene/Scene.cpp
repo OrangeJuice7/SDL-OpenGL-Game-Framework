@@ -28,7 +28,10 @@ void Scene::doTick() {
 void Scene::handleKeyDownEvent(SDL_Keycode key) {}
 void Scene::handleKeyUpEvent(SDL_Keycode key) {}
 
-void Scene::updateFromMouse(const SDL_Rect &screenRect, int mousePosX, int mousePosY) {
+void Scene::updateFromMouse(const SDL_Rect &screenRect, int mousePosX, int mousePosY, bool LMouseDown, bool RMouseDown) {
+	// Do not update the active element if the mouse is currently being held down, to preserve the existing active element (if any)
+	if (LMouseDown) return;
+
 	// Check for Widget intercepts
     if ( widgetManager.pickActiveWidget(mousePosX, mousePosY) ) return;
 
@@ -46,6 +49,14 @@ void Scene::handleMouseLDownEvent() {
 	modelManager->click();
 }
 void Scene::handleMouseRDownEvent() {}
+void Scene::handleMouseLUpEvent() {
+    // If we have an activeWidget, just release it and we are done
+    if ( widgetManager.releaseMouse() ) return;
+
+	// Check for Model intercepts
+	modelManager->releaseMouse();
+}
+void Scene::handleMouseRUpEvent() {}
 
 void Scene::draw(MainUiManager *uiManager) {
     modelManager->draw(uiManager); // draw model first

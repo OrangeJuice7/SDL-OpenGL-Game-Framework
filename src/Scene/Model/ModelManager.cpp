@@ -34,6 +34,7 @@ float ModelManager::gameToScreenLength(float gameLength) const {
 
 void ModelManager::pickActiveEntity(float x, float y) {}
 void ModelManager::click() {}
+void ModelManager::releaseMouse() {}
 
 std::function<void(int&, int&, float, float)> ModelManager::getGameToScreenCoordsFunc(MainUiManager *uiManager) {
     return [=](int& screenX, int& screenY, float gameX, float gameY) {

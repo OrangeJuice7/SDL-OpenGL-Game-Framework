@@ -27,7 +27,7 @@ void GameScene::loadWidgets() {
 		{40, 20, 240, 20},
 		Widget::HORZALIGN_LEFT,
 		Widget::VERTALIGN_TOP,
-		true, /*funcOnClick*/ []() {
+		/*funcOnClick*/ []() {
 			MessageHandler::postMessage( new SceneTransitMessage( new MenuScene() ) );
 		},
 		/*drawFunc*/ [](const Widget* widget, MainUiManager* uiManager) {
@@ -42,7 +42,6 @@ void GameScene::loadWidgets() {
 		{0, 20, 160, 20},
 		Widget::HORZALIGN_CENTER,
 		Widget::VERTALIGN_TOP,
-		false, [](){},
 		/*drawFunc*/ [&](const Widget* widget, MainUiManager* uiManager) {
 			widget->renderText(uiManager, "GAME SCENE", textColor);
 		} );
@@ -52,7 +51,7 @@ void GameScene::loadWidgets() {
 		{10,-40, 240, 180},
 		Widget::HORZALIGN_LEFT,
 		Widget::VERTALIGN_CENTER,
-		true, /*funcOnClick*/ [model]() {
+		/*funcOnClick*/ [model]() {
 			model->spawnParticleExplosion(100, 4, 1, .1f, .2f);
 		},
 		/*drawFunc*/ [](const Widget* widget, MainUiManager* uiManager) {
@@ -62,7 +61,10 @@ void GameScene::loadWidgets() {
 		{0,-40, 120, 60},
 		Widget::HORZALIGN_CENTER,
 		Widget::VERTALIGN_CENTER,
-		true, [](){},
+		/*funcOnClick*/ [](){},
+		/*funcOnRelease*/ [model]() {
+			model->spawnParticleExplosion(100, 4, -1, .1f, .2f);
+		},
 		/*drawFunc*/ [](const Widget* widget, MainUiManager* uiManager) {
 			// Circle test
 			/*SDL_Rect rect = widget->getScreenRect();
@@ -81,7 +83,6 @@ void GameScene::loadWidgets() {
 		{20, 80, 160, 20},
 		Widget::HORZALIGN_RIGHT,
 		Widget::VERTALIGN_BOTTOM,
-		false, [](){},
 		/*drawFunc*/ [this](const Widget* widget, MainUiManager* uiManager) {
 			if (!paused) return;
 			widget->renderText(uiManager, "-- PAUSED --", white);
@@ -92,7 +93,6 @@ void GameScene::loadWidgets() {
 		{20, 60, 160, 20},
 		Widget::HORZALIGN_RIGHT,
 		Widget::VERTALIGN_BOTTOM,
-		false, [](){},
 		/*drawFunc*/ [](const Widget* widget, MainUiManager* uiManager) {
 			char msg[256];
 			sprintf(msg, "UiTick: %u", uiManager->getUiTick());
@@ -104,7 +104,6 @@ void GameScene::loadWidgets() {
 		{20, 40, 160, 20},
 		Widget::HORZALIGN_RIGHT,
 		Widget::VERTALIGN_BOTTOM,
-		false, [](){},
 		/*drawFunc*/ [model](const Widget* widget, MainUiManager* uiManager) {
 			char msg[256];
 			sprintf(msg, "ModelTick: %u", model->getModelTick());
@@ -116,7 +115,6 @@ void GameScene::loadWidgets() {
 		{20, 20, 160, 20},
 		Widget::HORZALIGN_RIGHT,
 		Widget::VERTALIGN_BOTTOM,
-		false, [](){},
 		/*drawFunc*/ [](const Widget* widget, MainUiManager* uiManager) {
 			char msg[256];
 			sprintf(msg, "FPS: %.2f", uiManager->fps);
