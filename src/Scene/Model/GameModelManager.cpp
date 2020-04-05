@@ -17,11 +17,20 @@ void GameModelManager::updateOneTick() {
     // Update the entities individually
     particles.doTick();
 
-    // Inter-entity interactions (esp. collision detection and resolution)
-    /*particles.checkCollisionsSelf([](const Particle& p1, const Particle& p2) {
-        // particle-particle interaction code here
+    /** Inter-entity interactions (esp. collision detection and resolution) **/
+    // Particle-particle
+    particles.checkCollisionsSelf([](Particle& p1, Particle& p2) {
+        float xdist = p2.x - p1.x,
+              ydist = p2.y - p1.y;
+        /*float forceX = xdist*.0000004f,
+              forceY = ydist*.0000004f;*/
+        float dist2 = getdist2(xdist, ydist);
+        float forceX = .0000004f*xdist/dist2,
+              forceY = .0000004f*ydist/dist2;
+        p1.applyForce( forceX, forceY);
+        p2.applyForce(-forceX,-forceY);
     });
-    particles.checkCollisions(projectiles, [](const Particle& particle, const Projectile& projectile) {
+    /*particles.checkCollisions(projectiles, [](Particle& particle, Projectile& projectile) {
         // particle-projectile interaction code here
     });*/
 }

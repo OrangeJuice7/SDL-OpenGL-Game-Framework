@@ -20,12 +20,12 @@ class EntityManager {
         void doTick();
 
         void checkCollisionsSelf(
-                std::function<void(const TEntity&, const TEntity&)> collisionFunc );
+                std::function<void(TEntity&, TEntity&)> collisionFunc );
 
         template <class UEntity>
         void checkCollisions(
                 const EntityManager<UEntity>& otherManager,
-                std::function<void(const TEntity&, const UEntity&)> collisionFunc );
+                std::function<void(TEntity&, UEntity&)> collisionFunc );
 
         void draw(
                 std::function<void(int&, int&, float, float)> gameToScreenCoords,
@@ -64,7 +64,7 @@ void EntityManager<TEntity>::doTick() {
 
 template <class TEntity>
 void EntityManager<TEntity>::checkCollisionsSelf(
-        std::function<void(const TEntity&, const TEntity&)> collisionFunc ) {
+        std::function<void(TEntity&, TEntity&)> collisionFunc ) {
 
     for (auto entity = entities.begin(); entity != entities.end(); ++entity) {
         //if (entity.isDead()) continue;
@@ -81,7 +81,7 @@ template <class TEntity>
 template <class UEntity>
 void EntityManager<TEntity>::checkCollisions(
         const EntityManager<UEntity>& otherManager,
-        std::function<void(const TEntity&, const UEntity&)> collisionFunc ) {
+        std::function<void(TEntity&, UEntity&)> collisionFunc ) {
 
     for (TEntity &entity : entities) {
         //if (entity.isDead()) continue;
