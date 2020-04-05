@@ -1,5 +1,7 @@
 #include "GameScene.hpp"
 
+#include "Model/GameModelManager.hpp"
+
 #include "../MainApp/MessageHandler.hpp"
 #include "../Message/Message.hpp"
 #include "../Message/SceneTransitMessage.hpp"
@@ -44,5 +46,16 @@ void GameScene::handleKeyUpEvent(SDL_Keycode key) {
             break;
 
         //
+    }
+}
+
+void GameScene::handleMouseMDownEvent() {
+    modelManager->resetCamera();
+}
+void GameScene::handleMouseWheelEvent(Sint32 delta) {
+    if (delta > 0) { // away from user
+        modelManager->scaleCamera(1/cameraScaleFactor);
+    } else if (delta < 0) { // towards user
+        modelManager->scaleCamera(cameraScaleFactor);
     }
 }

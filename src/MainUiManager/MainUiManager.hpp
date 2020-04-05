@@ -4,6 +4,7 @@
 #include <SDL.h>
 #include <SDL_ttf.h> // http://www.sdltutorials.com/sdl-ttf
 #include "Texture.hpp"
+#include "MouseState.hpp"
 class Scene;
 
 class MainUiManager {
@@ -17,8 +18,7 @@ class MainUiManager {
         Uint32 uiTick;
 
         // Mouse state
-        int mousePosX, mousePosY;
-        bool isLMouseDown, isRMouseDown;
+        MouseState mouseState;
 
         bool initSDL();
         bool initWindow(); // requires initSDL()

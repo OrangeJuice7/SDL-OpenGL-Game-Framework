@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <SDL.h>
+#include "../MainUiManager/MouseState.hpp"
 #include "Widget/WidgetManager.hpp"
 class MainUiManager;
 class ModelManager;
@@ -21,15 +22,18 @@ class Scene {
 
         /**  UI  **/
         // Basically updates the active elements e.g. activeWidget
-        virtual void updateFromMouse(const SDL_Rect &screenRect, int mousePosX, int mousePosY, bool LMouseDown, bool RMouseDown);
+        virtual void updateFromMouse(const SDL_Rect &screenRect, const MouseState &mouseState);
 
-        // May send Messages to MainApp
+        // Handle input. May send Messages to MainApp
         virtual void handleKeyDownEvent(SDL_Keycode key);
         virtual void handleKeyUpEvent(SDL_Keycode key);
         virtual void handleMouseLDownEvent();
-        virtual void handleMouseRDownEvent();
         virtual void handleMouseLUpEvent();
+        virtual void handleMouseRDownEvent();
         virtual void handleMouseRUpEvent();
+        virtual void handleMouseMDownEvent();
+        virtual void handleMouseMUpEvent();
+        virtual void handleMouseWheelEvent(Sint32 delta); // positive delta: away from the user
 
         // Draws to the uiManager (called by the uiManager)
         void draw(MainUiManager *uiManager);

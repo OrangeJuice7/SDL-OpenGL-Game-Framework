@@ -4,11 +4,10 @@
 #include "../../MainUiManager/MainUiManager.hpp"
 
 GameModelManager::GameModelManager()
-        : ModelManager()
+        : ModelManager(32)
         , particles() {
 
-    modelScale = 32;
-    cameraX = cameraY = 0;
+    //(nothing)
 }
 GameModelManager::~GameModelManager() {}
 
@@ -16,12 +15,12 @@ void GameModelManager::updateOneTick() {
     // Update the entities individually
     particles.doTick();
 
-    // Collision detection and resolution
+    // Inter-entity interactions (esp. collision detection and resolution)
     /*particles.checkCollisionsSelf([](const Particle& p1, const Particle& p2) {
-        // particle-particle collision detection and resolution code here
+        // particle-particle interaction code here
     });
     particles.checkCollisions(projectiles, [](const Particle& particle, const Projectile& projectile) {
-        // particle-projectile collision detection and resolution code here
+        // particle-projectile interaction code here
     });*/
 }
 

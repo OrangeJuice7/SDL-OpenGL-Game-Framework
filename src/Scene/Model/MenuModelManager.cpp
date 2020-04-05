@@ -3,7 +3,7 @@
 #include "../../MainUiManager/MainUiManager.hpp"
 
 MenuModelManager::MenuModelManager()
-        : ModelManager() {
+        : ModelManager(1) {
 
     //
 }

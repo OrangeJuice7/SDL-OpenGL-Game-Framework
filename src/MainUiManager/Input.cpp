@@ -26,31 +26,33 @@ void MainUiManager::getInputs(Scene* scene) {
                 break;
 
             case SDL_MOUSEMOTION:
-                SDL_GetMouseState(&mousePosX, &mousePosY);
+                SDL_GetMouseState(&mouseState.x, &mouseState.y);
                 break;
 
             case SDL_MOUSEBUTTONDOWN:
                 switch (event.button.button) {
                     default: break; // Ignore other mouse buttons
-                    case SDL_BUTTON_LEFT : isLMouseDown = true; scene->handleMouseLDownEvent(); break;
-                    case SDL_BUTTON_RIGHT: isRMouseDown = true; scene->handleMouseRDownEvent(); break;
+                    case SDL_BUTTON_LEFT  : mouseState.isLDown = true; scene->handleMouseLDownEvent(); break;
+                    case SDL_BUTTON_RIGHT : mouseState.isRDown = true; scene->handleMouseRDownEvent(); break;
+                    case SDL_BUTTON_MIDDLE: mouseState.isMDown = true; scene->handleMouseMDownEvent(); break;
                 }
                 break;
 
             case SDL_MOUSEBUTTONUP:
                 switch (event.button.button) {
                     default: break; // Ignore other mouse buttons
-                    case SDL_BUTTON_LEFT : isLMouseDown = false; scene->handleMouseLUpEvent(); break;
-                    case SDL_BUTTON_RIGHT: isRMouseDown = false; scene->handleMouseRUpEvent(); break;
+                    case SDL_BUTTON_LEFT  : mouseState.isLDown = false; scene->handleMouseLUpEvent(); break;
+                    case SDL_BUTTON_RIGHT : mouseState.isRDown = false; scene->handleMouseRUpEvent(); break;
+                    case SDL_BUTTON_MIDDLE: mouseState.isMDown = false; scene->handleMouseMUpEvent(); break;
                 }
                 break;
 
             case SDL_MOUSEWHEEL:
-                //
+                scene->handleMouseWheelEvent(event.wheel.y);
                 break;
         }
     }
 
-    // Update the scene with the current mouse position (called every frame because even if the mouse position doesn't change, the scene may)
-    scene->updateFromMouse(SCREEN_RECT, mousePosX, mousePosY, isLMouseDown, isRMouseDown);
+    // Update the scene with the current mouse state (called every frame because even if the mouse state doesn't change, the scene may)
+    scene->updateFromMouse(SCREEN_RECT, mouseState);
 }

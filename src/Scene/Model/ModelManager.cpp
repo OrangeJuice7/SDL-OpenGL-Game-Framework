@@ -2,9 +2,9 @@
 
 #include "../../MainUiManager/MainUiManager.hpp"
 
-ModelManager::ModelManager() {
-    modelScale = 1;
-    cameraX = cameraY = 0;
+ModelManager::ModelManager(float initialModelScale) {
+    this->initialModelScale = initialModelScale;
+    resetCamera();
 
     modelTick = 0;
 }
@@ -30,6 +30,19 @@ void ModelManager::gameToScreenCoords(const SDL_Rect &screenRect, int& screenX, 
 }
 float ModelManager::gameToScreenLength(float gameLength) const {
     return gameLength * modelScale;
+}
+
+void ModelManager::resetCamera() {
+    modelScale = initialModelScale;
+    cameraX = cameraY = 0;
+}
+void ModelManager::moveCamera(float x, float y) {
+    cameraX += x;
+    cameraY += y;
+}
+void ModelManager::scaleCamera(float scale) {
+    // Can add some limits to the scale here
+    modelScale *= scale;
 }
 
 void ModelManager::pickActiveEntity(float x, float y) {}

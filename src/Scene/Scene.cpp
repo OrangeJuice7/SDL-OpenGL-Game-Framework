@@ -28,16 +28,16 @@ void Scene::doTick() {
 void Scene::handleKeyDownEvent(SDL_Keycode key) {}
 void Scene::handleKeyUpEvent(SDL_Keycode key) {}
 
-void Scene::updateFromMouse(const SDL_Rect &screenRect, int mousePosX, int mousePosY, bool LMouseDown, bool RMouseDown) {
+void Scene::updateFromMouse(const SDL_Rect &screenRect, const MouseState &mouseState) {
 	// Do not update the active element if the mouse is currently being held down, to preserve the existing active element (if any)
-	if (LMouseDown) return;
+	if (mouseState.isLDown) return;
 
 	// Check for Widget intercepts
-    if ( widgetManager.pickActiveWidget(mousePosX, mousePosY) ) return;
+    if ( widgetManager.pickActiveWidget(mouseState.x, mouseState.y) ) return;
 
 	// Check for Model intercepts
 	{   float gameX, gameY;
-        modelManager->screenToGameCoords(screenRect, gameX, gameY, mousePosX, mousePosY);
+        modelManager->screenToGameCoords(screenRect, gameX, gameY, mouseState.x, mouseState.y);
         modelManager->pickActiveEntity(gameX, gameY);
 	}
 }
@@ -48,7 +48,6 @@ void Scene::handleMouseLDownEvent() {
 	// Check for Model intercepts
 	modelManager->click();
 }
-void Scene::handleMouseRDownEvent() {}
 void Scene::handleMouseLUpEvent() {
     // If we have an activeWidget, just release it and we are done
     if ( widgetManager.releaseMouse() ) return;
@@ -56,7 +55,11 @@ void Scene::handleMouseLUpEvent() {
 	// Check for Model intercepts
 	modelManager->releaseMouse();
 }
+void Scene::handleMouseRDownEvent() {}
 void Scene::handleMouseRUpEvent() {}
+void Scene::handleMouseMDownEvent() {}
+void Scene::handleMouseMUpEvent() {}
+void Scene::handleMouseWheelEvent(Sint32 delta) {}
 
 void Scene::draw(MainUiManager *uiManager) {
     modelManager->draw(uiManager); // draw model first

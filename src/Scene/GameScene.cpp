@@ -12,12 +12,18 @@
 GameScene::GameScene()
         : Scene(new GameModelManager()) {
 
+    cameraScaleFactor = 1.2f;
+
     loadWidgets();
 }
 GameScene::~GameScene() {}
 
+GameModelManager* GameScene::getModel() {
+    return dynamic_cast<GameModelManager*>(modelManager);
+}
+
 void GameScene::loadWidgets() {
-	GameModelManager* model = dynamic_cast<GameModelManager*>(modelManager);
+	GameModelManager* model = getModel();
 
 	Widget* newWidget;
 	const static SDL_Color     white = {255, 255, 255, 255};
