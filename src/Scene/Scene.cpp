@@ -41,6 +41,7 @@ void Scene::updateFromMouse(const SDL_Rect &screenRect, const MouseState &mouseS
         modelManager->pickActiveEntity(gameX, gameY);
 	}
 }
+void Scene::updateFromKeys(const KeyboardState &keyboardState) {}
 void Scene::handleMouseLDownEvent() {
     // If we have an activeWidget, just activate it and we are done
     if ( widgetManager.click() ) return;

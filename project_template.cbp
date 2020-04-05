@@ -35,6 +35,8 @@
 		<Unit filename="src/MainUiManager/InitTextures.cpp" />
 		<Unit filename="src/MainUiManager/InitWindow.cpp" />
 		<Unit filename="src/MainUiManager/Input.cpp" />
+		<Unit filename="src/MainUiManager/InputState.cpp" />
+		<Unit filename="src/MainUiManager/InputState.hpp" />
 		<Unit filename="src/MainUiManager/MainUiManager.cpp" />
 		<Unit filename="src/MainUiManager/MainUiManager.hpp" />
 		<Unit filename="src/MainUiManager/Render.cpp" />
@@ -57,6 +59,8 @@
 		<Unit filename="src/Scene/Model/GameModelManager.hpp" />
 		<Unit filename="src/Scene/Model/MenuModelManager.cpp" />
 		<Unit filename="src/Scene/Model/MenuModelManager.hpp" />
+		<Unit filename="src/Scene/Model/Mob.cpp" />
+		<Unit filename="src/Scene/Model/Mob.hpp" />
 		<Unit filename="src/Scene/Model/ModelManager.cpp" />
 		<Unit filename="src/Scene/Model/ModelManager.hpp" />
 		<Unit filename="src/Scene/Model/Particle.cpp" />

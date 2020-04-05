@@ -4,6 +4,7 @@
 
 MainUiManager::MainUiManager(const char *windowTitle, int screenWidth, int screenHeight)
         : mouseState()
+        , keyboardState()
         , WINDOW_TITLE(windowTitle)
         , SCREEN_WIDTH(screenWidth)
         , SCREEN_HEIGHT(screenHeight)

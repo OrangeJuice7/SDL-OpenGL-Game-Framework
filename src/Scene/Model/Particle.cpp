@@ -11,7 +11,7 @@ ParticleData::ParticleData(const EntityData& entityData)
 
 
 
-Particle::Particle() : Particle(emptyParticleData, 0, 0, 0, 0, 1, 1, 1) {}
+Particle::Particle() : Particle(genericParticleData, 0, 0, 0, 0, 1, 1, 1) {}
 Particle::Particle(const ParticleData &data, float x, float y, float xvel, float yvel, float radius, float maxLife, float mass)
         : Entity(data, x, y, xvel, yvel, radius, maxLife, mass) {}
 

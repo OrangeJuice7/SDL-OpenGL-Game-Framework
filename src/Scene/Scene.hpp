@@ -3,7 +3,7 @@
 
 #include <cstdint>
 #include <SDL.h>
-#include "../MainUiManager/MouseState.hpp"
+#include "../MainUiManager/InputState.hpp"
 #include "Widget/WidgetManager.hpp"
 class MainUiManager;
 class ModelManager;
@@ -23,6 +23,7 @@ class Scene {
         /**  UI  **/
         // Basically updates the active elements e.g. activeWidget
         virtual void updateFromMouse(const SDL_Rect &screenRect, const MouseState &mouseState);
+        virtual void updateFromKeys(const KeyboardState &keyboardState);
 
         // Handle input. May send Messages to MainApp
         virtual void handleKeyDownEvent(SDL_Keycode key);

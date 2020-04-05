@@ -22,6 +22,7 @@ class GameScene : public Scene {
         /**  UI  **/
         // Checks for camera panning, then checks for active elements like normal
         void updateFromMouse(const SDL_Rect &screenRect, const MouseState &mouseState);
+        void updateFromKeys(const KeyboardState &keyboardState);
 
         // Sends Messages to MainApp
         void handleKeyDownEvent(SDL_Keycode key);

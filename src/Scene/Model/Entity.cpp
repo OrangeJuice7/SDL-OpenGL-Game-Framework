@@ -1,6 +1,7 @@
 #include "Entity.hpp"
 
 #include <SDL.h>
+#include "../../basicmath.hpp"
 #include "../../MainUiManager/MainUiManager.hpp"
 
 EntityData::EntityData() {
@@ -9,7 +10,7 @@ EntityData::EntityData() {
 
 
 
-Entity::Entity() : Entity(emptyEntityData, 0, 0, 0, 0, 1, 1, 1) {}
+Entity::Entity() : Entity(genericEntityData, 0, 0, 0, 0, 1, 1, 1) {}
 Entity::Entity(const EntityData &data, float x, float y, float xvel, float yvel, float radius, float maxLife, float mass) {
     this->data = &data;
     this->x = x;
@@ -23,6 +24,18 @@ Entity::Entity(const EntityData &data, float x, float y, float xvel, float yvel,
 
 float Entity::getLifeFraction() const { return life / maxLife; }
 bool Entity::isDead() const { return life <= 0; }
+bool Entity::isColliding(const Entity& other) const {
+    float x2 = other.x,
+          y2 = other.y,
+          r = radius + other.radius;
+
+    // Bounding box check
+    if (x < x2-r || x > x2+r ||
+        y < y2-r || y > y2+r ) return false;
+
+    // Circle check
+    return (getdist2(x2-x,y2-y) <= r*r);
+}
 
 void Entity::applyForce(float forceX, float forceY) {
     xvel += forceX / mass;

@@ -5,38 +5,59 @@
 
 GameModelManager::GameModelManager()
         : ModelManager(32)
+        , mobs()
         , particles() {
 
-    //(nothing)
+    activeMob = nullptr;
+    playerMob = nullptr;
 }
 GameModelManager::~GameModelManager() {}
+
+Mob* GameModelManager::getActiveMob() const {
+    return activeMob;
+}
+Mob* GameModelManager::getPlayerMob() const {
+    return playerMob;
+}
 
 void GameModelManager::updateOneTick() {
     spawnParticleExplosion(2, 0, 0, .1f, .2f);
 
     // Update the entities individually
+    mobs.doTick([=](const Mob* pMob) {
+        if (activeMob == pMob) activeMob = nullptr;
+        if (playerMob == pMob) playerMob = nullptr;
+    });
+
     particles.doTick();
 
     /** Inter-entity interactions (esp. collision detection and resolution) **/
-    // Particle-particle
-    particles.checkCollisionsSelf([](Particle& p1, Particle& p2) {
-        float xdist = p2.x - p1.x,
-              ydist = p2.y - p1.y;
-        /*float forceX = xdist*.0000004f,
-              forceY = ydist*.0000004f;*/
-        float dist2 = getdist2(xdist, ydist);
-        float forceX = .0000004f*xdist/dist2,
-              forceY = .0000004f*ydist/dist2;
-        p1.applyForce( forceX, forceY);
-        p2.applyForce(-forceX,-forceY);
+
+    // Mob-mob
+    mobs.checkCollisionsSelf([](Mob& m1, Mob& m2) {
+        if (m1.isColliding(m2)) { // Colliding
+            // Repel
+            float distx = m1.x - m2.x,
+                  disty = m1.y - m2.y;
+            float overlap = (m1.radius + m2.radius) - getdist(distx, disty);
+
+            m1.applyForce( distx*overlap, disty*overlap);
+            m2.applyForce(-distx*overlap,-disty*overlap);
+
+            // Add damage
+            /*m1.life -= .2f;
+            m2.life -= .2f;*/
+        }
     });
+
+    // Particle-projectile
     /*particles.checkCollisions(projectiles, [](Particle& particle, Projectile& projectile) {
-        // particle-projectile interaction code here
+        //
     });*/
 }
 
 void GameModelManager::spawnParticleExplosion(int numOfParticles, float x, float y, float maxVel, float maxRadius) {
-    Particle p(emptyParticleData, x, y, 0, 0, .2f, 30, 1);
+    Particle p(genericParticleData, x, y, 0, 0, .2f, 30, 1);
 
     for (int i = 0; i < numOfParticles; ++i) {
         p.radius = (1 - .5f*pow(getrand(), 3))*maxRadius;
@@ -53,9 +74,16 @@ void GameModelManager::spawnParticleExplosion(int numOfParticles, float x, float
         particles.addEntity(p);
     }
 }
+Mob* GameModelManager::spawnMob(const MobData &data, float x, float y) {
+    Mob mob(data, x, y);
+    return mobs.addEntity(mob);
+}
+Mob* GameModelManager::spawnPlayerMob(const MobData &data, float x, float y) {
+    return playerMob = spawnMob(data, x, y);
+}
 
 void GameModelManager::pickActiveEntity(float x, float y) {
-    //
+    activeMob = mobs.pickEntity(x,y);
 }
 void GameModelManager::click() {
     //
@@ -65,5 +93,6 @@ void GameModelManager::draw(MainUiManager *uiManager) {
     auto gameToScreenCoordsFunc = getGameToScreenCoordsFunc(uiManager);
     auto gameToScreenLengthFunc = getGameToScreenLengthFunc();
 
+    mobs.draw(gameToScreenCoordsFunc, gameToScreenLengthFunc, uiManager);
     particles.draw(gameToScreenCoordsFunc, gameToScreenLengthFunc, uiManager);
 }

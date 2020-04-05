@@ -11,7 +11,7 @@ struct EntityData {
 
     EntityData();
 };
-const EntityData emptyEntityData;
+const EntityData genericEntityData;
 
 
 
@@ -33,6 +33,7 @@ class Entity {
         float getLife() const;
         float getLifeFraction() const;
         virtual bool isDead() const;
+        bool isColliding(const Entity& other) const;
 
         void applyForce(float forceX, float forceY);
 

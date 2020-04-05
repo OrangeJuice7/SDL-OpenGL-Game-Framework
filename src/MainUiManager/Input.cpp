@@ -18,11 +18,17 @@ void MainUiManager::getInputs(Scene* scene) {
                 break;
 
             case SDL_KEYDOWN:
-                scene->handleKeyDownEvent(event.key.keysym.sym);
+                {   SDL_Keycode key = event.key.keysym.sym;
+                    keyboardState.keys[key] = true;
+                    scene->handleKeyDownEvent(key);
+                }
                 break;
 
             case SDL_KEYUP:
-                scene->handleKeyUpEvent(event.key.keysym.sym);
+                {   SDL_Keycode key = event.key.keysym.sym;
+                    keyboardState.keys[key] = false;
+                    scene->handleKeyUpEvent(key);
+                }
                 break;
 
             case SDL_MOUSEMOTION:
@@ -53,6 +59,7 @@ void MainUiManager::getInputs(Scene* scene) {
         }
     }
 
-    // Update the scene with the current mouse state (called every frame because even if the mouse state doesn't change, the scene may)
+    // Update the scene with the current input state (called every frame because even if the input state doesn't change, the scene may)
     scene->updateFromMouse(SCREEN_RECT, mouseState);
+    scene->updateFromKeys(keyboardState);
 }

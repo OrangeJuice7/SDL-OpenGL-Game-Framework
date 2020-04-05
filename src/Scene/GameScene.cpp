@@ -17,6 +17,10 @@ GameScene::GameScene()
     moveCameraScreenBorder = 5;
 
     loadWidgets();
+
+    getModel()->spawnPlayerMob(genericMobData, 0, 0);
+    getModel()->spawnMob(genericMobData, 8, 0);
+    getModel()->spawnMob(genericMobData,-8, 0);
 }
 GameScene::~GameScene() {}
 
@@ -85,6 +89,20 @@ void GameScene::loadWidgets() {
 
 			widget->renderText(uiManager, "test2", textColor);
 		} ) );
+	widgetManager.loadWidget(newWidget);
+
+    newWidget = new Widget(
+		{0, 20, 360, 60},
+		Widget::HORZALIGN_CENTER,
+		Widget::VERTALIGN_BOTTOM,
+		/*drawFunc*/ [model](const Widget* widget, MainUiManager* uiManager) {
+			Mob *pMob = model->getActiveMob();
+			if (!pMob) return;
+
+			char msg[256];
+			sprintf(msg, "Position: (%.2f, %.2f)", pMob->x, pMob->y);
+			widget->renderText(uiManager, msg, textColor);
+		} );
 	widgetManager.loadWidget(newWidget);
 
     newWidget = new Widget(

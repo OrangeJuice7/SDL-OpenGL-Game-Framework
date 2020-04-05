@@ -4,7 +4,7 @@
 #include <SDL.h>
 #include <SDL_ttf.h> // http://www.sdltutorials.com/sdl-ttf
 #include "Texture.hpp"
-#include "MouseState.hpp"
+#include "InputState.hpp"
 class Scene;
 
 class MainUiManager {
@@ -17,8 +17,8 @@ class MainUiManager {
 
         Uint32 uiTick;
 
-        // Mouse state
         MouseState mouseState;
+        KeyboardState keyboardState;
 
         bool initSDL();
         bool initWindow(); // requires initSDL()

@@ -10,9 +10,7 @@ struct ParticleData : EntityData {
 
     ParticleData(const EntityData& entityData);
 };
-const ParticleData emptyParticleData(emptyEntityData);
-
-//const ParticleData genericParticleData(EntityData(.2f, 30, 1));
+const ParticleData genericParticleData(genericEntityData);
 
 
 
