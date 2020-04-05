@@ -67,8 +67,8 @@ void GameScene::handleMouseMDownEvent() {
 }
 void GameScene::handleMouseWheelEvent(Sint32 delta) {
     if (delta > 0) { // away from user
-        modelManager->scaleCamera(1/cameraScaleFactor);
+        modelManager->scaleCamera(cameraScaleFactor); // zoom in
     } else if (delta < 0) { // towards user
-        modelManager->scaleCamera(cameraScaleFactor);
+        modelManager->scaleCamera(1/cameraScaleFactor); // zoom out
     }
 }
