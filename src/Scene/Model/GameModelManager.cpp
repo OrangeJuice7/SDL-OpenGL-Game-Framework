@@ -58,8 +58,14 @@ void GameModelManager::updateOneTick() {
         if (p.isColliding(m)) { // Colliding
             // Do damage
             //m.life -= .2f;
+
             // Spawn (killzone) explosion
             spawnExplosion(genericExplosionData, p.x, p.y);
+
+            // Push back mob with momentum from projectile i.e. add all of the projectile's momentum to the mob
+            // new_m.momentum = p.momentum + m.momentum => mm*nv = pm*pv + mm*mv => nv = pm*pv/mm + mv
+            m.xvel += p.xvel * p.mass / m.mass;
+            m.yvel += p.yvel * p.mass / m.mass;
 
             // Kill projectile
             p.kill();

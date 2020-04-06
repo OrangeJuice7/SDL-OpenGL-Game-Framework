@@ -14,7 +14,7 @@ struct ProjectileData : EntityData {
 
     ProjectileData(const EntityData& entityData, float radius, float maxLife, float mass);
 };
-const ProjectileData genericProjectileData(genericEntityData, .1f, 30, 1);
+const ProjectileData genericProjectileData(genericEntityData, .1f, 30, .1f);
 
 
 
