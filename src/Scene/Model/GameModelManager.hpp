@@ -3,8 +3,10 @@
 
 #include "ModelManager.hpp"
 #include "EntityManager.hpp"
-#include "Particle.hpp"
 #include "Mob.hpp"
+#include "Projectile.hpp"
+#include "Explosion.hpp"
+#include "Particle.hpp"
 
 class GameModelManager : public ModelManager {
     protected:
@@ -13,7 +15,8 @@ class GameModelManager : public ModelManager {
 
         /**  Model  **/
         EntityManager<Mob> mobs;
-        //EntityManager<Projectile> projectiles;
+        EntityManager<Projectile> projectiles;
+        EntityManager<Explosion> explosions;
         EntityManager<Particle> particles;
 
         //std::array<Player> players;
@@ -29,9 +32,11 @@ class GameModelManager : public ModelManager {
         Mob* getActiveMob() const;
         Mob* getPlayerMob() const;
 
-        void spawnParticleExplosion(int numOfParticles, float x, float y, float maxVel, float maxRadius);
         Mob* spawnMob(const MobData &data, float x, float y);
         Mob* spawnPlayerMob(const MobData &data, float x, float y);
+        Projectile* spawnProjectile(const ProjectileData &data, float x, float y, float xvel, float yvel);
+        Explosion* spawnExplosion(const ExplosionData &data, float x, float y);
+        void spawnParticleExplosion(int numOfParticles, float x, float y, float maxVel, float maxRadius);
 
         /**  UI  **/
         void pickActiveEntity(float x, float y);

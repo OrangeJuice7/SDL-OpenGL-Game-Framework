@@ -35,6 +35,7 @@ class Entity {
         virtual bool isDead() const;
         bool isColliding(const Entity& other) const;
 
+        void kill();
         void applyForce(float forceX, float forceY);
 
         virtual void doTick();

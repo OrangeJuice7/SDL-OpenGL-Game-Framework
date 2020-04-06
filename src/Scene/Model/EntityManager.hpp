@@ -8,6 +8,11 @@ class MainUiManager;
 
 template <class TEntity>
 class EntityManager {
+    // Let all the different EntityManager<> classes talk to each other
+    // Needed for checkCollisions() to work
+    template<class UEntity>
+    friend class EntityManager;
+
     protected:
         std::forward_list<TEntity> entities; // Convert to TEntity* to handle the TEntity's derivatives as well
 
@@ -26,7 +31,7 @@ class EntityManager {
 
         template <class UEntity>
         void checkCollisions(
-                const EntityManager<UEntity>& otherManager,
+                EntityManager<UEntity>& otherManager,
                 std::function<void(TEntity&, UEntity&)> collisionFunc );
 
         TEntity* pickEntity(float x, float y);
@@ -100,7 +105,7 @@ void EntityManager<TEntity>::checkCollisionsSelf(
 template <class TEntity>
 template <class UEntity>
 void EntityManager<TEntity>::checkCollisions(
-        const EntityManager<UEntity>& otherManager,
+        EntityManager<UEntity>& otherManager,
         std::function<void(TEntity&, UEntity&)> collisionFunc ) {
 
     for (TEntity &entity : entities) {

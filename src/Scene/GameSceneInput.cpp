@@ -1,5 +1,6 @@
 #include "GameScene.hpp"
 
+#include "../basicmath.hpp"
 #include "Model/GameModelManager.hpp"
 
 #include "../MainApp/MessageHandler.hpp"
@@ -14,6 +15,31 @@ void GameScene::updateFromMouse(const SDL_Rect &screenRect, const MouseState &mo
         else if (mouseState.x >= screenRect.w-moveCameraScreenBorder) modelManager->moveCamera( panAmount,0);
              if (mouseState.y <=              moveCameraScreenBorder) modelManager->moveCamera(0, panAmount);
         else if (mouseState.y >= screenRect.h-moveCameraScreenBorder) modelManager->moveCamera(0,-panAmount);
+    }
+
+    // Fire bullets
+    Mob* playerMob = getModel()->getPlayerMob();
+    if (mouseState.isLDown && getModelTick()%10 == 0 && playerMob) {
+        // Grab player position and radius
+        float px = playerMob->x,
+              py = playerMob->y;
+        float pr = playerMob->radius;
+
+        // Get cursor position in game coords
+        float gameX, gameY;
+        modelManager->screenToGameCoords(screenRect, gameX, gameY, mouseState.x, mouseState.y);
+
+        // Get direction vector of cursor from player
+        float dirX = gameX - px,
+              dirY = gameY - py;
+
+        // Normalize direction vector
+        float dist = getdist(dirX, dirY);
+        dirX /= dist;
+        dirY /= dist;
+
+        float vel = 1;
+        getModel()->spawnProjectile(genericProjectileData, px + dirX*pr, py + dirY*pr, dirX*vel, dirY*vel);
     }
 
     // Update like normal

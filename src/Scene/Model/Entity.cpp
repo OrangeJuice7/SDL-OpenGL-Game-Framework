@@ -36,6 +36,9 @@ bool Entity::isColliding(const Entity& other) const {
     // Circle check
     return (getdist2(x2-x,y2-y) <= r*r);
 }
+void Entity::kill() {
+    life = -1; // 0 should work, but -1 just to be safe from floating point errors
+}
 
 void Entity::applyForce(float forceX, float forceY) {
     xvel += forceX / mass;

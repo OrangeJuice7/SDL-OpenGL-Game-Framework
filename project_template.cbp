@@ -55,6 +55,8 @@
 		<Unit filename="src/Scene/Model/Entity.cpp" />
 		<Unit filename="src/Scene/Model/Entity.hpp" />
 		<Unit filename="src/Scene/Model/EntityManager.hpp" />
+		<Unit filename="src/Scene/Model/Explosion.cpp" />
+		<Unit filename="src/Scene/Model/Explosion.hpp" />
 		<Unit filename="src/Scene/Model/GameModelManager.cpp" />
 		<Unit filename="src/Scene/Model/GameModelManager.hpp" />
 		<Unit filename="src/Scene/Model/MenuModelManager.cpp" />
@@ -65,6 +67,8 @@
 		<Unit filename="src/Scene/Model/ModelManager.hpp" />
 		<Unit filename="src/Scene/Model/Particle.cpp" />
 		<Unit filename="src/Scene/Model/Particle.hpp" />
+		<Unit filename="src/Scene/Model/Projectile.cpp" />
+		<Unit filename="src/Scene/Model/Projectile.hpp" />
 		<Unit filename="src/Scene/Scene.cpp" />
 		<Unit filename="src/Scene/Scene.hpp" />
 		<Unit filename="src/Scene/Widget/Widget.cpp" />
