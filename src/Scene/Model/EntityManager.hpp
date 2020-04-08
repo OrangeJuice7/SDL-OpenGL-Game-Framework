@@ -14,7 +14,8 @@ class EntityManager {
     friend class EntityManager;
 
     protected:
-        std::forward_list<TEntity> entities; // Convert to TEntity* to handle the TEntity's derivatives as well
+        std::forward_list<TEntity> entities; // Convert to TEntity* to handle the TEntity's derivatives as well? Would also make external entity references safer, somewhat
+        std::forward_list<TEntity> toAdd; // Buffer list, to prevent element additions in the middle of iterating thru entities (which will screw up the iterator)
 
     public:
         EntityManager();
@@ -52,19 +53,23 @@ EntityManager<TEntity>::~EntityManager() {}
 
 template <class TEntity>
 TEntity* EntityManager<TEntity>::addEntity(const TEntity& entity) {
-    entities.push_front(entity);
-    return &(entities.front());
+    toAdd.push_front(entity);
+    return &(toAdd.front());
 }
 
 template <class TEntity>
 void EntityManager<TEntity>::clearEntities() {
     entities.clear();
+    toAdd.clear();
 }
 
 template <class TEntity>
 void EntityManager<TEntity>::doTick() {
     // Remove dead entities
     entities.remove_if( [](const TEntity& entity) -> bool { return entity.isDead(); } );
+
+    // Add buffered entities
+    entities.splice_after(entities.before_begin(), toAdd);
 
     // Update the rest
     for (TEntity &entity : entities) {
@@ -74,12 +79,15 @@ void EntityManager<TEntity>::doTick() {
 template <class TEntity>
 void EntityManager<TEntity>::doTick(std::function<void(const TEntity*)> entityDeletedFunc) {
     // Remove dead entities
-    entities.remove_if( [entityDeletedFunc](const TEntity& entity) -> bool {
+    entities.remove_if( [this, entityDeletedFunc](const TEntity& entity) -> bool {
         if (entity.isDead()) {
             entityDeletedFunc(&entity);
             return true;
         } else return false;
     } );
+
+    // Add buffered entities
+    entities.splice_after(entities.before_begin(), toAdd);
 
     // Update the rest
     for (TEntity &entity : entities) {

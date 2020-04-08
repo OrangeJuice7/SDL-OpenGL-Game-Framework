@@ -31,9 +31,12 @@ void GameModelManager::updateOneTick() {
 
         // Spawn (particle) explosion
         spawnParticleExplosion(100, m->x, m->y, .8f, .4f);
+
+        // Respawn a mob somewhere
+        spawnMob(genericMobData, getrand()*16 -8, getrand()*16 -8);
     });
     projectiles.doTick();
-    // Explosions are left to the end, since their initial state is important
+    explosions.doTick();
     particles.doTick();
 
     /** Inter-entity interactions (esp. collision detection and resolution) **/
@@ -102,8 +105,6 @@ void GameModelManager::updateOneTick() {
     /*explosions.checkCollisions(particles, [](Explosion& e, Particle& p) {
         //
     });*/
-
-    explosions.doTick();
 }
 
 Mob* GameModelManager::spawnMob(const MobData &data, float x, float y) {

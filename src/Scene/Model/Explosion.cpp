@@ -14,7 +14,10 @@ ExplosionData::ExplosionData(const EntityData& entityData, float radius, float m
 
 Explosion::Explosion() : Explosion(genericExplosionData, 0, 0) {}
 Explosion::Explosion(const ExplosionData &data, float x, float y)
-        : Entity(data, x, y, 0, 0, data.radius, data.maxLife, 1) {}
+        : Entity(data, x, y, 0, 0, data.radius, data.maxLife, 1) {
+
+    ++life; // Add a one-tick buffer, since all entities are updated by 1 tick before they are allowed to interact with other entities
+}
 
 bool Explosion::isOnInitialTick() const {
     return life > maxLife-.01f; // life starts at maxLife and ticks down by 1 per frame
