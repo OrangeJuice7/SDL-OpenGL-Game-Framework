@@ -2,6 +2,7 @@
 
 #include <cstdio>
 #include <SDL.h>
+#include "Model/MenuModelManager.hpp"
 #include "Widget/Widget.hpp"
 #include "../MainApp/MessageHandler.hpp"
 #include "../Message/SceneTransitMessage.hpp"
@@ -9,7 +10,7 @@
 #include "GameScene.hpp"
 
 MenuScene::MenuScene()
-        : Scene() {
+        : Scene(new MenuModelManager()) {
 
     loadWidgets();
 }
@@ -19,11 +20,11 @@ void MenuScene::loadWidgets() {
 	const static SDL_Color white = {255, 255, 255, 255};
 	const static SDL_Color textColor = {255, 200, 200, 255};
 
-	loadWidget( new Widget(
+	widgetManager.loadWidget( new Widget(
 		{40, 20, 240, 20},
 		Widget::HORZALIGN_LEFT,
 		Widget::VERTALIGN_TOP,
-		true, /*funcOnClick*/ []() {
+		/*funcOnClick*/ []() {
 			MessageHandler::postMessage( new SceneTransitMessage( new GameScene() ) );
 		},
 		/*drawFunc*/ [](const Widget* widget, MainUiManager* uiManager) {
@@ -33,52 +34,47 @@ void MenuScene::loadWidgets() {
 			widget->renderText(uiManager, "Click here to go to game", textColor);
 		} ) );
 
-    loadWidget( new Widget(
+    widgetManager.loadWidget( new Widget(
 		{0, 20, 160, 20},
 		Widget::HORZALIGN_CENTER,
 		Widget::VERTALIGN_TOP,
-		false, [](){},
 		/*drawFunc*/ [&](const Widget* widget, MainUiManager* uiManager) {
 			widget->renderText(uiManager, "MENU SCENE", textColor);
 		} ) );
 
-    loadWidget( new Widget(
+    widgetManager.loadWidget( new Widget(
 		{20, 80, 160, 20},
 		Widget::HORZALIGN_RIGHT,
 		Widget::VERTALIGN_BOTTOM,
-		false, [](){},
 		/*drawFunc*/ [&](const Widget* widget, MainUiManager* uiManager) {
 			if (!paused) return;
 			widget->renderText(uiManager, "-- PAUSED --", white);
 		} ) );
 
-    loadWidget( new Widget(
+    widgetManager.loadWidget( new Widget(
 		{20, 60, 160, 20},
 		Widget::HORZALIGN_RIGHT,
 		Widget::VERTALIGN_BOTTOM,
-		false, [](){},
 		/*drawFunc*/ [&](const Widget* widget, MainUiManager* uiManager) {
 			char msg[256];
 			sprintf(msg, "UiTick: %u", uiManager->getUiTick());
 			widget->renderText(uiManager, msg, textColor);
 		} ) );
 
-    loadWidget( new Widget(
+    widgetManager.loadWidget( new Widget(
 		{20, 40, 160, 20},
 		Widget::HORZALIGN_RIGHT,
 		Widget::VERTALIGN_BOTTOM,
-		false, [](){},
 		/*drawFunc*/ [&](const Widget* widget, MainUiManager* uiManager) {
 			char msg[256];
-			sprintf(msg, "ModelTick: %u", modelTick);
+			sprintf(msg, "ModelTick: %u", modelManager->getModelTick());
 			widget->renderText(uiManager, msg, textColor);
 		} ) );
 
-    loadWidget( new Widget(
+    widgetManager.loadWidget( new Widget(
 		{20, 20, 160, 20},
 		Widget::HORZALIGN_RIGHT,
 		Widget::VERTALIGN_BOTTOM,
-		false, [](){},
 		/*drawFunc*/ [&](const Widget* widget, MainUiManager* uiManager) {
 			char msg[256];
 			sprintf(msg, "FPS: %.2f", uiManager->fps);

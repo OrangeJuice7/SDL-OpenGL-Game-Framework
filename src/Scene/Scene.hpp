@@ -1,57 +1,46 @@
 #ifndef SCENE_HPP
 #define SCENE_HPP
 
+#include <cstdint>
 #include <SDL.h>
-#include <vector>
+#include "../MainUiManager/InputState.hpp"
+#include "Widget/WidgetManager.hpp"
 class MainUiManager;
-class Widget;
+class ModelManager;
 
 class Scene {
     protected:
-        /**  UI  **/
-        // Use a WidgetManager?
-        std::vector<Widget*> widgets;
-        Widget* activeWidget;
+        WidgetManager widgetManager;
+        ModelManager* modelManager;
 
-        void loadWidget(Widget* widget);
-        //virtual void loadWidgets(); // doesn't work in the constructor
-        void unloadWidgets();
-
-        void drawGui(MainUiManager *uiManager);
-
-        /**  Model  **/
-        //
-
-        //int cameraX, cameraY;
-
-        //virtual void drawModel(MainUiManager *uiManager);
-
-        Uint32 modelTick;
         bool paused;
 
-        virtual void updateOneTick();
-
     public:
-        Scene();
+        // modelManager should be a new ModelManager, created when constructing Scene's derived class
+        Scene(ModelManager* modelManager);
         virtual ~Scene();
 
         /**  UI  **/
         // Basically updates the active elements e.g. activeWidget
-        virtual void updateFromMouse(int mousePosX, int mousePosY);
+        virtual void updateFromMouse(const SDL_Rect &screenRect, const MouseState &mouseState);
+        virtual void updateFromKeys(const KeyboardState &keyboardState);
 
-        // Sends Messages to MainApp
+        // Handle input. May send Messages to MainApp
         virtual void handleKeyDownEvent(SDL_Keycode key);
         virtual void handleKeyUpEvent(SDL_Keycode key);
         virtual void handleMouseLDownEvent();
+        virtual void handleMouseLUpEvent();
         virtual void handleMouseRDownEvent();
-        //virtual void handleMouseLUpEvent();
-        //virtual void handleMouseRUpEvent();
+        virtual void handleMouseRUpEvent();
+        virtual void handleMouseMDownEvent();
+        virtual void handleMouseMUpEvent();
+        virtual void handleMouseWheelEvent(Sint32 delta); // positive delta: away from the user
 
         // Draws to the uiManager (called by the uiManager)
         void draw(MainUiManager *uiManager);
 
         /**  Model  **/
-        Uint32 getModelTick();
+        uint32_t getModelTick();
         void doTick();
 };
 

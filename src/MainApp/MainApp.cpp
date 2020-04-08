@@ -7,7 +7,7 @@
 #include "../Timer.hpp"
 
 MainApp::MainApp()
-        : uiManager("[PROJECT TITLE]", 1080, 720)
+        : uiManager("[PROJECT TITLE]", 1280, 720)
         , TARGET_FPS(60)
         , FPS_UPDATE_RATE(1)
         , LAG_COMPENSATION_THRESHOLD(1) {

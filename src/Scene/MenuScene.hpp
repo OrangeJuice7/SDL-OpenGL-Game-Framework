@@ -8,9 +8,6 @@ class MenuScene : public Scene {
         /**  UI  **/
         void loadWidgets();
 
-        /**  Model  **/
-        void updateOneTick();
-
     public:
         MenuScene();
         ~MenuScene();

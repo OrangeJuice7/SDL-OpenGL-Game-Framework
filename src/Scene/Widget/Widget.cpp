@@ -3,11 +3,39 @@
 #include "../../MainUiManager/MainUiManager.hpp"
 
 Widget::Widget(
+        SDL_Rect rect,
+        HorizontalAlignment horzAlign,
+        VerticalAlignment vertAlign,
+        std::function<void(const Widget*, MainUiManager*)> drawFunc )
+
+        : Widget(rect, horzAlign, vertAlign, false, nullptr, nullptr, drawFunc) {}
+
+Widget::Widget(
+        SDL_Rect rect,
+        HorizontalAlignment horzAlign,
+        VerticalAlignment vertAlign,
+        std::function<void()> funcOnClick,
+        std::function<void(const Widget*, MainUiManager*)> drawFunc )
+
+        : Widget(rect, horzAlign, vertAlign, true, funcOnClick, nullptr, drawFunc) {}
+
+Widget::Widget(
+        SDL_Rect rect,
+        HorizontalAlignment horzAlign,
+        VerticalAlignment vertAlign,
+        std::function<void()> funcOnClick,
+        std::function<void()> funcOnRelease,
+        std::function<void(const Widget*, MainUiManager*)> drawFunc )
+
+        : Widget(rect, horzAlign, vertAlign, true, funcOnClick, funcOnRelease, drawFunc) {}
+
+Widget::Widget(
 		SDL_Rect rect,
 		HorizontalAlignment horzAlign,
 		VerticalAlignment vertAlign,
 		bool clickable,
 		std::function<void()> funcOnClick,
+		std::function<void()> funcOnRelease,
 		std::function<void(const Widget*, MainUiManager*)> drawFunc ) {
 
     this->rect = rect;
@@ -15,6 +43,7 @@ Widget::Widget(
     this->vertAlign = vertAlign;
     this->clickable = clickable;
     this->funcOnClick = funcOnClick;
+    this->funcOnRelease = funcOnRelease;
     this->drawFunc = drawFunc;
 
     this->active = false;
@@ -26,6 +55,9 @@ Widget::~Widget() {
 	children.clear();
 }
 
+const SDL_Rect& Widget::getScreenRect() const {
+    return screenRect;
+}
 bool Widget::getActive() const {
 	return active;
 }
@@ -84,6 +116,9 @@ void Widget::deactivate() {
 void Widget::click() {
 	if (funcOnClick) funcOnClick();
 }
+void Widget::releaseMouse() {
+	if (funcOnRelease) funcOnRelease();
+}
 
 void Widget::update(const SDL_Rect &psRect) {
     calcScreenRect(psRect);
@@ -102,8 +137,8 @@ void Widget::renderText(MainUiManager *uiManager, const char *text, SDL_Color co
 
 void Widget::draw(MainUiManager *uiManager) const {
 	if (getClickable()) {
-        if (getActive()) uiManager->setDrawColor(0x60, 0x60, 0x00, 0xFF);
-        else             uiManager->setDrawColor(0x00, 0x40, 0x60, 0xFF);
+        if (getActive()) uiManager->setDrawColor(0x60, 0x60, 0x00);
+        else             uiManager->setDrawColor(0x00, 0x40, 0x60);
         uiManager->drawFillRect(screenRect);
     }
 

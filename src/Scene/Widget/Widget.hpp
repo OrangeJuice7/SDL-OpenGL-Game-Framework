@@ -36,10 +36,13 @@ class Widget {
 		HorizontalAlignment horzAlign;
 		VerticalAlignment vertAlign;
 
+		bool clickable;
 		// The function that this widget executes on click.
 		// Set to nullptr if this widget does nothing when clicked
 		std::function<void()> funcOnClick;
-		bool clickable;
+		// The function that this widget executes on mouse button release.
+		// Set to nullptr if this widget does nothing when clicked
+		std::function<void()> funcOnRelease;
 
 		// Whether this widget can be dragged around on mouse hold
 		// bool draggable;
@@ -60,18 +63,45 @@ class Widget {
 		void calcScreenRect(const SDL_Rect &psRect);
 
     public:
+        // Full constructor
         Widget(
 			SDL_Rect rect,
 			HorizontalAlignment horzAlign,
 			VerticalAlignment vertAlign,
 			bool clickable,
 			std::function<void()> funcOnClick,
+            std::function<void()> funcOnRelease,
+			std::function<void(const Widget*, MainUiManager*)> drawFunc );
+
+        // Unclickable Widget constructor
+        Widget(
+			SDL_Rect rect,
+			HorizontalAlignment horzAlign,
+			VerticalAlignment vertAlign,
+			std::function<void(const Widget*, MainUiManager*)> drawFunc );
+
+        // Click but no release constructor
+        Widget(
+			SDL_Rect rect,
+			HorizontalAlignment horzAlign,
+			VerticalAlignment vertAlign,
+			std::function<void()> funcOnClick,
+			std::function<void(const Widget*, MainUiManager*)> drawFunc );
+
+        // Click and release constructor
+        Widget(
+			SDL_Rect rect,
+			HorizontalAlignment horzAlign,
+			VerticalAlignment vertAlign,
+			std::function<void()> funcOnClick,
+            std::function<void()> funcOnRelease,
 			std::function<void(const Widget*, MainUiManager*)> drawFunc );
 
 		virtual ~Widget();
 
-		bool getActive() const;
-		bool getClickable() const;
+        const SDL_Rect& getScreenRect() const;
+        bool getActive() const;
+        bool getClickable() const;
 
 		void addChild(Widget* widget);
 
@@ -85,14 +115,15 @@ class Widget {
         void activate();
         void deactivate();
         void click();
+        void releaseMouse();
 
 		/**  Update  **/
+		// psRect: Parent screen rect, also taken from the top-left corner
 		void update(const SDL_Rect &psRect);
 
 		/**  Draw  **/
 		void renderText(MainUiManager *uiManager, const char *text, SDL_Color color) const;
 
-		// psRect: Parent screen rect, also taken from the top-left corner
         void draw(MainUiManager *uiManager) const;
 };
 

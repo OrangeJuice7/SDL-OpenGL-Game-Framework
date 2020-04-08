@@ -3,7 +3,9 @@
 #include "../Scene/Scene.hpp"
 
 MainUiManager::MainUiManager(const char *windowTitle, int screenWidth, int screenHeight)
-        : WINDOW_TITLE(windowTitle)
+        : mouseState()
+        , keyboardState()
+        , WINDOW_TITLE(windowTitle)
         , SCREEN_WIDTH(screenWidth)
         , SCREEN_HEIGHT(screenHeight)
         , SCREEN_RECT{0, 0, SCREEN_WIDTH, SCREEN_HEIGHT} {
@@ -12,8 +14,6 @@ MainUiManager::MainUiManager(const char *windowTitle, int screenWidth, int scree
     renderer = NULL;
 
     mainFont = NULL;
-
-    mousePosX = mousePosY = 0;
 
     uiTick = 0;
     fps = 0;

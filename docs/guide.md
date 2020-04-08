@@ -18,11 +18,21 @@ Windows:
 
 ### Verifying the setup
 - Run the program and interact with it using the mouse and keyboard.
-	- Currently, <kbd>Q</kbd> switches between the Menu and Game Scenes, as does clicking the Widget at the topleft of the screen.
+	- Currently, <kbd>Q</kbd> switches between the `MenuScene` and `GameScene`, as does clicking the Widget at the topleft of the screen.
+	- In the `GameScene`, there are three entities. The center entity is player-controlled.
+		- <kbd>SPACE</kbd> pauses/unpauses the game.
+		- <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> or <kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd> moves the player.
+		- The player can bump the other two entities by moving into them.
+		- The mouse can held down to make the player fire projectiles in the direction of the mouse. These projectiles can be fired at the other two entities to damage and eventually kill them. When killed, the entities explode into particles.
+		- The mouse can also be used to hover over and click on the widgets on the left of the screen. Clicking them spawns particles.
+		- The mouse may also be moved to the edges of the screen to pan the camera.
+		- The camera can also be zoomed in and out by scrolling the mouse wheel.
+		- The camera can be reset by clicking the mouse wheel.
 
 
 
 ## Design
+
 ### Architecture
 ![](ArchitectureDiagram.png)
 
@@ -58,14 +68,23 @@ The `MainUiManager` relies on SDL and OpenGL to perform its duties.
 ### Scene
 ![](SceneClassDiagram.png)
 
-The `Scene` is the core of the game. It is conceptually split into two sections: The UI and the Model. Despite this split, there is no technical barrier and they are not actual classes, as the UI section heavily reads from and writes to the Model section. The Model section may furthermore accept input and write output on its own.
+The `Scene` is the core of the game. It is conceptually split into two sections: The UI - handled by the `WidgetManager` - and the Model - handled by the `ModelManager`.
 
-There are different derivatives of `Scene`, corresponding what what environments the player might encounter while navigating the app. In particular, there is a `MenuScene` - meant to be the environment of the main menu and game lobby, and a `GameScene` - meant to be the actual game environment. The `MainApp` tracks one `Scene`, which it can construct and destruct as needed.
+Furthermore, There are different derivatives of `Scene`, corresponding what what environments the player might encounter while navigating the app. In particular, there is currently a `MenuScene` - the environment of the main menu and game lobby, and a `GameScene` - the actual game environment. The `MainApp` tracks one `Scene`, which it can construct and destruct as needed.
 
-The Model contains the actual state of the game, as well as methods to update them. While the `GameScene` makes the heaviest use of the Model, other `Scene`s may also use the Model to display backdrops and animations.
-
-The UI section serves two purposes: To define how input from `MainUiManager` is interpreted into actions that affect the Model, and to define how the Model is represented in terms of output to `MainUiManager`. It achieves this through the use of `Widget`s, which together build up a GUI.
+The `Scene` has three external functionalities:
+- Accept user input and interpret them into actions on itself, based on its current state. User input is in terms of keyboard and mouse events and state, and would typically be called from the `MainUiManager`, although they can technically be called from anywhere.
+- Update its internal state (by one game tick).
+- Tell a `MainUiManager` how to draw its state.
 
 #### Widgets
+The `WidgetManager` handles the GUI of the `Scene`. The GUI is defined in terms of `Widget`s. `Widget`s essentially define a region in screen space. They may have a defined action upon being clicked, and also have a defined draw function to visually indicate where they are when the app runs. They can be used to display information such as text, or provide a region for the player to click in order to activate a certain function. `Widget`s are fixed to the screen space; they move around with the in-game camera. `Widget`s are always drawn on top of any other object from the Model.
 
-`Widget`s essentially define a region in screen space. They may have a defined action upon being clicked, and also have a defined draw function to visually indicate where they are when the app runs. They can be used to display information such as text, or provide a region for the player to click in order to activate a certain function. `Widget`s are fixed to the screen space; they move around with the in-game camera. `Widget`s are always drawn on top of any other object from the Model.
+#### Model
+![](ModelClassDiagram.png)
+
+The Model contains the actual state of the game, as well as methods to interact with, update and draw them. The parent `Scene` may pass commands to the Model directly, or it may also pass user input to the `WidgetManager` which would then translate them into Model commands.
+
+While the `GameScene` makes the heaviest use of the Model, other `Scene`s may also use the Model to display backdrops and animations.
+
+The `ModelManager` is a base class that tracks camera and timing information about the game state, and defines methods on camera manipulation, conversion between game and screen coordinates, drawing to the screen, and updating its own state based on input or a game tick. Its derivatives would track actual game entities using `EntityManager`s, and define further methods to manipulate the game entities, such as spawning new entities.

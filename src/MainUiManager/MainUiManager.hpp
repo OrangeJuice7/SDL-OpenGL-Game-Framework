@@ -4,6 +4,7 @@
 #include <SDL.h>
 #include <SDL_ttf.h> // http://www.sdltutorials.com/sdl-ttf
 #include "Texture.hpp"
+#include "InputState.hpp"
 class Scene;
 
 class MainUiManager {
@@ -16,7 +17,8 @@ class MainUiManager {
 
         Uint32 uiTick;
 
-        int mousePosX, mousePosY;
+        MouseState mouseState;
+        KeyboardState keyboardState;
 
         bool initSDL();
         bool initWindow(); // requires initSDL()
@@ -52,12 +54,14 @@ class MainUiManager {
         // Draws the scene to screen
         void draw(Scene* scene);
 
+        void setDrawColor(Uint8 r, Uint8 g, Uint8 b);
         void setDrawColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
         void setDrawColor(const SDL_Color& color);
         void drawPixel(int x, int y);
         void drawLine(int x1, int y1, int x2, int y2);
         void drawFillRect(const SDL_Rect& rect);
         void drawLineRect(const SDL_Rect& rect);
+        void drawLineCircle(float x, float y, float r);
         void renderTextToScreen(const char *text, const SDL_Color& fg, int x, int y);
         void renderImageToScreen(SDL_Surface* image, int x, int y);
 };
