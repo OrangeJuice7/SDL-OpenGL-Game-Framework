@@ -69,37 +69,14 @@ void GameModelManager::updateOneTick() {
     // Projectile-mob
     projectiles.checkCollisions<Mob>(mobs, [this](Projectile& p, Mob& m) {
         if (p.isColliding(m)) { // Colliding
-            // Backtrack projectile to point of contact
-            float pVelDirX = p.xvel,
-                  pVelDirY = p.yvel;
-            float pSpeed = getdist(pVelDirX, pVelDirY);
-            pVelDirX /= pSpeed;
-            pVelDirY /= pSpeed;
-
-            float distX = m.x - p.x,
-                  distY = m.y - p.y;
-            float r = m.getRadius() + p.getRadius();
-            // Magic maffs
-            {   float a = pVelDirX*distX + pVelDirY*distY; // dist between p and (m projected to p.vel)
-                float l = sqrt(r*r + a*a - getdist2(distX, distY)); // dist between (m projected to p.vel) and actual point of intersection
-                float f = a-l;
-                p.x += f * pVelDirX;
-                p.y += f * pVelDirY;
-            }
-
-            // Do damage
-            //m.life -= .2f;
-
-            // Spawn (killzone) explosion
-            spawnExplosion(genericExplosionData, p.x, p.y);
-
-            // Push back mob with momentum from projectile i.e. add all of the projectile's momentum to the mob
-            // new_m.momentum = p.momentum + m.momentum => mm*nv = pm*pv + mm*mv => nv = pm*pv/mm + mv
-            m.xvel += p.xvel * p.getMass() / m.getMass();
-            m.yvel += p.yvel * p.getMass() / m.getMass();
+            p.backtrackToPointOfContact(m);
+            p.damageEntity(m);
+            p.pushEntity(m);
 
             // Kill projectile
             p.kill();
+            // Spawn (killzone) explosion
+            if (p.getExplosionData()) spawnExplosion(*p.getExplosionData(), p.x, p.y);
             // Spawn (particle) explosion
             spawnParticleExplosion(20, p.x, p.y, .1f, .2f);
         }
@@ -109,18 +86,8 @@ void GameModelManager::updateOneTick() {
     explosions.checkCollisions<Mob>(mobs, [](Explosion& e, Mob& m) {
         if (!e.isOnInitialTick()) return; // Only do stuff on the initial tick
         if (e.isColliding(m)) { // Colliding
-            float distx = m.x - e.x,
-                  disty = m.y - e.y;
-            float dist2 = getdist2(distx, disty);
-            float sdist = sqrt(dist2) - m.getRadius(); if (sdist < 0) sdist = 0; // "short" distance
-
-            // Do damage (decays with distance from epicenter, to 1/2 damage at edge)
-            float maxDamage = .05f;
-            m.life -= maxDamage / (sdist / e.getRadius() + 1);
-
-            // Push back, inversely proportionate to squared distance
-            float forceMod = .1f / dist2;
-            m.applyForce( distx*forceMod, disty*forceMod);
+            e.pushEntity(m);
+            e.damageEntity(m);
         }
     });
 
@@ -128,13 +95,7 @@ void GameModelManager::updateOneTick() {
     /*explosions.checkCollisions<Projectile>(projectiles, [](Explosion& e, Projectile& p) {
         if (!e.isOnInitialTick()) return; // Only do stuff on the initial tick
         if (e.isColliding(p)) { // Colliding
-            float distx = p.x - e.x,
-                  disty = p.y - e.y;
-            float dist2 = getdist2(distx, disty);
-
-            // Push back, inversely proportionate to squared distance
-            float forceMod = .1f / dist2;
-            p.applyForce( distx*forceMod, disty*forceMod);
+            e.pushEntity(p);
         }
     });*/
 
@@ -142,13 +103,7 @@ void GameModelManager::updateOneTick() {
     /*explosions.checkCollisions<Particle>(particles, [](Explosion& e, Particle& p) {
         if (!e.isOnInitialTick()) return; // Only do stuff on the initial tick
         if (e.isColliding(p)) { // Colliding
-            float distx = p.x - e.x,
-                  disty = p.y - e.y;
-            float dist2 = getdist2(distx, disty);
-
-            // Push back, inversely proportionate to squared distance
-            float forceMod = .1f / dist2;
-            p.applyForce( distx*forceMod, disty*forceMod);
+            e.pushEntity(p);
         }
     });*/
 }

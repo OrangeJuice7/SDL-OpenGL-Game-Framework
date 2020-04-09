@@ -21,6 +21,7 @@ class ImmovableEntity {
         virtual bool isDead() const;
         bool isColliding(const ImmovableEntity& other) const;
 
+        virtual void takeDamage(float dmg);
         void kill();
         virtual void doTick();
 
@@ -44,6 +45,7 @@ class Entity : public ImmovableEntity {
         virtual float getMass() const =0; // Should be > 0
 
         void applyForce(float forceX, float forceY);
+        void backtrackToPointOfContact(const ImmovableEntity &e); // Assumes they are already overlapping, otherwise this might "forward-track"
         virtual void doTick();
 };
 

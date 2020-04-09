@@ -32,6 +32,10 @@ bool ImmovableEntity::isColliding(const ImmovableEntity& other) const {
     return (getdist2(x2-x,y2-y) <= r*r);
 }
 
+void ImmovableEntity::takeDamage(float dmg) {
+    life -= dmg;
+}
+
 void ImmovableEntity::kill() {
     life = -1; // 0 should work, but -1 just to be safe from floating point errors
 }
@@ -84,6 +88,23 @@ Entity::~Entity() {}
 void Entity::applyForce(float forceX, float forceY) {
     xvel += forceX / getMass();
     yvel += forceY / getMass();
+}
+
+void Entity::backtrackToPointOfContact(const ImmovableEntity &e) {
+    float speed = getdist(xvel, yvel);
+    float velDirX = xvel / speed,
+          velDirY = yvel / speed;
+
+    float distX = e.x - x,
+          distY = e.y - y;
+    float r = e.getRadius() + getRadius();
+    // Magic maffs
+    {   float a = velDirX*distX + velDirY*distY; // dist between p and (m projected to p.vel)
+        float l = sqrt(r*r + a*a - getdist2(distX, distY)); // dist between (m projected to p.vel) and actual point of intersection
+        float f = a-l;
+        x += f * velDirX;
+        y += f * velDirY;
+    }
 }
 
 void Entity::doTick() {

@@ -2,18 +2,19 @@
 #define PROJECTILE_HPP
 
 #include "Entity.hpp"
-class ExplosionData;
+#include "Explosion.hpp"
 
 struct ProjectileData {
     float radius;
     float maxLife;
     float mass;
     float damage; // Damage on contact; this is in addition to explosion damage
-    ExplosionData* explosion; // Set to nullptr for no explosion
+    const ExplosionData* explosionData; // Set to nullptr for no explosion
 
-    ProjectileData(float radius, float maxLife, float mass, float damage, ExplosionData* explosion);
+    ProjectileData(float radius, float maxLife, float mass, float damage, const ExplosionData* explosionData);
 };
 const ProjectileData genericProjectileData(.1f, 30, .1f, .2f, nullptr);
+const ProjectileData explosiveProjectileData(.1f, 30, .1f, 0, &genericExplosionData);
 
 
 
@@ -27,6 +28,11 @@ class Projectile : public Entity {
         float getRadius() const;
         float getMaxLife() const;
         float getMass() const;
+        float getDamage() const;
+        const ExplosionData* getExplosionData() const;
+
+        void pushEntity(Entity &e);
+        void damageEntity(ImmovableEntity &e);
 
         virtual void doTick();
         virtual void draw(

@@ -19,7 +19,7 @@ void GameScene::updateFromMouse(const SDL_Rect &screenRect, const MouseState &mo
 
     // Fire bullets
     Mob* playerMob = getModel()->getPlayerMob();
-    if (mouseState.isLDown && getModelTick()%10 == 0 && playerMob) {
+    if (playerMob) {
         // Grab player position and radius
         float px = playerMob->x,
               py = playerMob->y;
@@ -39,7 +39,8 @@ void GameScene::updateFromMouse(const SDL_Rect &screenRect, const MouseState &mo
         dirY /= dist;
 
         float vel = 1;
-        getModel()->spawnProjectile(genericProjectileData, px + dirX*pr, py + dirY*pr, dirX*vel, dirY*vel);
+        if (mouseState.isLDown && getModelTick()%10 == 0) getModel()->spawnProjectile(  genericProjectileData, px + dirX*pr, py + dirY*pr, dirX*vel, dirY*vel);
+        if (mouseState.isRDown && getModelTick()%20 == 5) getModel()->spawnProjectile(explosiveProjectileData, px + dirX*pr, py + dirY*pr, dirX*vel, dirY*vel);
     }
 
     // Update like normal

@@ -3,12 +3,12 @@
 #include "../../basicmath.hpp"
 #include "../../MainUiManager/MainUiManager.hpp"
 
-ProjectileData::ProjectileData(float radius, float maxLife, float mass, float damage, ExplosionData* explosion) {
+ProjectileData::ProjectileData(float radius, float maxLife, float mass, float damage, const ExplosionData* explosionData) {
     this->radius = radius;
     this->maxLife = maxLife;
     this->mass = mass;
     this->damage = damage;
-    this->explosion = explosion;
+    this->explosionData = explosionData;
 }
 
 
@@ -23,6 +23,17 @@ Projectile::Projectile(const ProjectileData &data, float x, float y, float xvel,
 float Projectile::getRadius() const { return data->radius; }
 float Projectile::getMaxLife() const { return data->maxLife; }
 float Projectile::getMass() const { return data->mass; }
+float Projectile::getDamage() const { return data->damage; }
+const ExplosionData* Projectile::getExplosionData() const { return data->explosionData; }
+
+void Projectile::pushEntity(Entity &e) {
+    // Add all of this projectile's momentum to e
+    e.applyForce(xvel*getMass(), yvel*getMass());
+}
+
+void Projectile::damageEntity(ImmovableEntity &e) {
+    e.takeDamage(getDamage());
+}
 
 void Projectile::doTick() {
     Entity::doTick();

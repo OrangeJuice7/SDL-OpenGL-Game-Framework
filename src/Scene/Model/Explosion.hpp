@@ -6,11 +6,11 @@
 struct ExplosionData {
     float radius;
     float maxLife;
-    float damage;
+    float maxDamage;
 
-    ExplosionData(float radius, float maxLife, float damage);
+    ExplosionData(float radius, float maxLife, float maxDamage);
 };
-const ExplosionData genericExplosionData(4, 15, .2f);
+const ExplosionData genericExplosionData(4, 15, .05f);
 
 
 
@@ -24,7 +24,11 @@ class Explosion : public ImmovableEntity {
 
         float getRadius() const;
         float getMaxLife() const;
+        float getMaxDamage() const;
         bool isOnInitialTick() const;
+
+        void pushEntity(Entity &e);
+        void damageEntity(ImmovableEntity &e);
 
         virtual void doTick();
         virtual void draw(
