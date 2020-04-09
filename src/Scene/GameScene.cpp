@@ -20,7 +20,7 @@ GameScene::GameScene()
 
     getModel()->spawnPlayerMob(genericMobData, 0, 0);
     getModel()->spawnMob(genericMobData, 8, 0);
-    getModel()->spawnMob(genericMobData,-8, 0);
+    getModel()->spawnMob(heavyMobData,-8, 0);
 }
 GameScene::~GameScene() {}
 
@@ -100,7 +100,7 @@ void GameScene::loadWidgets() {
 			if (!pMob) return;
 
 			char msg[256];
-			sprintf(msg, "Position: (%.2f, %.2f)", pMob->x, pMob->y);
+			sprintf(msg, "Position: (%.3f, %.3f), Life: %.3f", pMob->x, pMob->y, pMob->life);
 			widget->renderText(uiManager, msg, textColor);
 		} );
 	widgetManager.loadWidget(newWidget);

@@ -13,6 +13,7 @@ struct MobData : EntityData {
     MobData(const EntityData& entityData, float radius, float maxLife, float mass);
 };
 const MobData genericMobData(genericEntityData, 1, 1, 1);
+const MobData heavyMobData(genericEntityData, 2, 2, 8);
 
 
 

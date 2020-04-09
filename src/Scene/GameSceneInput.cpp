@@ -50,32 +50,34 @@ void GameScene::updateFromKeys(const KeyboardState &keyboardState) {
     {   Mob* playerMob = getModel()->getPlayerMob();
         if (playerMob) {
             float maxVel = .2f;
-            float force = .2f;
+            float maxForce = .2f;
             float forceX = 0,
                   forceY = 0;
 
             if ((keyboardState.isKeyDown(SDLK_LEFT) ||
                  keyboardState.isKeyDown(SDLK_a)) &&
                 playerMob->xvel > -maxVel)
-                forceX -= force;
+                forceX -= 1;
 
             if ((keyboardState.isKeyDown(SDLK_RIGHT) ||
                  keyboardState.isKeyDown(SDLK_d)) &&
                 playerMob->xvel < maxVel)
-                forceX += force;
+                forceX += 1;
 
             if ((keyboardState.isKeyDown(SDLK_UP) ||
                  keyboardState.isKeyDown(SDLK_w)) &&
                 playerMob->yvel < maxVel)
-                forceY += force;
+                forceY += 1;
 
             if ((keyboardState.isKeyDown(SDLK_DOWN) ||
                  keyboardState.isKeyDown(SDLK_s)) &&
                 playerMob->yvel > -maxVel)
-                forceY -= force;
+                forceY -= 1;
 
-            if (forceX != 0 || forceY != 0)
-                playerMob->applyForce(forceX, forceY);
+            if (forceX != 0 || forceY != 0) {
+                float forgeMag = getdist(forceX, forceY);
+                playerMob->applyForce((forceX/forgeMag) *maxForce, (forceY/forgeMag) *maxForce);
+            }
         }
     }
 }
