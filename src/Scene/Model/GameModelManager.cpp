@@ -54,52 +54,29 @@ void GameModelManager::updateOneTick() {
             dirX /= dist;
             dirY /= dist;
 
-            /*float momDiffX = m1.xvel*m1.mass - m2.xvel*m2.mass,
-                  momDiffY = m1.yvel*m1.mass - m2.yvel*m2.mass;
+            /*float momDiffX = m1.xvel*m1.getMass() - m2.xvel*m2.getMass(),
+                  momDiffY = m1.yvel*m1.getMass() - m2.yvel*m2.getMass();
             float mag = getdist(momDiffX, momDiffY);*/
             float mag = .1f * (1 + getdist(m1.xvel-m2.xvel, m1.yvel-m2.yvel));
 
             float forceX = dirX * mag,
                   forceY = dirY * mag;
-            m1.applyForce( forceX *m1.mass, forceY *m1.mass); // Already conserves momentum
-            m2.applyForce(-forceX *m2.mass,-forceY *m2.mass);
+            m1.applyForce( forceX *m1.getMass(), forceY *m1.getMass()); // Already conserves momentum
+            m2.applyForce(-forceX *m2.getMass(),-forceY *m2.getMass());
         }
     });
 
     // Projectile-mob
     projectiles.checkCollisions<Mob>(mobs, [this](Projectile& p, Mob& m) {
         if (p.isColliding(m)) { // Colliding
-            // Backtrack projectile to point of contact
-            float pVelDirX = p.xvel,
-                  pVelDirY = p.yvel;
-            float pSpeed = getdist(pVelDirX, pVelDirY);
-            pVelDirX /= pSpeed;
-            pVelDirY /= pSpeed;
-
-            float distX = m.x - p.x,
-                  distY = m.y - p.y;
-            float r = m.radius + p.radius;
-            // Magic maffs
-            {   float a = pVelDirX*distX + pVelDirY*distY; // dist between p and (m projected to p.vel)
-                float l = sqrt(r*r + a*a - getdist2(distX, distY)); // dist between (m projected to p.vel) and actual point of intersection
-                float f = a-l;
-                p.x += f * pVelDirX;
-                p.y += f * pVelDirY;
-            }
-
-            // Do damage
-            //m.life -= .2f;
-
-            // Spawn (killzone) explosion
-            spawnExplosion(genericExplosionData, p.x, p.y);
-
-            // Push back mob with momentum from projectile i.e. add all of the projectile's momentum to the mob
-            // new_m.momentum = p.momentum + m.momentum => mm*nv = pm*pv + mm*mv => nv = pm*pv/mm + mv
-            m.xvel += p.xvel * p.mass / m.mass;
-            m.yvel += p.yvel * p.mass / m.mass;
+            p.backtrackToPointOfContact(m);
+            p.damageEntity(m);
+            p.pushEntity(m);
 
             // Kill projectile
             p.kill();
+            // Spawn (killzone) explosion
+            if (p.getExplosionData()) spawnExplosion(*p.getExplosionData(), p.x, p.y);
             // Spawn (particle) explosion
             spawnParticleExplosion(20, p.x, p.y, .1f, .2f);
         }
@@ -109,18 +86,8 @@ void GameModelManager::updateOneTick() {
     explosions.checkCollisions<Mob>(mobs, [](Explosion& e, Mob& m) {
         if (!e.isOnInitialTick()) return; // Only do stuff on the initial tick
         if (e.isColliding(m)) { // Colliding
-            float distx = m.x - e.x,
-                  disty = m.y - e.y;
-            float dist2 = getdist2(distx, disty);
-            float sdist = sqrt(dist2) - m.radius; if (sdist < 0) sdist = 0; // "short" distance
-
-            // Do damage (decays with distance from epicenter, to 1/2 damage at edge)
-            float maxDamage = .05f;
-            m.life -= maxDamage / (sdist / e.radius + 1);
-
-            // Push back, inversely proportionate to squared distance
-            float forceMod = .1f / dist2;
-            m.applyForce( distx*forceMod, disty*forceMod);
+            e.pushEntity(m);
+            e.damageEntity(m);
         }
     });
 
@@ -128,13 +95,7 @@ void GameModelManager::updateOneTick() {
     /*explosions.checkCollisions<Projectile>(projectiles, [](Explosion& e, Projectile& p) {
         if (!e.isOnInitialTick()) return; // Only do stuff on the initial tick
         if (e.isColliding(p)) { // Colliding
-            float distx = p.x - e.x,
-                  disty = p.y - e.y;
-            float dist2 = getdist2(distx, disty);
-
-            // Push back, inversely proportionate to squared distance
-            float forceMod = .1f / dist2;
-            p.applyForce( distx*forceMod, disty*forceMod);
+            e.pushEntity(p);
         }
     });*/
 
@@ -142,13 +103,7 @@ void GameModelManager::updateOneTick() {
     /*explosions.checkCollisions<Particle>(particles, [](Explosion& e, Particle& p) {
         if (!e.isOnInitialTick()) return; // Only do stuff on the initial tick
         if (e.isColliding(p)) { // Colliding
-            float distx = p.x - e.x,
-                  disty = p.y - e.y;
-            float dist2 = getdist2(distx, disty);
-
-            // Push back, inversely proportionate to squared distance
-            float forceMod = .1f / dist2;
-            p.applyForce( distx*forceMod, disty*forceMod);
+            e.pushEntity(p);
         }
     });*/
 }
@@ -169,17 +124,17 @@ Explosion* GameModelManager::spawnExplosion(const ExplosionData &data, float x, 
     return explosions.addEntity(explosion);
 }
 void GameModelManager::spawnParticleExplosion(int numOfParticles, float x, float y, float maxVel, float maxRadius) {
-    Particle p(genericParticleData, x, y, 0, 0, .2f, 30, 1);
+    Particle p(x, y, 0, 0, .2f, 30, 1);
 
     for (int i = 0; i < numOfParticles; ++i) {
         p.radius = (1 - .5f*pow(getrand(), 3))*maxRadius;
-        p.mass = 0.5f * pow(p.radius, 3);
+        p.mass = 0.5f * pow(p.getRadius(), 3);
 
-        p.life = p.maxLife = p.radius*150;
+        p.life = p.maxLife = p.getRadius()*150;
 
         float angle = getrand() * TWO_PI;
         float a = getrand();
-        float vel = sqrt(1-a*a) * maxVel; vel /= p.mass*100; vel *= getrand();
+        float vel = sqrt(1-a*a) * maxVel; vel /= p.getMass()*100; vel *= getrand();
         p.xvel = sin(angle)*vel;
         p.yvel = cos(angle)*vel;
 

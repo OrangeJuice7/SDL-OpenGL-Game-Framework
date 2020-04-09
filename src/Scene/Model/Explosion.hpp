@@ -3,29 +3,32 @@
 
 #include "Entity.hpp"
 
-
-
-struct ExplosionData : EntityData {
+struct ExplosionData {
     float radius;
     float maxLife;
-    // float damage;
+    float maxDamage;
 
-    ExplosionData(const EntityData& entityData, float radius, float maxLife);
+    ExplosionData(float radius, float maxLife, float maxDamage);
 };
-const ExplosionData genericExplosionData(genericEntityData, 4, 15);
+const ExplosionData genericExplosionData(4, 15, .05f);
 
 
 
 // Explosion does damage to all enemies within it on its initial tick. Everything after that is just for visuals.
-class Explosion : public Entity {
-    protected:
-        // (nothing)
-
+class Explosion : public ImmovableEntity {
     public:
+        const ExplosionData *data;
+
         Explosion(); // default constructor
         Explosion(const ExplosionData &data, float x, float y);
 
+        float getRadius() const;
+        float getMaxLife() const;
+        float getMaxDamage() const;
         bool isOnInitialTick() const;
+
+        void pushEntity(Entity &e);
+        void damageEntity(ImmovableEntity &e);
 
         virtual void doTick();
         virtual void draw(

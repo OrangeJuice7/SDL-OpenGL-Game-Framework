@@ -3,19 +3,37 @@
 #include "../../basicmath.hpp"
 #include "../../MainUiManager/MainUiManager.hpp"
 
-ProjectileData::ProjectileData(const EntityData& entityData, float radius, float maxLife, float mass)
-        : EntityData(entityData) {
-
+ProjectileData::ProjectileData(float radius, float maxLife, float mass, float damage, const ExplosionData* explosionData) {
     this->radius = radius;
     this->maxLife = maxLife;
     this->mass = mass;
+    this->damage = damage;
+    this->explosionData = explosionData;
 }
 
 
 
 Projectile::Projectile() : Projectile(genericProjectileData, 0, 0, 0, 0) {}
 Projectile::Projectile(const ProjectileData &data, float x, float y, float xvel, float yvel)
-        : Entity(data, x, y, xvel, yvel, data.radius, data.maxLife, data.mass) {}
+        : Entity(x, y, xvel, yvel, data.maxLife) {
+
+    this->data = &data;
+}
+
+float Projectile::getRadius() const { return data->radius; }
+float Projectile::getMaxLife() const { return data->maxLife; }
+float Projectile::getMass() const { return data->mass; }
+float Projectile::getDamage() const { return data->damage; }
+const ExplosionData* Projectile::getExplosionData() const { return data->explosionData; }
+
+void Projectile::pushEntity(Entity &e) {
+    // Add all of this projectile's momentum to e
+    e.applyForce(xvel*getMass(), yvel*getMass());
+}
+
+void Projectile::damageEntity(ImmovableEntity &e) {
+    e.takeDamage(getDamage());
+}
 
 void Projectile::doTick() {
     Entity::doTick();
@@ -38,7 +56,7 @@ void Projectile::draw(
         std::function<float(float)> gameToScreenLength,
         MainUiManager *uiManager) {
 
-    float r = gameToScreenLength(radius);
+    float r = gameToScreenLength(getRadius());
     int sx, sy;
     gameToScreenCoords(sx, sy, x, y);
 

@@ -4,40 +4,25 @@
 #include <functional>
 class MainUiManager;
 
-
-
-struct EntityData {
-    //
-
-    EntityData();
-};
-const EntityData genericEntityData;
-
-
-
-class Entity {
-    protected:
-        // Nothing sacred so far...
-
+class ImmovableEntity {
     public:
-        const EntityData *data;
-		float life, maxLife; // Can be thought of as health, or a timer, or simply an indicator of destruction
-        float x, y, radius;
-        float xvel, yvel;
-        float mass;
+        // Expose internal state to let other places modify at will
+        float x, y;
+		float life; // Can be thought of as health, or a timer, or simply an indicator for deletion
+        // Circular vs Rectangular hitbox maybe
 
-        Entity(); // default constructor
-        Entity(const EntityData &data, float x, float y, float xvel, float yvel, float radius, float maxLife, float mass);
+        ImmovableEntity(); // default constructor
+        ImmovableEntity(float x, float y, float life);
+        virtual ~ImmovableEntity();
 
-        const EntityData* getData() const;
-        float getLife() const;
+        virtual float getRadius() const =0; // Should be >= 0
+        virtual float getMaxLife() const =0; // Should be > 0
         float getLifeFraction() const;
         virtual bool isDead() const;
-        bool isColliding(const Entity& other) const;
+        bool isColliding(const ImmovableEntity& other) const;
 
+        virtual void takeDamage(float dmg);
         void kill();
-        void applyForce(float forceX, float forceY);
-
         virtual void doTick();
 
         bool isWithinScreen(
@@ -47,6 +32,21 @@ class Entity {
                 std::function<void(int&, int&, float, float)> gameToScreenCoords,
                 std::function<float(float)> gameToScreenLength,
                 MainUiManager *uiManager);
+};
+
+class Entity : public ImmovableEntity {
+    public:
+        float xvel, yvel;
+
+        Entity(); // default constructor
+        Entity(float x, float y, float xvel, float yvel, float life);
+        virtual ~Entity();
+
+        virtual float getMass() const =0; // Should be > 0
+
+        void applyForce(float forceX, float forceY);
+        void backtrackToPointOfContact(const ImmovableEntity &e); // Assumes they are already overlapping, otherwise this might "forward-track"
+        virtual void doTick();
 };
 
 #endif // ENTITY_HPP

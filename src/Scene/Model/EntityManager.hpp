@@ -130,7 +130,7 @@ TEntity* EntityManager<TEntity>::pickEntity(float x, float y) {
     for (TEntity &entity : entities) {
         float ex = entity.x,
               ey = entity.y,
-              er = entity.radius;
+              er = entity.getRadius();
 
         // Bounding box check
         if (x < ex-er || x > ex+er ||
