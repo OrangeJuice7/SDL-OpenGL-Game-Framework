@@ -20,11 +20,11 @@ Mob::Mob(const MobData &data, float x, float y)
 void Mob::doTick() {
     Entity::doTick();
 
-    float maxVelChange2 = .01f;
-    float vel2 = getdist2(xvel, yvel);
-    if (vel2 <= maxVelChange2) xvel = yvel = 0;
+    float maxVelChange = .1f;
+    float vel = getdist(xvel, yvel);
+    if (vel <= maxVelChange) xvel = yvel = 0;
     else {
-        float mod = (vel2 - maxVelChange2) / vel2;
+        float mod = (vel - maxVelChange) / vel;
         xvel *= mod;
         yvel *= mod;
     }
