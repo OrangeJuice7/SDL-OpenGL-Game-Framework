@@ -3,9 +3,7 @@
 #include "../../basicmath.hpp"
 #include "../../MainUiManager/MainUiManager.hpp"
 
-MobData::MobData(const EntityData& entityData, float radius, float maxLife, float mass)
-        : EntityData(entityData) {
-
+MobData::MobData(float radius, float maxLife, float mass) {
     this->radius = radius;
     this->maxLife = maxLife;
     this->mass = mass;
@@ -15,7 +13,14 @@ MobData::MobData(const EntityData& entityData, float radius, float maxLife, floa
 
 Mob::Mob() : Mob(genericMobData, 0, 0) {}
 Mob::Mob(const MobData &data, float x, float y)
-        : Entity(data, x, y, 0, 0, data.radius, data.maxLife, data.mass) {}
+        : Entity(x, y, 0, 0, data.maxLife) {
+
+    this->data = &data;
+}
+
+float Mob::getRadius() const { return data->radius; }
+float Mob::getMaxLife() const { return data->maxLife; }
+float Mob::getMass() const { return data->mass; }
 
 void Mob::doTick() {
     Entity::doTick();
@@ -35,7 +40,7 @@ void Mob::draw(
         std::function<float(float)> gameToScreenLength,
         MainUiManager *uiManager) {
 
-    float r = gameToScreenLength(radius);
+    float r = gameToScreenLength(getRadius());
     int sx, sy;
     gameToScreenCoords(sx, sy, x, y);
 

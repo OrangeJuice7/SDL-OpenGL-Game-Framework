@@ -3,28 +3,32 @@
 #include "../../basicmath.hpp"
 #include "../../MainUiManager/MainUiManager.hpp"
 
-ExplosionData::ExplosionData(const EntityData& entityData, float radius, float maxLife)
-        : EntityData(entityData) {
-
+ExplosionData::ExplosionData(float radius, float maxLife, float damage) {
     this->radius = radius;
     this->maxLife = maxLife;
+    this->damage = damage;
 }
 
 
 
 Explosion::Explosion() : Explosion(genericExplosionData, 0, 0) {}
 Explosion::Explosion(const ExplosionData &data, float x, float y)
-        : Entity(data, x, y, 0, 0, data.radius, data.maxLife, 1) {
+        : ImmovableEntity(x, y, data.maxLife) {
 
-    ++life; // Add a one-tick buffer, since all entities are updated by 1 tick before they are allowed to interact with other entities
+    this->data = &data;
+
+    // Add a one-tick buffer, since all entities are updated by 1 tick before they are allowed to interact with other entities
+    ++life;
 }
 
+float Explosion::getRadius() const { return data->radius; }
+float Explosion::getMaxLife() const { return data->maxLife; }
+
 bool Explosion::isOnInitialTick() const {
-    return life > maxLife-.01f; // life starts at maxLife and ticks down by 1 per frame
+    return life > getMaxLife() - .01f; // life starts at maxLife and ticks down by 1 per frame
 }
 
 void Explosion::doTick() {
-    Entity::doTick();
     --life;
 }
 
@@ -33,7 +37,7 @@ void Explosion::draw(
         std::function<float(float)> gameToScreenLength,
         MainUiManager *uiManager) {
 
-    float r = gameToScreenLength(radius);
+    float r = gameToScreenLength(getRadius());
     int sx, sy;
     gameToScreenCoords(sx, sy, x, y);
 

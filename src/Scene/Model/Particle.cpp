@@ -3,17 +3,18 @@
 #include "../../basicmath.hpp"
 #include "../../MainUiManager/MainUiManager.hpp"
 
-ParticleData::ParticleData(const EntityData& entityData)
-        : EntityData(entityData) {
+Particle::Particle() : Particle(0, 0, 0, 0, 1, 1, 1) {}
+Particle::Particle(float x, float y, float xvel, float yvel, float radius, float maxLife, float mass)
+        : Entity(x, y, xvel, yvel, maxLife) {
 
-    //this->radius = radius;
+    this->radius = radius;
+    this->maxLife = maxLife;
+    this->mass = mass;
 }
 
-
-
-Particle::Particle() : Particle(genericParticleData, 0, 0, 0, 0, 1, 1, 1) {}
-Particle::Particle(const ParticleData &data, float x, float y, float xvel, float yvel, float radius, float maxLife, float mass)
-        : Entity(data, x, y, xvel, yvel, radius, maxLife, mass) {}
+float Particle::getRadius() const { return radius; }
+float Particle::getMaxLife() const { return maxLife; }
+float Particle::getMass() const { return mass; }
 
 void Particle::doTick() {
     Entity::doTick();
@@ -41,7 +42,7 @@ void Particle::draw(
         std::function<float(float)> gameToScreenLength,
         MainUiManager *uiManager) {
 
-    float r = gameToScreenLength(radius);
+    float r = gameToScreenLength(getRadius());
     int sx, sy;
     gameToScreenCoords(sx, sy, x, y);
 

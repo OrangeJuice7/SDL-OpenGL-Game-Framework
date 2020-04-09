@@ -3,24 +3,20 @@
 
 #include "Entity.hpp"
 
-
-
-struct ParticleData : EntityData {
-    //float radius;
-
-    ParticleData(const EntityData& entityData);
-};
-const ParticleData genericParticleData(genericEntityData);
-
-
-
+// Define specific Particle types in subclasses, or ID/Data system?
+// Derivatives would define appearance, behaviour and variety
 class Particle : public Entity {
-    protected:
-        // (nothing)
-
     public:
+        float radius;
+        float maxLife;
+        float mass;
+
         Particle(); // default constructor
-        Particle(const ParticleData &data, float x, float y, float xvel, float yvel, float radius, float maxLife, float mass);
+        Particle(float x, float y, float xvel, float yvel, float radius, float maxLife, float mass);
+
+        float getRadius() const;
+        float getMaxLife() const;
+        float getMass() const;
 
         virtual void doTick();
         virtual void draw(

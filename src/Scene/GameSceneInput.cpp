@@ -23,7 +23,7 @@ void GameScene::updateFromMouse(const SDL_Rect &screenRect, const MouseState &mo
         // Grab player position and radius
         float px = playerMob->x,
               py = playerMob->y;
-        float pr = playerMob->radius;
+        float pr = playerMob->getRadius();
 
         // Get cursor position in game coords
         float gameX, gameY;
