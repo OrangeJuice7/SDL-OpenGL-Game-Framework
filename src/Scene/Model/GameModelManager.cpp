@@ -47,22 +47,35 @@ void GameModelManager::updateOneTick() {
     // Mob-mob
     mobs.checkCollisionsSelf([](Mob& m1, Mob& m2) {
         if (m1.isColliding(m2)) { // Colliding
-            // Repel
-            float dirX = m1.x - m2.x,
-                  dirY = m1.y - m2.y;
-            float dist = getdist(dirX, dirY);
-            dirX /= dist;
-            dirY /= dist;
+            float diffX = m2.x - m1.x,
+                  diffY = m2.y - m1.y;
+            float dist2 = getdist2(diffX, diffY);
+            if (dist2 <= 0) return; // Do nothing if the mobs are exactly on top of each other. Otherwise the position of the mobs might be yeeted to nan
+            float dist = sqrt(dist2);
 
-            /*float momDiffX = m1.xvel*m1.getMass() - m2.xvel*m2.getMass(),
-                  momDiffY = m1.yvel*m1.getMass() - m2.yvel*m2.getMass();
-            float mag = getdist(momDiffX, momDiffY);*/
-            float mag = .1f * (1 + getdist(m1.xvel-m2.xvel, m1.yvel-m2.yvel));
+            // Repel: set velocity
+            float diffVelX = m1.xvel - m2.xvel,
+                  diffVelY = m1.yvel - m2.yvel;
 
-            float forceX = dirX * mag,
-                  forceY = dirY * mag;
-            m1.applyForce( forceX *m1.getMass(), forceY *m1.getMass()); // Already conserves momentum
-            m2.applyForce(-forceX *m2.getMass(),-forceY *m2.getMass());
+            float a = -(diffX*diffVelX + diffY*diffVelY) / dist2;
+            if (a < 0) {
+                a *= std::min(m1.getMass(), m2.getMass());
+
+                float forceX = a * diffX,
+                      forceY = a * diffY;
+                m1.applyForce( forceX, forceY);
+                m2.applyForce(-forceX,-forceY);
+            }
+
+            // Repel: resolve overlap
+            float overlap = m1.getRadius() + m2.getRadius() - sqrt(dist2);
+            float totalMass = m1.getMass() + m2.getMass();
+            float m1compense = overlap * (m2.getMass() / totalMass),
+                  m2compense = overlap * (m1.getMass() / totalMass);
+            m1.x -= diffX/dist * m1compense;
+            m1.y -= diffY/dist * m1compense;
+            m2.x += diffX/dist * m2compense;
+            m2.y += diffY/dist * m2compense;
         }
     });
 

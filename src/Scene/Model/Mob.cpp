@@ -25,6 +25,7 @@ float Mob::getMass() const { return data->mass; }
 void Mob::doTick() {
     Entity::doTick();
 
+    // Add drag
     float maxVelChange = .1f;
     float vel = getdist(xvel, yvel);
     if (vel <= maxVelChange) xvel = yvel = 0;
