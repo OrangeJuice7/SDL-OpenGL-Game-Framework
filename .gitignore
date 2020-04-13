@@ -35,3 +35,6 @@ bin/
 # Project files
 *.depend
 *.layout
+
+# Build files
+build/
