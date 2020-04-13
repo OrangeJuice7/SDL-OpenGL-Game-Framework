@@ -1,4 +1,4 @@
-#include "mainApp/MainApp.hpp"
+#include "MainApp/MainApp.hpp"
 
 int main(int argc, char* args[]) {
 
