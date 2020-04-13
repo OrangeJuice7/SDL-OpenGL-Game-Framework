@@ -110,9 +110,6 @@ jobs:
         restore-keys: |
           ${{ matrix.config.name }}-ccache-
     
-    - name: Install SDL
-      run: sudo apt install cmake libsdl2-dev g++
-    
     - name: Configure
       shell: cmake -P {0}
       run: |
