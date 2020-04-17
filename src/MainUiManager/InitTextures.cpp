@@ -1,7 +1,7 @@
 #include "MainUiManager.hpp"
 
 #include <cstdio>
-#include <SDL_image.h>
+#include <SDL2/SDL_image.h>
 
 bool MainUiManager::initTextures() {
     //if (!bgTexture.loadFromFile("data/textures/bg.tga")) return false;

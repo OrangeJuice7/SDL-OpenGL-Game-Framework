@@ -3,7 +3,7 @@
 
 #include <functional>
 #include <forward_list>
-#include <SDL.h> // for SDL_Rect
+#include <SDL2/SDL.h> // for SDL_Rect
 class MainUiManager;
 
 /**

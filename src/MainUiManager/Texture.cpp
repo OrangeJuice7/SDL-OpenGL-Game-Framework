@@ -1,7 +1,7 @@
 #include "Texture.hpp"
 
 #include <cstdio>
-#include <SDL_image.h>
+#include <SDL2/SDL_image.h>
 
 SDL_Renderer* Texture::renderer = NULL;
 

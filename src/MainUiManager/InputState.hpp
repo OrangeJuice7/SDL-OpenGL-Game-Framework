@@ -1,7 +1,7 @@
 #ifndef INPUT_STATE_HPP
 #define INPUT_STATE_HPP
 
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include <unordered_map>
 
 struct MouseState {

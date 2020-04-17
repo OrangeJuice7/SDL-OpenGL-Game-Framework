@@ -1,8 +1,8 @@
 #ifndef MAIN_UI_MANAGER_HPP
 #define MAIN_UI_MANAGER_HPP
 
-#include <SDL.h>
-#include <SDL_ttf.h> // http://www.sdltutorials.com/sdl-ttf
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h> // http://www.sdltutorials.com/sdl-ttf
 #include "Texture.hpp"
 #include "InputState.hpp"
 class Scene;

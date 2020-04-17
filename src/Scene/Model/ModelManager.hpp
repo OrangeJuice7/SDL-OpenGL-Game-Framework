@@ -3,7 +3,7 @@
 
 #include <cstdint>
 #include <functional>
-#include <SDL.h>
+#include <SDL2/SDL.h>
 class MainUiManager;
 
 class ModelManager {

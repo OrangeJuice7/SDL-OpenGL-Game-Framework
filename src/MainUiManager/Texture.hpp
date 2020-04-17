@@ -1,8 +1,8 @@
 #ifndef TEXTURE_HPP_INCLUDED
 #define TEXTURE_HPP_INCLUDED
 
-#include <SDL.h>
-#include <SDL_ttf.h> // http://www.sdltutorials.com/sdl-ttf
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h> // http://www.sdltutorials.com/sdl-ttf
 
 class Texture {
 	protected:

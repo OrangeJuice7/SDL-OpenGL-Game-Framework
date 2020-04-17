@@ -1,7 +1,7 @@
 #include "GameScene.hpp"
 
 #include <cstdio>
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include "Model/GameModelManager.hpp"
 #include "Widget/Widget.hpp"
 #include "../MainApp/MessageHandler.hpp"

@@ -1,7 +1,7 @@
 #include "MenuScene.hpp"
 
 #include <cstdio>
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include "Model/MenuModelManager.hpp"
 #include "Widget/Widget.hpp"
 #include "../MainApp/MessageHandler.hpp"

@@ -2,7 +2,7 @@
 #define SCENE_HPP
 
 #include <cstdint>
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include "../MainUiManager/InputState.hpp"
 #include "Widget/WidgetManager.hpp"
 class MainUiManager;
