@@ -36,6 +36,7 @@
 		<Compiler>
 			<Add option="-pedantic" />
 			<Add option="-Wextra" />
+			<Add option="-Wno-unused-parameter" />
 			<Add option="-Wall" />
 			<Add option="-std=c++11" />
 		</Compiler>
