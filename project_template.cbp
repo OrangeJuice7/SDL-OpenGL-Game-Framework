@@ -34,7 +34,6 @@
 			</Target>
 		</Build>
 		<Compiler>
-			<Add option="-Weffc++" />
 			<Add option="-pedantic" />
 			<Add option="-Wextra" />
 			<Add option="-Wall" />
