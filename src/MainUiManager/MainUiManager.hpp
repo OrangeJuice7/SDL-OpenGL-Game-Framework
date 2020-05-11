@@ -5,7 +5,7 @@
 #include <SDL2/SDL_ttf.h> // http://www.sdltutorials.com/sdl-ttf
 #include <GL/glew.h>
 #include <SDL2/SDL_opengl.h> // Needs to come after glew.h
-#include <GL/glu.h>
+#include "ShaderProgram.hpp"
 #include "Texture.hpp"
 #include "InputState.hpp"
 class Scene;
@@ -18,7 +18,7 @@ class MainUiManager {
 
         // OpenGL
         SDL_GLContext glContext; // Rendering context
-        GLuint glProgramID; // Shader program
+        ShaderProgram shaderProgram;
         GLuint glVBO;
         GLuint glIBO;
 

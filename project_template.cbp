@@ -42,7 +42,7 @@
 			<Add option="-DGLEW_STATIC" />
 		</Compiler>
 		<Linker>
-			<Add option="-lmingw32 -lSDL2main -lSDL2 -lSDL2_ttf -lSDL2_image -lglew32s -lopengl32 -lglu32" />
+			<Add option="-lmingw32 -lSDL2main -lSDL2 -lSDL2_ttf -lSDL2_image -lglew32s -lopengl32" />
 		</Linker>
 		<Unit filename="src/MainApp/MainApp.cpp" />
 		<Unit filename="src/MainApp/MainApp.hpp" />
@@ -61,6 +61,8 @@
 		<Unit filename="src/MainUiManager/MainUiManager.cpp" />
 		<Unit filename="src/MainUiManager/MainUiManager.hpp" />
 		<Unit filename="src/MainUiManager/Render.cpp" />
+		<Unit filename="src/MainUiManager/ShaderProgram.cpp" />
+		<Unit filename="src/MainUiManager/ShaderProgram.hpp" />
 		<Unit filename="src/MainUiManager/Texture.cpp" />
 		<Unit filename="src/MainUiManager/Texture.hpp" />
 		<Unit filename="src/Message/Message.cpp" />
