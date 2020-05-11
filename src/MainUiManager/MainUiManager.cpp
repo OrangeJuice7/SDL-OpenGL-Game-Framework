@@ -13,6 +13,11 @@ MainUiManager::MainUiManager(const char *windowTitle, int screenWidth, int scree
     mainWindow = NULL;
     renderer = NULL;
 
+    glProgramID = 0;
+    glVertexPos2DLocation = -1;
+    glVBO = 0;
+    glIBO = 0;
+
     mainFont = NULL;
 
     uiTick = 0;

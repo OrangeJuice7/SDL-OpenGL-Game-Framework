@@ -39,9 +39,10 @@
 			<Add option="-Wno-unused-parameter" />
 			<Add option="-Wall" />
 			<Add option="-std=c++11" />
+			<Add option="-DGLEW_STATIC" />
 		</Compiler>
 		<Linker>
-			<Add option="-lmingw32 -lSDL2main -lSDL2 -lSDL2_ttf -lSDL2_image" />
+			<Add option="-lmingw32 -lSDL2main -lSDL2 -lSDL2_ttf -lSDL2_image -lglew32s -lopengl32 -lglu32" />
 		</Linker>
 		<Unit filename="src/MainApp/MainApp.cpp" />
 		<Unit filename="src/MainApp/MainApp.hpp" />
@@ -49,6 +50,7 @@
 		<Unit filename="src/MainApp/MessageHandler.hpp" />
 		<Unit filename="src/MainUiManager/Init.cpp" />
 		<Unit filename="src/MainUiManager/InitFont.cpp" />
+		<Unit filename="src/MainUiManager/InitOpenGL.cpp" />
 		<Unit filename="src/MainUiManager/InitRenderer.cpp" />
 		<Unit filename="src/MainUiManager/InitSDL.cpp" />
 		<Unit filename="src/MainUiManager/InitTextures.cpp" />

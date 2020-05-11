@@ -3,30 +3,46 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h> // http://www.sdltutorials.com/sdl-ttf
+#include <GL/glew.h>
+#include <SDL2/SDL_opengl.h> // Needs to come after glew.h
+#include <GL/glu.h>
 #include "Texture.hpp"
 #include "InputState.hpp"
 class Scene;
 
 class MainUiManager {
     protected:
-        // The main window
+        // SDL
         SDL_Window* mainWindow;
         SDL_Renderer* renderer;
 
+        // OpenGL
+        SDL_GLContext glContext; // Rendering context
+        GLuint glProgramID; // Shader program
+        GLuint glVBO;
+        GLuint glIBO;
+
+        // Shader variables
+        GLint glVertexPos2DLocation;
+
+        // Hardware input states
+        MouseState mouseState;
+        KeyboardState keyboardState;
+
+        // Utility
         TTF_Font* mainFont;
 
         Uint32 uiTick;
 
-        MouseState mouseState;
-        KeyboardState keyboardState;
-
         bool initSDL();
+        bool initOpenGL();
         bool initWindow(); // requires initSDL()
         bool initRenderer();
         bool initFont();
         bool initTextures(); // requires initWindow()
 
         void deinitSDL();
+        void deinitOpenGL();
         void deinitWindow();
         void deinitRenderer();
         void deinitFont();

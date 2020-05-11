@@ -7,7 +7,7 @@ bool MainUiManager::initWindow() {
             SDL_WINDOWPOS_UNDEFINED,
             SCREEN_WIDTH,
             SCREEN_HEIGHT,
-            SDL_WINDOW_SHOWN);
+            SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
 
     if (mainWindow == NULL) {
         return false;
