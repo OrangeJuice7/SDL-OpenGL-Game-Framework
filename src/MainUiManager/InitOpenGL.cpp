@@ -2,6 +2,9 @@
 
 #include <cstdio>
 
+#define VERTEX_SHADER_FILEPATH "default.vert"
+#define FRAGMENT_SHADER_FILEPATH "default.frag"
+
 bool MainUiManager::initOpenGL() {
     //Use OpenGL 3.1 core
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
@@ -63,7 +66,7 @@ bool MainUiManager::initOpenGL() {
     }
 
     // generate shader program
-    if(!shaderProgram.load()) {
+    if(!shaderProgram.load(VERTEX_SHADER_FILEPATH, FRAGMENT_SHADER_FILEPATH)) {
         printf("Could not load shader program!\n");
         return false;
     }

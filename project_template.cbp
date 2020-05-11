@@ -44,6 +44,8 @@
 		<Linker>
 			<Add option="-lmingw32 -lSDL2main -lSDL2 -lSDL2_ttf -lSDL2_image -lglew32s -lopengl32" />
 		</Linker>
+		<Unit filename="default.frag" />
+		<Unit filename="default.vert" />
 		<Unit filename="src/MainApp/MainApp.cpp" />
 		<Unit filename="src/MainApp/MainApp.hpp" />
 		<Unit filename="src/MainApp/MessageHandler.cpp" />

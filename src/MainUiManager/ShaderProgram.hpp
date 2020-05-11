@@ -2,7 +2,6 @@
 #define SHADER_PROGRAM_HPP
 
 #include <GL/glew.h>
-//#include <SDL2/SDL_opengl.h>
 
 class ShaderProgram {
     protected:
@@ -13,7 +12,9 @@ class ShaderProgram {
         virtual ~ShaderProgram();
 
         // Requires a valid OpenGL context
-        virtual bool load(); // Expand this later to be able to accept source file names
+        virtual bool load(
+                const char* vertexShaderFilepath,
+                const char* fragmentShaderFilepath);
         virtual void free();
 
         // Sets this program as the current shader program

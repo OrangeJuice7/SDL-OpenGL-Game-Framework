@@ -1,6 +1,8 @@
 #include "ShaderProgram.hpp"
 
 #include <cstdio>
+#include <string>
+#include <fstream>
 
 // OpenGL shader error reporting
 void printProgramLog(GLuint program) {
@@ -56,30 +58,44 @@ void printShaderLog(GLuint shader) {
     delete[] infoLog;
 }
 
-bool loadShader(GLuint glProgramID, GLenum shaderType, const GLchar* const* shaderSource) {
+bool loadShader(GLuint glProgramID, GLenum shaderType, const char* shaderSourcePath) {
     //Create shader
-    GLuint shader = glCreateShader(shaderType);
+    GLuint shaderID = glCreateShader(shaderType);
 
     //Get shader source
-    //
+    std::string shaderString;
+    {   //Open file
+        std::ifstream sourceFile(shaderSourcePath);
+        if (!sourceFile) {
+            printf("Unable to open shader source file: %s\n", shaderSourcePath);
+            return false;
+        }
+
+        //Get shader source
+        shaderString.assign(
+            std::istreambuf_iterator<char>(sourceFile),
+            std::istreambuf_iterator<char>() );
+    }
 
     //Set source
-    glShaderSource(shader, 1, shaderSource, NULL);
+    const GLchar* shaderSource = shaderString.c_str();
+    glShaderSource(shaderID, 1, (const GLchar**)&shaderSource, NULL);
 
     //Compile source
-    glCompileShader(shader);
+    glCompileShader(shaderID);
 
     //Check shader for errors
     GLint shaderCompiled = GL_FALSE;
-    glGetShaderiv(shader, GL_COMPILE_STATUS, &shaderCompiled);
+    glGetShaderiv(shaderID, GL_COMPILE_STATUS, &shaderCompiled);
     if (shaderCompiled != GL_TRUE) {
-        printf("Unable to compile shader %d!\n", shader);
-        printShaderLog(shader);
+        printf("Unable to compile shader %d!\n", shaderID);
+        printShaderLog(shaderID);
+        glDeleteShader(shaderID);
         return false;
     }
 
     //Attach shader to program
-    glAttachShader(glProgramID, shader);
+    glAttachShader(glProgramID, shaderID);
 
     return true;
 }
@@ -93,32 +109,21 @@ ShaderProgram::~ShaderProgram() {
     free();
 }
 
-bool ShaderProgram::load() {
+bool ShaderProgram::load(
+        const char* vertexShaderFilepath,
+        const char* fragmentShaderFilepath) {
+
     //Generate shader program
 	id = glCreateProgram();
 
     // Load vertex shader
-    const GLchar* vertexShaderSource[] = {
-        "#version 140\n \
-        in vec2 LVertexPos2D;\n \
-        void main() {\n \
-            gl_Position = vec4(LVertexPos2D.x, LVertexPos2D.y, 0, 1);\n \
-        }\n"
-    };
-    if (!loadShader(id, GL_VERTEX_SHADER, vertexShaderSource) ) {
+    if (!loadShader(id, GL_VERTEX_SHADER, vertexShaderFilepath) ) {
         printf("Could not load vertex shader!\n");
         return false;
     }
 
     // Load fragment shader
-    const GLchar* fragmentShaderSource[] = {
-        "#version 140\n \
-        out vec4 LFragment; \
-        void main() { \
-            LFragment = vec4(1, .3, .7, 1); \
-        }"
-    };
-	if (!loadShader(id, GL_FRAGMENT_SHADER, fragmentShaderSource) ) {
+	if (!loadShader(id, GL_FRAGMENT_SHADER, fragmentShaderFilepath) ) {
         printf("Could not load fragment shader!\n");
         return false;
     }
