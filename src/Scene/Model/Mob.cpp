@@ -1,7 +1,7 @@
 #include "Mob.hpp"
 
 #include "../../basicmath.hpp"
-#include "../../MainUiManager/MainUiManager.hpp"
+#include "../../ui/MainUiManager.hpp"
 
 MobData::MobData(float radius, float maxLife, float mass) {
     this->radius = radius;

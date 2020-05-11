@@ -1,7 +1,7 @@
 #include "Particle.hpp"
 
 #include "../../basicmath.hpp"
-#include "../../MainUiManager/MainUiManager.hpp"
+#include "../../ui/MainUiManager.hpp"
 
 Particle::Particle() : Particle(0, 0, 0, 0, 1, 1, 1) {}
 Particle::Particle(float x, float y, float xvel, float yvel, float radius, float maxLife, float mass)

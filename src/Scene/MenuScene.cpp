@@ -6,7 +6,7 @@
 #include "Widget/Widget.hpp"
 #include "../MainApp/MessageHandler.hpp"
 #include "../Message/SceneTransitMessage.hpp"
-#include "../MainUiManager/MainUiManager.hpp"
+#include "../ui/MainUiManager.hpp"
 #include "GameScene.hpp"
 
 MenuScene::MenuScene()

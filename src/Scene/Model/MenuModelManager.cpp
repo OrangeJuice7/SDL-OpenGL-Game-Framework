@@ -1,6 +1,6 @@
 #include "MenuModelManager.hpp"
 
-#include "../../MainUiManager/MainUiManager.hpp"
+#include "../../ui/MainUiManager.hpp"
 
 MenuModelManager::MenuModelManager()
         : ModelManager(1) {

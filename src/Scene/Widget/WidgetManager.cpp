@@ -1,6 +1,6 @@
 #include "WidgetManager.hpp"
 
-#include "../../MainUiManager/MainUiManager.hpp"
+#include "../../ui/MainUiManager.hpp"
 #include "Widget.hpp"
 
 WidgetManager::WidgetManager() {

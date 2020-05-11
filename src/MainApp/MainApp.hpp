@@ -2,7 +2,7 @@
 #define MAIN_APP_HPP_INCLUDED
 
 #include "MessageHandler.hpp"
-#include "../MainUiManager/MainUiManager.hpp"
+#include "../ui/MainUiManager.hpp"
 class Scene;
 
 class MainApp {

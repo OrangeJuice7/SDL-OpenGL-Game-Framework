@@ -1,6 +1,6 @@
 #include "Widget.hpp"
 
-#include "../../MainUiManager/MainUiManager.hpp"
+#include "../../ui/MainUiManager.hpp"
 
 Widget::Widget(
         SDL_Rect rect,

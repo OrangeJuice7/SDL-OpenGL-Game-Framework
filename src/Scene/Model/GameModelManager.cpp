@@ -1,7 +1,7 @@
 #include "GameModelManager.hpp"
 
 #include "../../basicmath.hpp"
-#include "../../MainUiManager/MainUiManager.hpp"
+#include "../../ui/MainUiManager.hpp"
 
 GameModelManager::GameModelManager()
         : ModelManager(32)

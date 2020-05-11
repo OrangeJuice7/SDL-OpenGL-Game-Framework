@@ -1,7 +1,7 @@
 #include "Explosion.hpp"
 
 #include "../../basicmath.hpp"
-#include "../../MainUiManager/MainUiManager.hpp"
+#include "../../ui/MainUiManager.hpp"
 
 ExplosionData::ExplosionData(float radius, float maxLife, float maxDamage) {
     this->radius = radius;

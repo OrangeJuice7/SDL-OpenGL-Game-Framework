@@ -2,7 +2,7 @@
 
 #include <SDL2/SDL.h>
 #include "../../basicmath.hpp"
-#include "../../MainUiManager/MainUiManager.hpp"
+#include "../../ui/MainUiManager.hpp"
 
 ImmovableEntity::ImmovableEntity() : ImmovableEntity(0, 0, 1) {}
 ImmovableEntity::ImmovableEntity(float x, float y, float life) {

@@ -1,6 +1,6 @@
 #include "ModelManager.hpp"
 
-#include "../../MainUiManager/MainUiManager.hpp"
+#include "../../ui/MainUiManager.hpp"
 
 ModelManager::ModelManager(float initialModelScale) {
     this->initialModelScale = initialModelScale;

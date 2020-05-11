@@ -3,7 +3,7 @@
 
 #include <cstdint>
 #include <SDL2/SDL.h>
-#include "../MainUiManager/InputState.hpp"
+#include "../ui/InputState.hpp"
 #include "Widget/WidgetManager.hpp"
 class MainUiManager;
 class ModelManager;
