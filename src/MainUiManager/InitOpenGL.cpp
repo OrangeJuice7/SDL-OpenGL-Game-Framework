@@ -4,7 +4,6 @@
 
 // OpenGL shader error reporting
 void printProgramLog(GLuint program) {
-    // Make sure name is shader
     if (!glIsProgram(program)) {
         printf("Name %d is not a program!\n", program);
         return;
@@ -31,7 +30,6 @@ void printProgramLog(GLuint program) {
     delete[] infoLog;
 }
 void printShaderLog(GLuint shader) {
-    // Make sure name is shader
     if (!glIsShader(shader)) {
         printf("Name %d is not a shader!\n", shader);
         return;
