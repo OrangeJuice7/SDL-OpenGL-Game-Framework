@@ -7,6 +7,7 @@ class ShaderProgram {
     protected:
         GLuint id; // Program ID
 
+        /* Can define some shader uniforms here, in derived classes */
     public:
         ShaderProgram();
         virtual ~ShaderProgram();

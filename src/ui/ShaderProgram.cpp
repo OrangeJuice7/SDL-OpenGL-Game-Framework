@@ -3,6 +3,7 @@
 #include <cstdio>
 #include <string>
 #include <fstream>
+#include "GLUtil.hpp"
 
 // OpenGL shader error reporting
 void printProgramLog(GLuint program) {
@@ -97,6 +98,9 @@ bool loadShader(GLuint glProgramID, GLenum shaderType, const char* shaderSourceP
     //Attach shader to program
     glAttachShader(glProgramID, shaderID);
 
+    // Clean up excess shader references
+    glDeleteShader(shaderID);
+
     return true;
 }
 
@@ -156,7 +160,7 @@ bool ShaderProgram::bind() {
     //Check for errors
     GLenum error = glGetError();
     if (error != GL_NO_ERROR) {
-        printf("Error binding shader program: %x\n", error);
+        printf("Error binding shader program: %s\n", glErrorToString(error));
         printProgramLog(id);
         return false;
     }

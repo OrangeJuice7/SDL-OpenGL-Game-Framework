@@ -45,13 +45,13 @@ void MainUiManager::drawLineCircle(float x, float y, float r) {
 }
 
 void MainUiManager::renderTextToScreen(const char *text, const SDL_Color& fg, int x, int y) {
-    Texture texture;
+    /*Texture texture;
     texture.loadFromText(mainFont, text, fg);
-    texture.render(x, y);
+    texture.render(x, y);*/
 }
 
 void MainUiManager::renderImageToScreen(SDL_Surface* image, int x, int y) {
-    Texture texture;
+    /*Texture texture;
     texture.loadFromSurface(image);
-    texture.render(x, y);
+    texture.render(x, y);*/
 }

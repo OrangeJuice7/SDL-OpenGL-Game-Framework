@@ -6,7 +6,7 @@
 #include <GL/glew.h>
 #include <SDL2/SDL_opengl.h> // Needs to come after glew.h
 #include "ShaderProgram.hpp"
-#include "Texture.hpp"
+#include "Sprite.hpp"
 #include "InputState.hpp"
 class Scene;
 
@@ -19,11 +19,8 @@ class MainUiManager {
         // OpenGL
         SDL_GLContext glContext; // Rendering context
         ShaderProgram shaderProgram;
-        GLuint glVBO;
-        GLuint glIBO;
 
-        // Shader variables
-        GLint glVertexPos2DLocation;
+        TexturedSprite sprite;
 
         // Hardware input states
         MouseState mouseState;

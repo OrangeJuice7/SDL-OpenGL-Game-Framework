@@ -9,7 +9,6 @@ bool MainUiManager::initRenderer() {
         return false;
     }
 
-    Texture::setRenderer(renderer);
     return true;
 }
 
