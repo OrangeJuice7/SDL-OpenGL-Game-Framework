@@ -3,6 +3,13 @@
 
 #include <GL/glew.h>
 
+// Preset location of vertex attributes in the vertex shaders
+// Should align with the specs in the vertex shaders
+// Also recall that there can be at most 16 vertex attributes, for most GPUs
+#define VERTEX_ATTRIB_POSITION_LOCATION     0
+#define VERTEX_ATTRIB_TEXCOORDS_LOCATION    1
+#define VERTEX_ATTRIB_COLOUR_LOCATION       2
+
 // Useful structs to define vertex data.
 // Do NOT re-order the struct variables.
 struct GLvertex2 {

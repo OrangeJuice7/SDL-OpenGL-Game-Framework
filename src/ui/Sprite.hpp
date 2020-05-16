@@ -15,7 +15,7 @@ class Sprite {
         virtual bool init();
 
         // Set camera position etc.? Basically matrix operations
-        virtual void draw();
+        virtual void draw()=0;
 };
 
 class TexturedSprite : public Sprite {
@@ -23,13 +23,11 @@ class TexturedSprite : public Sprite {
         constexpr static GLvertex2 vertices[] = { {-1,-1}, {1,-1}, {-1,1}, {1,1} };
         constexpr static GLtexcoord texcoords[] = { {0,0}, {1,0}, {0,1}, {1,1} };
         constexpr static GLcolorRGB colors[] = { {0,0,1}, {0,1,0}, {1,0,1}, {1,1,0} };
-        constexpr static GLuint indices[] = { 0, 1, 2, 3 };
 
         static GLuint vao; // vertex array
         static GLuint vbo; // vertices
         static GLuint cvbo; // colours
         //static GLuint tvbo; // textures
-        static GLuint ibo; // indices
 
     public:
         TexturedSprite();
@@ -43,15 +41,20 @@ class GeometricSprite : public Sprite {
     protected:
         // dynamic arrays
         GLvertex2 *vertices;
-        GLcolorRGB *colours;
+        GLcolorRGB *colors;
         GLuint *indices;
 
+        GLuint vao;
         GLuint vbo;
+        GLuint cvbo;
         GLuint ibo;
 
     public:
         GeometricSprite();
         virtual ~GeometricSprite();
+
+        bool init();
+        virtual void draw()=0;
 };
 
 #endif // SPRITE_HPP
