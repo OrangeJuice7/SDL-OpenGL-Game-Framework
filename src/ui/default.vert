@@ -6,8 +6,14 @@ layout(location = 2) in vec3 vertexColor3D;
 
 out vec4 vertexColor;
 
+uniform vec2 translate;
+uniform vec2 scale;
+
 void main() {
-	gl_Position = vec4(vertexPos2D, 0, 1);
+	gl_Position = vec4(
+        scale.x*(vertexPos2D.x + translate.x),
+        scale.y*(vertexPos2D.y + translate.y),
+        0, 1);
 	vertexColor = vec4(vertexColor3D, 1);
 	//vertexColor = vec4(1.f, .5f, .0f, 1.f);
 	//vertexColor = .5f*(gl_Position + vec4(1,1,0,1));

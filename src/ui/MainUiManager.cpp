@@ -34,10 +34,8 @@ void MainUiManager::draw(Scene* scene) {
     glClear(GL_COLOR_BUFFER_BIT);
     //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    //Reset transformations
-    //glLoadIdentity();
-
     // scene->draw(this);
+    setScale(128);
     sprite.draw();
 
     //Update screen

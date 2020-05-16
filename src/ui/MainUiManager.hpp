@@ -48,7 +48,7 @@ class MainUiManager {
     public:
         const char *WINDOW_TITLE;
         const int SCREEN_WIDTH;
-        const int SCREEN_HEIGHT;
+        const int SCREEN_HEIGHT; // Won't be constant anymore in the future for arbitrary window resizes
         const SDL_Rect SCREEN_RECT;
 
         float fps; // For display purposes only; is written to by MainApp.
@@ -67,9 +67,18 @@ class MainUiManager {
         // Draws the scene to screen
         void draw(Scene* scene);
 
+        // Set draw parameters
+        // (mainly just passes the info to this object's underlying ShaderProgram)
+        void resetTransform();
+        void setTranslate(GLfloat x, GLfloat y);
+        void setScale(GLfloat x, GLfloat y);
+        void setScale(GLfloat scale);
+
         void setDrawColor(Uint8 r, Uint8 g, Uint8 b);
         void setDrawColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
         void setDrawColor(const SDL_Color& color);
+
+        // Draw functions
         void drawPixel(int x, int y);
         void drawLine(int x1, int y1, int x2, int y2);
         void drawFillRect(const SDL_Rect& rect);

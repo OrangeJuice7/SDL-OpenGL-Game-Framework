@@ -2,6 +2,19 @@
 
 #include "../basicmath.hpp"
 
+void MainUiManager::resetTransform() {
+    shaderProgram.resetTransform();
+}
+void MainUiManager::setTranslate(GLfloat x, GLfloat y) {
+    shaderProgram.setTranslate(x, y);
+}
+void MainUiManager::setScale(GLfloat x, GLfloat y) {
+    shaderProgram.setScale(x, y);
+}
+void MainUiManager::setScale(GLfloat scale) {
+    shaderProgram.setScale(scale);
+}
+
 void MainUiManager::setDrawColor(Uint8 r, Uint8 g, Uint8 b) {
     setDrawColor(r, g, b, 0xff);
 }

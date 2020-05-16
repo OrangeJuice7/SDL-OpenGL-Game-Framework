@@ -21,8 +21,7 @@ class Sprite {
 class TexturedSprite : public Sprite {
     protected:
         constexpr static GLvertex2 vertices[] = { {-1,-1}, {1,-1}, {-1,1}, {1,1} };
-        //constexpr static GLvertex2 vertices[] = { {-.5f,-.5f}, {-.5f,1}, {1,-.5f}, {1,1} };
-        constexpr static GLtexcoord texcoords[] = { {0,0}, {0,1}, {1,0}, {1,1} };
+        constexpr static GLtexcoord texcoords[] = { {0,0}, {1,0}, {0,1}, {1,1} };
         constexpr static GLcolorRGB colors[] = { {0,0,1}, {0,1,0}, {1,0,1}, {1,1,0} };
         constexpr static GLuint indices[] = { 0, 1, 2, 3 };
 

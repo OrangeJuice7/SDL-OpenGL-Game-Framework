@@ -5,6 +5,15 @@
 #include <fstream>
 #include "GLUtil.hpp"
 
+ShaderUniform2f::ShaderUniform2f()
+        : ShaderUniform<GLvertex2>() {}
+ShaderUniform2f::~ShaderUniform2f() {}
+void ShaderUniform2f::load() {
+    glUniform2f(loc, value.x, value.y);
+}
+
+
+
 // OpenGL shader error reporting
 void printProgramLog(GLuint program) {
     if (!glIsProgram(program)) {
@@ -16,20 +25,20 @@ void printProgramLog(GLuint program) {
     int infoLogLength = 0;
     int maxLength = infoLogLength;
 
-    //Get info string length
+    // Get info string length
     glGetProgramiv(program, GL_INFO_LOG_LENGTH, &maxLength);
 
-    //Allocate string
+    // Allocate string
     char* infoLog = new char[maxLength];
 
-    //Get info log
+    // Get info log
     glGetProgramInfoLog(program, maxLength, &infoLogLength, infoLog);
     if (infoLogLength > 0) {
-        //Print Log
+        // Print Log
         printf("%s\n", infoLog);
     }
 
-    //Deallocate string
+    // Deallocate string
     delete[] infoLog;
 }
 void printShaderLog(GLuint shader) {
@@ -42,50 +51,50 @@ void printShaderLog(GLuint shader) {
     int infoLogLength = 0;
     int maxLength = infoLogLength;
 
-    //Get info string length
+    // Get info string length
     glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &maxLength);
 
-    //Allocate string
+    // Allocate string
     char* infoLog = new char[maxLength];
 
-    //Get info log
+    // Get info log
     glGetShaderInfoLog(shader, maxLength, &infoLogLength, infoLog);
     if (infoLogLength > 0) {
-        //Print Log
+        // Print Log
         printf("%s\n", infoLog);
     }
 
-    //Deallocate string
+    // Deallocate string
     delete[] infoLog;
 }
 
 bool loadShader(GLuint glProgramID, GLenum shaderType, const char* shaderSourcePath) {
-    //Create shader
+    // Create shader
     GLuint shaderID = glCreateShader(shaderType);
 
-    //Get shader source
+    // Get shader source
     std::string shaderString;
-    {   //Open file
+    {   // Open file
         std::ifstream sourceFile(shaderSourcePath);
         if (!sourceFile) {
             printf("Unable to open shader source file: %s\n", shaderSourcePath);
             return false;
         }
 
-        //Get shader source
+        // Get shader source
         shaderString.assign(
             std::istreambuf_iterator<char>(sourceFile),
             std::istreambuf_iterator<char>() );
     }
 
-    //Set source
+    // Set source
     const GLchar* shaderSource = shaderString.c_str();
     glShaderSource(shaderID, 1, (const GLchar**)&shaderSource, NULL);
 
-    //Compile source
+    // Compile source
     glCompileShader(shaderID);
 
-    //Check shader for errors
+    // Check shader for errors
     GLint shaderCompiled = GL_FALSE;
     glGetShaderiv(shaderID, GL_COMPILE_STATUS, &shaderCompiled);
     if (shaderCompiled != GL_TRUE) {
@@ -95,7 +104,7 @@ bool loadShader(GLuint glProgramID, GLenum shaderType, const char* shaderSourceP
         return false;
     }
 
-    //Attach shader to program
+    // Attach shader to program
     glAttachShader(glProgramID, shaderID);
 
     // Clean up excess shader references
@@ -104,20 +113,33 @@ bool loadShader(GLuint glProgramID, GLenum shaderType, const char* shaderSourceP
     return true;
 }
 
-ShaderProgram::ShaderProgram() {
+
+
+ShaderProgram::ShaderProgram()
+        : translateVector()
+        , scaleVector() {
+
     id = 0;
 }
-
 ShaderProgram::~ShaderProgram() {
-    //Free program if it exists
+    // Free program if it exists
     free();
+}
+
+template <class T>
+bool ShaderProgram::loadUniform(ShaderUniform<T>& uniform, const char* name) {
+    if (uniform.setLoc(id, name) == -1) {
+        printf("Unable to load shader uniform \"%s\"! Error: %s\n", name, glErrorToString(glGetError()) );
+        return false;
+    }
+    return true;
 }
 
 bool ShaderProgram::load(
         const char* vertexShaderFilepath,
         const char* fragmentShaderFilepath) {
 
-    //Generate shader program
+    // Generate shader program
 	id = glCreateProgram();
 
     // Load vertex shader
@@ -132,10 +154,10 @@ bool ShaderProgram::load(
         return false;
     }
 
-	//Link shader program
+	// Link shader program
     glLinkProgram(id);
 
-    //Check for errors
+    // Check for errors
     {   GLint programSuccess = GL_TRUE;
         glGetProgramiv(id, GL_LINK_STATUS, &programSuccess);
         if(programSuccess != GL_TRUE) {
@@ -145,19 +167,28 @@ bool ShaderProgram::load(
         }
     }
 
+    // Load uniforms
+    if (!loadUniform(translateVector, "translate")) return false;
+    if (!loadUniform(scaleVector, "scale")) return false;
+
     return true;
 }
 
 void ShaderProgram::free() {
-    //Delete program
+    // Delete program
     glDeleteProgram(id);
 }
 
+void ShaderProgram::setScreenDimensions(int width, int height) {
+    screenWidth  = ( width >= 1) ?  width : 1;
+    screenHeight = (height >= 1) ? height : 1;
+}
+
 bool ShaderProgram::bind() {
-    //Use shader
+    // Use shader
     glUseProgram(id);
 
-    //Check for errors
+    // Check for errors
     GLenum error = glGetError();
     if (error != GL_NO_ERROR) {
         printf("Error binding shader program: %s\n", glErrorToString(error));
@@ -169,10 +200,34 @@ bool ShaderProgram::bind() {
 }
 
 void ShaderProgram::unbind() {
-    //Use default program
+    // Use default program
     glUseProgram(0);
 }
 
 GLuint ShaderProgram::getID() {
     return id;
+}
+
+void ShaderProgram::resetTransform() {
+    setTranslate(0, 0);
+    setScale(1);
+}
+void ShaderProgram::resetUniforms() {
+    resetTransform();
+}
+
+void ShaderProgram::setTranslate(GLfloat x, GLfloat y) {
+    // Note: better to expand the struct out to reduce ambiguity
+    translateVector.value.x = x;
+    translateVector.value.y = y;
+    translateVector.load();
+}
+void ShaderProgram::setScale(GLfloat x, GLfloat y) {
+    // Note: x2 because OpenGL by default takes the window to be coords -1 to 1, i.e. the window is 2 coords wide in each direction
+    scaleVector.value.x = x * 2 / screenWidth;
+    scaleVector.value.y = y * 2 / screenHeight;
+    scaleVector.load();
+}
+void ShaderProgram::setScale(GLfloat scale) {
+    setScale(scale, scale);
 }

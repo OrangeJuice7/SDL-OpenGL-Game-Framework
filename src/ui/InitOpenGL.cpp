@@ -79,7 +79,7 @@ bool MainUiManager::initOpenGL() {
         return false;
     }
 
-    // generate shader program
+    // Generate shader program
     if (!shaderProgram.load(VERTEX_SHADER_FILEPATH, FRAGMENT_SHADER_FILEPATH)) {
         printf("Could not load shader program!\n");
         return false;
@@ -88,6 +88,8 @@ bool MainUiManager::initOpenGL() {
         printf("Could not bind shader program!\n");
         return false;
     }
+    shaderProgram.setScreenDimensions(SCREEN_WIDTH, SCREEN_HEIGHT);
+    shaderProgram.resetUniforms();
 
     return true;
 }
