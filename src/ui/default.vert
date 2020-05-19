@@ -15,6 +15,4 @@ void main() {
         scale.y*(vertexPos2D.y + translate.y),
         0, 1);
 	vertexColor = vec4(vertexColor3D, 1);
-	//vertexColor = vec4(1.f, .5f, .0f, 1.f);
-	//vertexColor = .5f*(gl_Position + vec4(1,1,0,1));
 }

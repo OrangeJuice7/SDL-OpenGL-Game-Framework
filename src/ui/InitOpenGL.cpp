@@ -67,6 +67,8 @@ bool MainUiManager::initOpenGL() {
     // Enable line antialiasing
     glEnable(GL_LINE_SMOOTH);
 
+    // Init texture params
+
     // Check for errors
     GLenum error = glGetError();
     if (error != GL_NO_ERROR) {
@@ -74,10 +76,12 @@ bool MainUiManager::initOpenGL() {
         return false;
     }
 
+    // Init sprites
     if (!TexturedSprite::initClass()) {
         printf("Could not initialize textured sprites!\n");
         return false;
     }
+    geomSprite.init();
 
     // Generate shader program
     if (!shaderProgram.load(VERTEX_SHADER_FILEPATH, FRAGMENT_SHADER_FILEPATH)) {

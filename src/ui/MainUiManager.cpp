@@ -1,9 +1,18 @@
 #include "MainUiManager.hpp"
 
+#include <cmath>
 #include "../Scene/Scene.hpp"
+
+GLvertex2 vertices[] = { {-1,-1}, {1,-1}, {-1,1}, {1,1} };
+GLcolorRGB colors[] = { {0,0,1}, {0,1,0}, {1,0,1}, {1,1,0} };
+void spriteDrawfunc() {
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+}
 
 MainUiManager::MainUiManager(const char *windowTitle, int screenWidth, int screenHeight)
         : shaderProgram()
+        , texSprite()
+        , geomSprite(4, vertices, colors, spriteDrawfunc)
         , mouseState()
         , keyboardState()
         , WINDOW_TITLE(windowTitle)
@@ -36,7 +45,12 @@ void MainUiManager::draw(Scene* scene) {
 
     // scene->draw(this);
     setScale(128);
-    sprite.draw();
+    setTranslate(2 + sin(uiTick*.1f), .5f*cos(uiTick*.1f));
+    texSprite.draw();
+    setTranslate(-2 + sin(uiTick*.1f +.8f), .5f*cos(uiTick*.1f +.8f));
+    texSprite.draw();
+    setTranslate(.5f*cos(uiTick*.1f +.4f), 1 - sin(uiTick*.1f +.4f));
+    geomSprite.draw();
 
     //Update screen
     SDL_GL_SwapWindow(mainWindow);

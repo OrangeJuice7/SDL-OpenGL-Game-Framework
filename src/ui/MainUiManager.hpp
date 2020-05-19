@@ -20,7 +20,8 @@ class MainUiManager {
         SDL_GLContext glContext; // Rendering context
         ShaderProgram shaderProgram;
 
-        TexturedSprite sprite;
+        TexturedSprite texSprite;
+        GeometricSprite geomSprite;
 
         // Hardware input states
         MouseState mouseState;
@@ -73,6 +74,8 @@ class MainUiManager {
         void setTranslate(GLfloat x, GLfloat y);
         void setScale(GLfloat x, GLfloat y);
         void setScale(GLfloat scale);
+
+        // Set, reset texture (reset = blank white texture)
 
         void setDrawColor(Uint8 r, Uint8 g, Uint8 b);
         void setDrawColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
