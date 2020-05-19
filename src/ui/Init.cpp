@@ -23,13 +23,13 @@ bool MainUiManager::init() {
         return false;
     }
 
-    if(!initFont()) {
-        printf("Could not initialize font!\n");
+    if(!spriteManager.init()) {
+        printf("Could not initialize textures and sprites!\n");
         return false;
     }
 
-    if(!initTextures()) {
-        printf("Could not initialize textures!\n");
+    if(!initFont()) {
+        printf("Could not initialize font!\n");
         return false;
     }
 
@@ -37,8 +37,8 @@ bool MainUiManager::init() {
 }
 
 void MainUiManager::deinit() {
-    deinitTextures();
     deinitFont();
+    spriteManager.deinit();
     deinitOpenGL();
     deinitRenderer();
     deinitWindow();

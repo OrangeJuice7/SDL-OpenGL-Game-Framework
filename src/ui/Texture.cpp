@@ -12,21 +12,24 @@ Texture::Texture() {
 }
 Texture::~Texture() {}
 
-bool Texture::initBlankTexture() {
+bool Texture::initBlank() {
     GLubyte data[] = {0xff, 0xff, 0xff};
 
-    blankTexture.width = blankTexture.height = 1;
-    blankTexture.numOfChannels = 3;
-    blankTexture.pixelFormat = GL_RGB;
+    width = height = 1;
+    numOfChannels = 3;
+    pixelFormat = GL_RGB;
 
-    glGenTextures(1, &blankTexture.id);
-    glBindTexture(GL_TEXTURE_2D, blankTexture.id);
-    glTexImage2D(GL_TEXTURE_2D, 0, blankTexture.pixelFormat, blankTexture.width, blankTexture.height, 0, blankTexture.pixelFormat, GL_UNSIGNED_BYTE, data);
+    glGenTextures(1, &id);
+    glBindTexture(GL_TEXTURE_2D, id);
+    glTexImage2D(GL_TEXTURE_2D, 0, pixelFormat, width, height, 0, pixelFormat, GL_UNSIGNED_BYTE, data);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 	return true;
+}
+bool Texture::initBlankTexture() {
+    return blankTexture.initBlank();
 }
 bool Texture::init(const char* filename) {
     // Load data from file
@@ -62,9 +65,6 @@ bool Texture::init(const char* filename) {
     SOIL_free_image_data(data);
 
     return true;
-}
-void Texture::deinit() {
-    //
 }
 
 void Texture::bind() {

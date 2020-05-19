@@ -6,6 +6,9 @@ Sprite::Sprite(std::function<void()> drawfunc) {
     this->drawfunc = drawfunc;
 }
 Sprite::~Sprite() {}
+
+void Sprite::deinit() {}
+
 void Sprite::draw() {
     glBindVertexArray( getVAO() );
     drawfunc();
@@ -74,9 +77,6 @@ bool TexturedSprite::init(const char* filename) {
     }
     return true;
 }
-void TexturedSprite::deinit() {
-    texture.deinit();
-}
 
 GLuint TexturedSprite::getVAO() {
     return vao;
@@ -89,23 +89,15 @@ void TexturedSprite::draw() {
 
 
 
-GeometricSprite::GeometricSprite(
+GeometricSprite::GeometricSprite(std::function<void()> drawfunc)
+        : Sprite (drawfunc) {}
+GeometricSprite::~GeometricSprite() {}
+
+bool GeometricSprite::init(
         GLuint numOfVertices,
         const GLvertex2* vertices,
-        const GLcolorRGBA* colors,
-        std::function<void()> drawfunc)
+        const GLcolorRGBA* colors) {
 
-        : Sprite (drawfunc) {
-
-    this->numOfVertices = numOfVertices;
-    this->vertices = vertices;
-    this->colors = colors;
-}
-GeometricSprite::~GeometricSprite() {
-    deinit();
-}
-
-bool GeometricSprite::init() {
     // Generate buffer objects
     glGenVertexArrays(1, &vao);
     glGenBuffers(1, &vbo);

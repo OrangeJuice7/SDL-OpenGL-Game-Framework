@@ -11,13 +11,15 @@ class Sprite {
         /**
          * Allowed to call:
          * - glDrawArrays, glDrawElements
-         * - Texture bindings and parameters
+         * - Texture bindings and parameters?
          */
         std::function<void()> drawfunc;
 
     public:
         Sprite(std::function<void()> drawfunc);
         virtual ~Sprite();
+
+        virtual void deinit();
 
         virtual GLuint getVAO()=0;
 
@@ -28,7 +30,7 @@ class Sprite {
 class TexturedSprite : public Sprite {
     protected:
         constexpr static GLvertex2 vertices[] = { {-1,-1}, {1,-1}, {-1,1}, {1,1} };
-        constexpr static GLtexcoord texcoords[] = { {0,0}, {1,0}, {0,1}, {1,1} };
+        constexpr static GLtexcoord texcoords[] = { {0,1}, {1,1}, {0,0}, {1,0} }; // Note: loaded textures are y-inverted
 
         static GLuint vao; // vertex array
         static GLuint vbo; // vertices
@@ -41,9 +43,9 @@ class TexturedSprite : public Sprite {
         TexturedSprite();
         ~TexturedSprite();
 
+        // Called only after OpenGL has been initialized
         static bool initClass();
         bool init(const char* filename);
-        void deinit();
 
         GLuint getVAO();
 
@@ -52,12 +54,6 @@ class TexturedSprite : public Sprite {
 
 class GeometricSprite : public Sprite {
     protected:
-        GLuint numOfVertices;
-        // pointers to arrays outside
-        const GLvertex2 *vertices;
-        const GLcolorRGBA *colors;
-        //GLuint *indices;
-
         GLuint vao;
         GLuint vbo;
         GLuint cvbo; // colours
@@ -65,14 +61,14 @@ class GeometricSprite : public Sprite {
 
     public:
         // vertices and colors should be arrays
-        GeometricSprite(
-                GLuint numOfVertices,
-                const GLvertex2* vertices,
-                const GLcolorRGBA* colors,
-                std::function<void()> drawfunc);
+        GeometricSprite(std::function<void()> drawfunc);
         ~GeometricSprite();
 
-        bool init();
+        // Called only after OpenGL has been initialized
+        bool init(
+                GLuint numOfVertices,
+                const GLvertex2* vertices,
+                const GLcolorRGBA* colors);
         void deinit();
 
         // function to update and reload vertices?

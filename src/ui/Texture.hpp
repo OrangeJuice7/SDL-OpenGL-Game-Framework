@@ -12,15 +12,17 @@ class Texture {
 
 		GLuint id;
 
+		bool initBlank();
+
     public:
 		static Texture blankTexture;
 
 		Texture();
 		~Texture();
 
+        // Called only after OpenGL has been initialized
         static bool initBlankTexture();
 		bool init(const char* filename);
-        void deinit();
 
         void bind();
         static void unbind();

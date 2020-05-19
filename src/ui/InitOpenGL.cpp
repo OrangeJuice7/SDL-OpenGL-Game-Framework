@@ -78,16 +78,8 @@ bool MainUiManager::initOpenGL() {
         return false;
     }
 
-    // Init textures and sprites
-    Texture::initBlankTexture();
-    if (!TexturedSprite::initClass()) {
-        printf("Could not initialize textured sprites!\n");
-        return false;
-    }
-    texSprite.init("data/textures/crate.jpg");
-    texSprite2.init("data/textures/colours.bmp");
-    texSprite3.init("data/textures/bit.tga");
-    geomSprite.init();
+    // Make sure a texture unit is active
+    glActiveTexture(GL_TEXTURE0);
 
     // Generate shader program
     if (!shaderProgram.load(VERTEX_SHADER_FILEPATH, FRAGMENT_SHADER_FILEPATH)) {

@@ -92,7 +92,6 @@
 		<Unit filename="src/ui/InitOpenGL.cpp" />
 		<Unit filename="src/ui/InitRenderer.cpp" />
 		<Unit filename="src/ui/InitSDL.cpp" />
-		<Unit filename="src/ui/InitTextures.cpp" />
 		<Unit filename="src/ui/InitWindow.cpp" />
 		<Unit filename="src/ui/Input.cpp" />
 		<Unit filename="src/ui/InputState.cpp" />
@@ -104,6 +103,10 @@
 		<Unit filename="src/ui/ShaderProgram.hpp" />
 		<Unit filename="src/ui/Sprite.cpp" />
 		<Unit filename="src/ui/Sprite.hpp" />
+		<Unit filename="src/ui/SpriteId.hpp" />
+		<Unit filename="src/ui/SpriteLoad.cpp" />
+		<Unit filename="src/ui/SpriteManager.cpp" />
+		<Unit filename="src/ui/SpriteManager.hpp" />
 		<Unit filename="src/ui/Texture.cpp" />
 		<Unit filename="src/ui/Texture.hpp" />
 		<Unit filename="src/ui/default.frag" />

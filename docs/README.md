@@ -19,7 +19,7 @@ The authors would like to express appreciation for the following tutorials for t
 	- [Simple OpenGL Image Library (SOIL)](http://www.lonesock.net/soil.html) (public): Texture loading
 
 ### 3rd-party Textures
-- [crate.jpg](https://learnopengl.com/img/textures/container.jpg): LearnOpenGL
+- LearnOpenGL: [crate.jpg](https://learnopengl.com/img/textures/container.jpg), [awesomeface.png](https://learnopengl.com/img/textures/awesomeface.png)
 
 ### 3rd-party Audio
 (none)

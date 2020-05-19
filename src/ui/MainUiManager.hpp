@@ -6,7 +6,7 @@
 #include <GL/glew.h>
 #include <SDL2/SDL_opengl.h> // Needs to come after glew.h
 #include "ShaderProgram.hpp"
-#include "Sprite.hpp"
+#include "SpriteManager.hpp"
 #include "InputState.hpp"
 class Scene;
 
@@ -19,19 +19,16 @@ class MainUiManager {
         // OpenGL
         SDL_GLContext glContext; // Rendering context
         ShaderProgram shaderProgram;
+        SpriteManager spriteManager;
 
-        TexturedSprite texSprite;
-        TexturedSprite texSprite2;
-        TexturedSprite texSprite3;
-        GeometricSprite geomSprite;
+        // Font
+        TTF_Font* mainFont;
 
         // Hardware input states
         MouseState mouseState;
         KeyboardState keyboardState;
 
         // Utility
-        TTF_Font* mainFont;
-
         Uint32 uiTick;
 
         bool initSDL();
@@ -39,14 +36,12 @@ class MainUiManager {
         bool initWindow(); // requires initSDL()
         bool initRenderer();
         bool initFont();
-        bool initTextures(); // requires initWindow()
 
         void deinitSDL();
         void deinitOpenGL();
         void deinitWindow();
         void deinitRenderer();
         void deinitFont();
-        void deinitTextures();
 
     public:
         const char *WINDOW_TITLE;
@@ -67,6 +62,9 @@ class MainUiManager {
         // Collect hardware inputs and pass them to scene for interpretation
         void getInputs(Scene* scene);
 
+        // Expose sprite access for other programs to use (particularly to invoke draw calls with)
+        Sprite* getSprite(SpriteId id);
+
         // Draws the scene to screen
         void draw(Scene* scene);
 
@@ -76,8 +74,6 @@ class MainUiManager {
         void setTranslate(GLfloat x, GLfloat y);
         void setMapScale(GLfloat scale);
         void setObjectScale(GLfloat scale);
-
-        // Set, reset texture (reset = blank white texture)
 
         void setDrawColor(Uint8 r, Uint8 g, Uint8 b);
         void setDrawColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
