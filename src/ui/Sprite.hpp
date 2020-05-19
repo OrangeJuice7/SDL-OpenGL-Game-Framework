@@ -4,6 +4,7 @@
 #include <GL/glew.h>
 #include <functional>
 #include "GLUtil.hpp"
+#include "Texture.hpp"
 
 class Sprite {
     protected:
@@ -21,7 +22,7 @@ class Sprite {
         virtual GLuint getVAO()=0;
 
         // Transformations should be set before calling this function
-        void draw();
+        virtual void draw();
 };
 
 class TexturedSprite : public Sprite {
@@ -31,9 +32,9 @@ class TexturedSprite : public Sprite {
 
         static GLuint vao; // vertex array
         static GLuint vbo; // vertices
-        //static GLuint tvbo; // textures
+        static GLuint tvbo; // textures
 
-        // Texture?
+        Texture texture;
 
     public:
         //TexturedSprite(Texture texture);
@@ -41,8 +42,12 @@ class TexturedSprite : public Sprite {
         ~TexturedSprite();
 
         static bool initClass();
+        bool init(const char* filename);
+        void deinit();
 
         GLuint getVAO();
+
+        void draw();
 };
 
 class GeometricSprite : public Sprite {
@@ -50,7 +55,7 @@ class GeometricSprite : public Sprite {
         GLuint numOfVertices;
         // pointers to arrays outside
         const GLvertex2 *vertices;
-        const GLcolorRGB *colors;
+        const GLcolorRGBA *colors;
         //GLuint *indices;
 
         GLuint vao;
@@ -63,15 +68,18 @@ class GeometricSprite : public Sprite {
         GeometricSprite(
                 GLuint numOfVertices,
                 const GLvertex2* vertices,
-                const GLcolorRGB* colors,
+                const GLcolorRGBA* colors,
                 std::function<void()> drawfunc);
         ~GeometricSprite();
 
         bool init();
+        void deinit();
 
         // function to update and reload vertices?
 
         GLuint getVAO();
+
+        void draw();
 };
 
 #endif // SPRITE_HPP

@@ -11,12 +11,19 @@ The authors would like to express appreciation for the following tutorials for t
 - [Lazy Foo's SDL Tutorial](http://lazyfoo.net/tutorials/SDL) for setting up SDL2.
 - [LearnOpenGL](https://learnopengl.com/) for setting up modern OpenGL.
 
-### Libraries Used
-- [Simple DirectMedia Layer (SDL2)](https://www.libsdl.org/download-2.0.php): Hardware interfacing
+### 3rd-party Libraries
+- [Simple DirectMedia Layer (SDL2)](https://www.libsdl.org/download-2.0.php) (zlib): Hardware interfacing
 	- [SDL2_ttf](https://www.libsdl.org/projects/SDL_ttf): TrueType font support
-	- [SDL2_image](https://www.libsdl.org/projects/SDL_image): Texture loading and support
 - OpenGL 3.3 or later: Modern graphics rendering API (should come native with your compiler)
-	- [OpenGL Extension Wrangler (GLEW)](http://glew.sourceforge.net/): Support for OpenGL 3+
+	- [OpenGL Extension Wrangler (GLEW)](http://glew.sourceforge.net/) (Modified BSD/MIT): Support for OpenGL 3+
+	- [Simple OpenGL Image Library (SOIL)](http://www.lonesock.net/soil.html) (public): Texture loading
+
+### 3rd-party Textures
+- [crate.jpg](https://learnopengl.com/img/textures/container.jpg): LearnOpenGL
+
+### 3rd-party Audio
+(none)
 
 ### Other Resources Used
-- Arial Rounded MT Bold
+- [Austin font](https://fontesk.com/austin-typeface/) (OFL)
+- [PT Mono font](https://fontesk.com/pt-mono-typeface/) (OFL)

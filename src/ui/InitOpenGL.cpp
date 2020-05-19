@@ -67,7 +67,9 @@ bool MainUiManager::initOpenGL() {
     // Enable line antialiasing
     glEnable(GL_LINE_SMOOTH);
 
-    // Init texture params
+    // Enable antialiased polygons
+    // Note: will cause "cracks" to appear in triangle strips
+    //glEnable(GL_POLYGON_SMOOTH);
 
     // Check for errors
     GLenum error = glGetError();
@@ -76,11 +78,15 @@ bool MainUiManager::initOpenGL() {
         return false;
     }
 
-    // Init sprites
+    // Init textures and sprites
+    Texture::initBlankTexture();
     if (!TexturedSprite::initClass()) {
         printf("Could not initialize textured sprites!\n");
         return false;
     }
+    texSprite.init("data/textures/crate.jpg");
+    texSprite2.init("data/textures/colours.bmp");
+    texSprite3.init("data/textures/bit.tga");
     geomSprite.init();
 
     // Generate shader program

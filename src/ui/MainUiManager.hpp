@@ -21,6 +21,8 @@ class MainUiManager {
         ShaderProgram shaderProgram;
 
         TexturedSprite texSprite;
+        TexturedSprite texSprite2;
+        TexturedSprite texSprite3;
         GeometricSprite geomSprite;
 
         // Hardware input states

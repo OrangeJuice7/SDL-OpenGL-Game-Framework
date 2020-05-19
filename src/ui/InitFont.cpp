@@ -3,7 +3,7 @@
 #include <cstdio>
 
 bool MainUiManager::initFont() {
-    const char* fontFilename = "data/ARLRDBD.TTF";
+    const char* fontFilename = "data/fonts/AustinModern.ttf";
     const int fontSize = 20;
 
     if (TTF_Init() < 0) {
