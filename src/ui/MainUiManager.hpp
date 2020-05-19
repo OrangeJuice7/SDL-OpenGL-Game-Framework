@@ -72,8 +72,8 @@ class MainUiManager {
         // (mainly just passes the info to this object's underlying ShaderProgram)
         void resetTransform();
         void setTranslate(GLfloat x, GLfloat y);
-        void setScale(GLfloat x, GLfloat y);
-        void setScale(GLfloat scale);
+        void setMapScale(GLfloat scale);
+        void setObjectScale(GLfloat scale);
 
         // Set, reset texture (reset = blank white texture)
 

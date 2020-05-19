@@ -33,6 +33,13 @@ class ShaderUniform {
         // Essentially calls the appropriate glUniform function based on T
         virtual void load()=0;
 };
+class ShaderUniform1f : public ShaderUniform<GLfloat> {
+    public:
+        ShaderUniform1f();
+        ~ShaderUniform1f();
+
+        void load();
+};
 class ShaderUniform2f : public ShaderUniform<GLvertex2> {
     public:
         ShaderUniform2f();
@@ -49,7 +56,8 @@ class ShaderProgram {
 
         // Shader uniforms
         ShaderUniform2f translateVector;
-        ShaderUniform2f scaleVector;
+        ShaderUniform2f mapScaleVector;
+        ShaderUniform1f objectScale;
 
         // Cached screen dimensions to help with transformations
         int screenWidth;
@@ -91,8 +99,8 @@ class ShaderProgram {
         // Update the uniforms into the shaders
         // Assumes this shader is already bound
         void setTranslate(GLfloat x, GLfloat y); // In coords (+x/+y direction is right/up)
-        void setScale(GLfloat x, GLfloat y); // Length of one coord in pixels
-        void setScale(GLfloat scale);
+        void setMapScale(GLfloat scale); // Length of one coord in pixels
+        void setObjectScale(GLfloat scale); // Scale of the object in coords
 };
 
 #endif // SHADER_PROGRAM_HPP

@@ -44,12 +44,16 @@ void MainUiManager::draw(Scene* scene) {
     //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // scene->draw(this);
-    setScale(128);
     setTranslate(2 + sin(uiTick*.1f), .5f*cos(uiTick*.1f));
+    setObjectScale(.6f);
     texSprite.draw();
+
     setTranslate(-2 + sin(uiTick*.1f +.8f), .5f*cos(uiTick*.1f +.8f));
+    setObjectScale(1);
     texSprite.draw();
+
     setTranslate(.5f*cos(uiTick*.1f +.4f), 1 - sin(uiTick*.1f +.4f));
+    setObjectScale(1 + .2f*sin(uiTick*.1618f));
     geomSprite.draw();
 
     //Update screen

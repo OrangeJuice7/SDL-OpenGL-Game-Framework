@@ -94,6 +94,7 @@ bool MainUiManager::initOpenGL() {
     }
     shaderProgram.setScreenDimensions(SCREEN_WIDTH, SCREEN_HEIGHT);
     shaderProgram.resetUniforms();
+    setMapScale(64);
 
     return true;
 }

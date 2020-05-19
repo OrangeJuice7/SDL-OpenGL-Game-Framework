@@ -5,6 +5,13 @@
 #include <fstream>
 #include "GLUtil.hpp"
 
+ShaderUniform1f::ShaderUniform1f()
+        : ShaderUniform<GLfloat>() {}
+ShaderUniform1f::~ShaderUniform1f() {}
+void ShaderUniform1f::load() {
+    glUniform1f(loc, value);
+}
+
 ShaderUniform2f::ShaderUniform2f()
         : ShaderUniform<GLvertex2>() {}
 ShaderUniform2f::~ShaderUniform2f() {}
@@ -117,7 +124,8 @@ bool loadShader(GLuint glProgramID, GLenum shaderType, const char* shaderSourceP
 
 ShaderProgram::ShaderProgram()
         : translateVector()
-        , scaleVector() {
+        , mapScaleVector()
+        , objectScale() {
 
     id = 0;
 }
@@ -169,7 +177,8 @@ bool ShaderProgram::load(
 
     // Load uniforms
     if (!loadUniform(translateVector, "translate")) return false;
-    if (!loadUniform(scaleVector, "scale")) return false;
+    if (!loadUniform(mapScaleVector, "mapScale")) return false;
+    if (!loadUniform(objectScale, "objectScale")) return false;
 
     return true;
 }
@@ -210,7 +219,8 @@ GLuint ShaderProgram::getID() {
 
 void ShaderProgram::resetTransform() {
     setTranslate(0, 0);
-    setScale(1);
+    setMapScale(16);
+    setObjectScale(1);
 }
 void ShaderProgram::resetUniforms() {
     resetTransform();
@@ -222,12 +232,13 @@ void ShaderProgram::setTranslate(GLfloat x, GLfloat y) {
     translateVector.value.y = y;
     translateVector.load();
 }
-void ShaderProgram::setScale(GLfloat x, GLfloat y) {
+void ShaderProgram::setMapScale(GLfloat scale) {
     // Note: x2 because OpenGL by default takes the window to be coords -1 to 1, i.e. the window is 2 coords wide in each direction
-    scaleVector.value.x = x * 2 / screenWidth;
-    scaleVector.value.y = y * 2 / screenHeight;
-    scaleVector.load();
+    mapScaleVector.value.x = scale * 2 / screenWidth;
+    mapScaleVector.value.y = scale * 2 / screenHeight;
+    mapScaleVector.load();
 }
-void ShaderProgram::setScale(GLfloat scale) {
-    setScale(scale, scale);
+void ShaderProgram::setObjectScale(GLfloat scale) {
+    objectScale.value = scale;
+    objectScale.load();
 }
