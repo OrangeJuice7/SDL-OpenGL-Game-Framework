@@ -21,10 +21,17 @@ MainApp::~MainApp() {
 }
 
 bool MainApp::init() {
+    Timer initializeTimer;
+    printf("Initializing...\n");
+    initializeTimer.start();
+
     if(!uiManager.init()) {
         printf("Main UI Manager failed to initialize.\n");
         return false;
     }
+
+    initializeTimer.stop();
+    printf("Initialized! (%.3f s)\n", initializeTimer.getTime());
 
     return true;
 }

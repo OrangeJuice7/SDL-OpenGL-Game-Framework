@@ -2,11 +2,11 @@
 #define MAIN_UI_MANAGER_HPP
 
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h> // http://www.sdltutorials.com/sdl-ttf
 #include <GL/glew.h>
 #include <SDL2/SDL_opengl.h> // Needs to come after glew.h
 #include "ShaderProgram.hpp"
 #include "SpriteManager.hpp"
+#include "TextManager.hpp"
 #include "InputState.hpp"
 class Scene;
 
@@ -20,9 +20,7 @@ class MainUiManager {
         SDL_GLContext glContext; // Rendering context
         ShaderProgram shaderProgram;
         SpriteManager spriteManager;
-
-        // Font
-        TTF_Font* mainFont;
+        TextManager textManager;
 
         // Hardware input states
         MouseState mouseState;
@@ -35,13 +33,13 @@ class MainUiManager {
         bool initOpenGL();
         bool initWindow(); // requires initSDL()
         bool initRenderer();
-        bool initFont();
 
         void deinitSDL();
         void deinitOpenGL();
         void deinitWindow();
         void deinitRenderer();
-        void deinitFont();
+
+        Sprite* getSprite(SpriteId id);
 
     public:
         const char *WINDOW_TITLE;
@@ -62,24 +60,27 @@ class MainUiManager {
         // Collect hardware inputs and pass them to scene for interpretation
         void getInputs(Scene* scene);
 
-        // Expose sprite access for other programs to use (particularly to invoke draw calls with)
-        Sprite* getSprite(SpriteId id);
-
         // Draws the scene to screen
         void draw(Scene* scene);
 
-        // Set draw parameters
+        // Set draw parameters, defined in Render.cpp
         // (mainly just passes the info to this object's underlying ShaderProgram)
-        void resetTransform();
+        void resetTransform(); // Sets some values for the transformation that are guaranteed to be valid, though may not make objects visible
         void setTranslate(GLfloat x, GLfloat y);
         void setMapScale(GLfloat scale);
         void setObjectScale(GLfloat scale);
+        void setDrawToGameSpace(); // Prepare to draw to the game scene: use game coords
+        void setDrawToScreenSpace(); // Prepare to draw to the screen: use screen coords (i.e. pixels), following OpenGL coord specs (i.e. +x/+y = right/up)
+        void setFont(FontId fontId, FontsizeId fontsizeId);
 
         void setDrawColor(Uint8 r, Uint8 g, Uint8 b);
         void setDrawColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
         void setDrawColor(const SDL_Color& color);
 
-        // Draw functions
+        // Draw functions, defined in Render.cpp
+        void drawSprite(float x, float y, SpriteId id);
+        void drawText(float x, float y, const char* text); // Draws a single unwrapped line, implement wrap later
+
         void drawPixel(int x, int y);
         void drawLine(int x1, int y1, int x2, int y2);
         void drawFillRect(const SDL_Rect& rect);

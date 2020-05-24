@@ -18,10 +18,12 @@ class Texture {
 		static Texture blankTexture;
 
 		Texture();
-		~Texture();
+		virtual ~Texture();
 
         // Called only after OpenGL has been initialized
         static bool initBlankTexture();
+        // Note that the dimensions (width only?) of the specified image must be a multiple of 4, or the texture will be slanted (or even segfault?)
+        // (Can be corrected by setting glPixelStorei(GL_UNPACK_ALIGNMENT, 1)?)
 		bool init(const char* filename);
 
         void bind();

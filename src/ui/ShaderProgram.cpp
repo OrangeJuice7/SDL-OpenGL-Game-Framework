@@ -19,6 +19,13 @@ void ShaderUniform2f::load() {
     glUniform2f(loc, value.x, value.y);
 }
 
+ShaderUniform1ui::ShaderUniform1ui()
+        : ShaderUniform<GLuint>() {}
+ShaderUniform1ui::~ShaderUniform1ui() {}
+void ShaderUniform1ui::load() {
+    glUniform1ui(loc, value);
+}
+
 
 
 // OpenGL shader error reporting
@@ -123,9 +130,11 @@ bool loadShader(GLuint glProgramID, GLenum shaderType, const char* shaderSourceP
 
 
 ShaderProgram::ShaderProgram()
-        : translateVector()
-        , mapScaleVector()
-        , objectScale() {
+        : screenDimensions()
+        , translateVector()
+        , mapScale()
+        , objectScale()
+        , flags() {
 
     id = 0;
 }
@@ -176,9 +185,11 @@ bool ShaderProgram::load(
     }
 
     // Load uniforms
+    if (!loadUniform(screenDimensions, "screenDimensions")) return false;
     if (!loadUniform(translateVector, "translate")) return false;
-    if (!loadUniform(mapScaleVector, "mapScale")) return false;
+    if (!loadUniform(mapScale, "mapScale")) return false;
     if (!loadUniform(objectScale, "objectScale")) return false;
+    if (!loadUniform(flags, "flags")) return false;
 
     return true;
 }
@@ -189,8 +200,9 @@ void ShaderProgram::free() {
 }
 
 void ShaderProgram::setScreenDimensions(int width, int height) {
-    screenWidth  = ( width >= 1) ?  width : 1;
-    screenHeight = (height >= 1) ? height : 1;
+    screenDimensions.value.x = ( width >= 1) ?  width : 1;
+    screenDimensions.value.y = (height >= 1) ? height : 1;
+    screenDimensions.load();
 }
 
 bool ShaderProgram::bind() {
@@ -224,6 +236,23 @@ void ShaderProgram::resetTransform() {
 }
 void ShaderProgram::resetUniforms() {
     resetTransform();
+    resetFlags();
+}
+
+void ShaderProgram::setFlags(GLuint flags) {
+    this->flags.value = flags;
+    this->flags.load();
+}
+void ShaderProgram::addFlags(GLuint flags) {
+    this->flags.value |= flags;
+    this->flags.load();
+}
+void ShaderProgram::removeFlags(GLuint flags) {
+    this->flags.value &= ~flags;
+    this->flags.load();
+}
+void ShaderProgram::resetFlags() {
+    setFlags(0);
 }
 
 void ShaderProgram::setTranslate(GLfloat x, GLfloat y) {
@@ -233,10 +262,8 @@ void ShaderProgram::setTranslate(GLfloat x, GLfloat y) {
     translateVector.load();
 }
 void ShaderProgram::setMapScale(GLfloat scale) {
-    // Note: x2 because OpenGL by default takes the window to be coords -1 to 1, i.e. the window is 2 coords wide in each direction
-    mapScaleVector.value.x = scale * 2 / screenWidth;
-    mapScaleVector.value.y = scale * 2 / screenHeight;
-    mapScaleVector.load();
+    mapScale.value = scale;
+    mapScale.load();
 }
 void ShaderProgram::setObjectScale(GLfloat scale) {
     objectScale.value = scale;

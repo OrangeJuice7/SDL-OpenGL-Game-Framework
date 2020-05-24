@@ -41,7 +41,7 @@
 			<Add option="-DGLEW_STATIC" />
 		</Compiler>
 		<Linker>
-			<Add option="-lmingw32 -lSDL2main -lSDL2 -lSDL2_ttf -lglew32s -lSOIL -lopengl32" />
+			<Add option="-lmingw32 -lSDL2main -lSDL2 -lglew32s -lSOIL -lopengl32 -lfreetype" />
 		</Linker>
 		<Unit filename="src/MainApp/MainApp.cpp" />
 		<Unit filename="src/MainApp/MainApp.hpp" />
@@ -88,7 +88,6 @@
 		<Unit filename="src/ui/GLUtil.cpp" />
 		<Unit filename="src/ui/GLUtil.hpp" />
 		<Unit filename="src/ui/Init.cpp" />
-		<Unit filename="src/ui/InitFont.cpp" />
 		<Unit filename="src/ui/InitOpenGL.cpp" />
 		<Unit filename="src/ui/InitRenderer.cpp" />
 		<Unit filename="src/ui/InitSDL.cpp" />
@@ -107,6 +106,8 @@
 		<Unit filename="src/ui/SpriteLoad.cpp" />
 		<Unit filename="src/ui/SpriteManager.cpp" />
 		<Unit filename="src/ui/SpriteManager.hpp" />
+		<Unit filename="src/ui/TextManager.cpp" />
+		<Unit filename="src/ui/TextManager.hpp" />
 		<Unit filename="src/ui/Texture.cpp" />
 		<Unit filename="src/ui/Texture.hpp" />
 		<Unit filename="src/ui/default.frag" />

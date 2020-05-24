@@ -15,6 +15,32 @@ void MainUiManager::setObjectScale(GLfloat scale) {
     shaderProgram.setObjectScale(scale);
 }
 
+void MainUiManager::setDrawToGameSpace() {
+    shaderProgram.removeFlags(SHADER_FLAG_ORTHO_MODE);
+}
+void MainUiManager::setDrawToScreenSpace() {
+    shaderProgram.addFlags(SHADER_FLAG_ORTHO_MODE);
+}
+
+void MainUiManager::setFont(FontId fontId, FontsizeId fontsizeId) {
+    textManager.setActiveFont(fontId, fontsizeId);
+}
+
+void MainUiManager::drawSprite(float x, float y, SpriteId id) {
+    setTranslate(x, y);
+    getSprite(id)->draw();
+}
+void MainUiManager::drawText(float x, float y, const char* text) {
+    shaderProgram.addFlags(SHADER_FLAG_RENDER_TEXT);
+    for (int i = 0; text[i] != '\0'; ++i) {
+        setTranslate(x, y);
+        x += textManager.drawChar(text[i]);
+    }
+    shaderProgram.removeFlags(SHADER_FLAG_RENDER_TEXT);
+}
+
+
+
 void MainUiManager::setDrawColor(Uint8 r, Uint8 g, Uint8 b) {
     setDrawColor(r, g, b, 0xff);
 }

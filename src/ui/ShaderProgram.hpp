@@ -47,17 +47,29 @@ class ShaderUniform2f : public ShaderUniform<GLvertex2> {
 
         void load();
 };
+class ShaderUniform1ui : public ShaderUniform<GLuint> {
+    public:
+        ShaderUniform1ui();
+        ~ShaderUniform1ui();
+
+        void load();
+};
 
 
+
+const GLuint SHADER_FLAG_ORTHO_MODE = 1 << 0;
+const GLuint SHADER_FLAG_RENDER_TEXT = 1 << 1;
 
 class ShaderProgram {
     protected:
         GLuint id; // Program ID
 
         // Shader uniforms
+        ShaderUniform2f screenDimensions;
         ShaderUniform2f translateVector;
-        ShaderUniform2f mapScaleVector;
+        ShaderUniform1f mapScale;
         ShaderUniform1f objectScale;
+        ShaderUniform1ui flags; // smallest uniform size is uint, sadly
 
         // Cached screen dimensions to help with transformations
         int screenWidth;
@@ -95,6 +107,11 @@ class ShaderProgram {
         // Assumes this shader is already bound
         void resetTransform(); // Reset vertex transformations only
         void resetUniforms(); // Reset everything
+
+        void setFlags(GLuint flags); // Note: will reset previously set flags
+        void addFlags(GLuint flags);
+        void removeFlags(GLuint flags);
+        void resetFlags();
 
         // Update the uniforms into the shaders
         // Assumes this shader is already bound

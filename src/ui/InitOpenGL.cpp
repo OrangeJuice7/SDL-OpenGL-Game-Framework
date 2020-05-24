@@ -41,10 +41,11 @@ bool MainUiManager::initOpenGL() {
 
     // Initialize clear color
     // Some dark blue, just to check if graphics are working, and if there's any coloured object hidden by the bg
-    glClearColor(0.0282f, 0.062f, 0.121f, 1);
+    glClearColor(0.0387f, 0.083f, 0.171f, 1);
 
     // Enable depth (won't be needing this in a 2D app)
     //glEnable(GL_DEPTH_TEST);
+    glDisable(GL_DEPTH_TEST);
 
     // Enable backface culling
     glEnable(GL_CULL_FACE);
@@ -56,7 +57,6 @@ bool MainUiManager::initOpenGL() {
 
     // Set blending
     glEnable(GL_BLEND);
-    glDisable(GL_DEPTH_TEST);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     // Set point size
@@ -92,7 +92,6 @@ bool MainUiManager::initOpenGL() {
     }
     shaderProgram.setScreenDimensions(SCREEN_WIDTH, SCREEN_HEIGHT);
     shaderProgram.resetUniforms();
-    setMapScale(64);
 
     return true;
 }

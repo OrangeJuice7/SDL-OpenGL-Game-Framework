@@ -12,6 +12,7 @@ class Sprite {
          * Allowed to call:
          * - glDrawArrays, glDrawElements
          * - Texture bindings and parameters?
+         * (Future: function accepts a MainUiManager and is allowed to pass arguments to it? Watch for cyclic/recursive definitions)
          */
         std::function<void()> drawfunc;
 

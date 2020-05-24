@@ -6,6 +6,7 @@
 MainUiManager::MainUiManager(const char *windowTitle, int screenWidth, int screenHeight)
         : shaderProgram()
         , spriteManager()
+        , textManager()
         , mouseState()
         , keyboardState()
         , WINDOW_TITLE(windowTitle)
@@ -15,8 +16,6 @@ MainUiManager::MainUiManager(const char *windowTitle, int screenWidth, int scree
 
     mainWindow = NULL;
     renderer = NULL;
-
-    mainFont = NULL;
 
     uiTick = 0;
     fps = 0;
@@ -42,29 +41,46 @@ void MainUiManager::draw(Scene* scene) {
 
     // scene->draw(this);
 
-    setTranslate(-3 + sin(uiTick*.01f +.8f), .5f*cos(uiTick*.01f +.8f));
+    setDrawToGameSpace();
+    setMapScale(64);
+
     setObjectScale(1 + .8f*sin(uiTick*.01618f +.8f));
-    getSprite(SPRITE_ID_TEX1)->draw();
+    drawSprite(-3 + sin(uiTick*.01f +.8f), .5f*cos(uiTick*.01f +.8f), SPRITE_ID_TEX1);
 
-    setTranslate(.5f*cos(uiTick*.01f +.4f), 1 - sin(uiTick*.01f +.4f));
     setObjectScale(1 + .2f*sin(uiTick*.01618f));
-    getSprite(SPRITE_ID_GEOM)->draw();
+    drawSprite(.5f*cos(uiTick*.01f +.4f), 1 - sin(uiTick*.01f +.4f), SPRITE_ID_GEOM);
 
-    setTranslate(3 + sin(uiTick*.01f), .5f*cos(uiTick*.01f));
     setObjectScale(1);
-    getSprite(SPRITE_ID_TEX1)->draw();
+    drawSprite(3 + sin(uiTick*.01f), .5f*cos(uiTick*.01f), SPRITE_ID_TEX1);
 
-    setTranslate(3 + sin(uiTick*.01f +.3f), 3 + .5f*cos(uiTick*.01f +.3f));
     setObjectScale(1);
-    getSprite(SPRITE_ID_TEX2)->draw();
+    drawSprite(3 + sin(uiTick*.01f +.3f), 3 + .5f*cos(uiTick*.01f +.3f), SPRITE_ID_TEX2);
 
-    setTranslate(-3 + sin(uiTick*.01f), 1 + .5f*cos(uiTick*.01f));
     setObjectScale(1);
-    getSprite(SPRITE_ID_TEX3)->draw();
+    drawSprite(-3 + sin(uiTick*.01f), 1 + .5f*cos(uiTick*.01f), SPRITE_ID_TEX3);
 
-    setTranslate(-3 + sin(uiTick*.015f), -2 + cos(uiTick*.015f));
     setObjectScale(1);
-    getSprite(SPRITE_ID_TEX4)->draw();
+    drawSprite(-3 + sin(uiTick*.015f), -2 + cos(uiTick*.015f), SPRITE_ID_TEX4);
+
+    setDrawToScreenSpace();
+
+    setFont(FONT_ID_STANDARD, FONTSIZE_ID_SMALL);
+    drawText(0, 0, "The quick brown fox: 1234567890DQIl");
+    setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
+    drawText(0, 32, "The quick brown fox: 1234567890DQIl");
+    setFont(FONT_ID_STANDARD, FONTSIZE_ID_SUBHEADING);
+    drawText(0, 64, "The quick brown fox: 1234567890DQIl");
+    setFont(FONT_ID_STANDARD, FONTSIZE_ID_HEADING);
+    drawText(0, 96, "The quick brown fox: 1234567890DQIl");
+
+    setFont(FONT_ID_MONOSPACE, FONTSIZE_ID_SMALL);
+    drawText(0, 200, "The quick brown fox: 1234567890DQIl");
+    setFont(FONT_ID_MONOSPACE, FONTSIZE_ID_NORMAL);
+    drawText(0, 232, "The quick brown fox: 1234567890DQIl");
+    setFont(FONT_ID_MONOSPACE, FONTSIZE_ID_SUBHEADING);
+    drawText(0, 264, "The quick brown fox: 1234567890DQIl");
+    setFont(FONT_ID_MONOSPACE, FONTSIZE_ID_HEADING);
+    drawText(0, 296, "The quick brown fox: 1234567890DQIl");
 
     //Update screen
     SDL_GL_SwapWindow(mainWindow);

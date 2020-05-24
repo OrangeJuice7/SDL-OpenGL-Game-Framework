@@ -28,8 +28,8 @@ bool MainUiManager::init() {
         return false;
     }
 
-    if(!initFont()) {
-        printf("Could not initialize font!\n");
+    if(!textManager.init()) {
+        printf("Could not initialize text manager!\n");
         return false;
     }
 
@@ -37,7 +37,7 @@ bool MainUiManager::init() {
 }
 
 void MainUiManager::deinit() {
-    deinitFont();
+    textManager.deinit();
     spriteManager.deinit();
     deinitOpenGL();
     deinitRenderer();
