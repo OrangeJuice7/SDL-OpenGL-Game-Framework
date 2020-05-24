@@ -68,7 +68,7 @@ class ShaderProgram {
         ShaderUniform2f screenDimensions;
         ShaderUniform2f translateVector;
         ShaderUniform1f mapScale;
-        ShaderUniform1f objectScale;
+        ShaderUniform2f objectScale;
         ShaderUniform1ui flags; // smallest uniform size is uint, sadly
 
         // Cached screen dimensions to help with transformations
@@ -118,6 +118,7 @@ class ShaderProgram {
         void setTranslate(GLfloat x, GLfloat y); // In coords (+x/+y direction is right/up)
         void setMapScale(GLfloat scale); // Length of one coord in pixels
         void setObjectScale(GLfloat scale); // Scale of the object in coords
+        void setObjectScale(GLfloat xscale, GLfloat yscale); // scale per dimension
 };
 
 #endif // SHADER_PROGRAM_HPP

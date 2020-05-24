@@ -69,6 +69,7 @@ class UiManager {
         void setTranslate(GLfloat x, GLfloat y);
         void setMapScale(GLfloat scale);
         void setObjectScale(GLfloat scale);
+        void setObjectScale(GLfloat xscale, GLfloat yscale);
         void setDrawToGameSpace(); // Prepare to draw to the game scene: use game coords
         void setDrawToScreenSpace(); // Prepare to draw to the screen: use screen coords (i.e. pixels), following OpenGL coord specs (i.e. +x/+y = right/up)
         void setFont(FontId fontId, FontsizeId fontsizeId);
@@ -79,6 +80,7 @@ class UiManager {
 
         // Draw functions, defined in Render.cpp
         void drawSprite(float x, float y, SpriteId id);
+        void drawSpriteStretched(float x, float y, float width, float height, SpriteId id);
         void drawText(float x, float y, const char* text); // Draws a single unwrapped line, implement wrap later
 
         void drawPixel(int x, int y);

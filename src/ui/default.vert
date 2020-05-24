@@ -10,7 +10,7 @@ out vec4 vertexColor;
 uniform vec2 screenDimensions;
 uniform vec2 translate;
 uniform float mapScale;
-uniform float objectScale;
+uniform vec2 objectScale;
 uniform uint flags;
 
 const uint SHADER_FLAG_ORTHO_MODE = uint(1 << 0);
@@ -23,8 +23,8 @@ bool hasFlag(uint flag) {
 void main() {
 	vec2 pos = vertexPos2D;
 
-	// Scale the object
-	if (!hasFlag(SHADER_FLAG_RENDER_TEXT)) // NOT rendering text
+	// Scale the object (if it's not text)
+	if (!hasFlag(SHADER_FLAG_RENDER_TEXT))
         pos *= objectScale;
 
     // Translate in map coords (pixels for ortho mode)

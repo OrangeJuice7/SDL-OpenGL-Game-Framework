@@ -266,6 +266,10 @@ void ShaderProgram::setMapScale(GLfloat scale) {
     mapScale.load();
 }
 void ShaderProgram::setObjectScale(GLfloat scale) {
-    objectScale.value = scale;
+    setObjectScale(scale, scale);
+}
+void ShaderProgram::setObjectScale(GLfloat xscale, GLfloat yscale) {
+    objectScale.value.x = xscale;
+    objectScale.value.y = yscale;
     objectScale.load();
 }

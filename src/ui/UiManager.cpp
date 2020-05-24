@@ -53,7 +53,7 @@ void UiManager::draw(Scene* scene) {
     setObjectScale(1);
     drawSprite(3 + sin(uiTick*.01f), .5f*cos(uiTick*.01f), SPRITE_ID_TEX1);
 
-    setObjectScale(1);
+    setObjectScale(3, 1);
     drawSprite(3 + sin(uiTick*.01f +.3f), 3 + .5f*cos(uiTick*.01f +.3f), SPRITE_ID_TEX2);
 
     setObjectScale(1);

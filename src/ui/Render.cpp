@@ -14,6 +14,9 @@ void UiManager::setMapScale(GLfloat scale) {
 void UiManager::setObjectScale(GLfloat scale) {
     shaderProgram.setObjectScale(scale);
 }
+void UiManager::setObjectScale(GLfloat xscale, GLfloat yscale) {
+    shaderProgram.setObjectScale(xscale, yscale);
+}
 
 void UiManager::setDrawToGameSpace() {
     shaderProgram.removeFlags(SHADER_FLAG_ORTHO_MODE);
@@ -28,6 +31,13 @@ void UiManager::setFont(FontId fontId, FontsizeId fontsizeId) {
 
 void UiManager::drawSprite(float x, float y, SpriteId id) {
     setTranslate(x, y);
+    getSprite(id)->draw();
+}
+void UiManager::drawSpriteStretched(float x, float y, float width, float height, SpriteId id) {
+    float halfwidth = width*.5f,
+          halfheight = height*.5f;
+    setTranslate(x + halfwidth, y + halfheight);
+    setObjectScale(halfwidth, halfheight);
     getSprite(id)->draw();
 }
 void UiManager::drawText(float x, float y, const char* text) {
