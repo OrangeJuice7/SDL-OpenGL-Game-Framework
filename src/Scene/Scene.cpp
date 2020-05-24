@@ -1,6 +1,7 @@
 #include "Scene.hpp"
 
 #include "Model/ModelManager.hpp"
+#include "../Ui/UiManager.hpp"
 
 Scene::Scene(ModelManager* modelManager)
         : widgetManager() {
@@ -63,6 +64,11 @@ void Scene::handleMouseMUpEvent() {}
 void Scene::handleMouseWheelEvent(Sint32 delta) {}
 
 void Scene::draw(UiManager *uiManager) {
-    modelManager->draw(uiManager); // draw model first
-    widgetManager.draw(uiManager); // draw widgets on top
+    // Draw model first
+    uiManager->setDrawToGameSpace();
+    modelManager->draw(uiManager);
+
+    // Draw widgets on top
+    uiManager->setDrawToScreenSpace();
+    widgetManager.draw(uiManager);
 }

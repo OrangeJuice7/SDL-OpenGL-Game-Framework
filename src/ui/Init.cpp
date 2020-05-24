@@ -13,11 +13,6 @@ bool UiManager::init() {
         return false;
     }
 
-    if(!initRenderer()) {
-        printf("Could not initialize renderer!\n");
-        return false;
-    }
-
     if(!initOpenGL()) {
         printf("Could not initialize OpenGL!\n");
         return false;
@@ -40,7 +35,6 @@ void UiManager::deinit() {
     textManager.deinit();
     spriteManager.deinit();
     deinitOpenGL();
-    deinitRenderer();
     deinitWindow();
     deinitSDL();
 }

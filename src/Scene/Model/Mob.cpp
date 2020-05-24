@@ -41,14 +41,11 @@ void Mob::draw(
         std::function<float(float)> gameToScreenLength,
         UiManager *uiManager) {
 
-    float r = gameToScreenLength(getRadius());
-    int sx, sy;
-    gameToScreenCoords(sx, sy, x, y);
-
     float a = getLifeFraction()*0x100;
     if (a < 0) a = 0;
     else if (a > 0xff) a = 0xff;
 
-    uiManager->setDrawColor(0x80, (Uint8)(a), (Uint8)(a));
-    uiManager->drawLineCircle(sx, sy, r);
+    //uiManager->setDrawColor(0x80, (Uint8)(a), (Uint8)(a));
+    uiManager->setObjectScale(getRadius());
+    uiManager->drawSprite(x, y, SPRITE_ID_CIRCLE);
 }

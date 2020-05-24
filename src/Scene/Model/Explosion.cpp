@@ -59,15 +59,12 @@ void Explosion::draw(
         std::function<float(float)> gameToScreenLength,
         UiManager *uiManager) {
 
-    float r = gameToScreenLength(getRadius());
-    int sx, sy;
-    gameToScreenCoords(sx, sy, x, y);
-
     float a = getLifeFraction()*0x100;
     if (a < 0) a = 0;
     else if (a > 0xff) a = 0xff;
 
-    uiManager->setDrawColor(0xff, (Uint8)(a), 0x00);
-    uiManager->drawLineCircle(sx, sy, r);
+    //uiManager->setDrawColor(0xff, (Uint8)(a), 0x00);
+    uiManager->setObjectScale(getRadius());
+    uiManager->drawSprite(x, y, SPRITE_ID_CIRCLE);
 }
 

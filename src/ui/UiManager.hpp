@@ -14,7 +14,6 @@ class UiManager {
     protected:
         // SDL
         SDL_Window* mainWindow;
-        SDL_Renderer* renderer;
 
         // OpenGL
         SDL_GLContext glContext; // Rendering context
@@ -32,12 +31,10 @@ class UiManager {
         bool initSDL();
         bool initOpenGL();
         bool initWindow(); // requires initSDL()
-        bool initRenderer();
 
         void deinitSDL();
         void deinitOpenGL();
         void deinitWindow();
-        void deinitRenderer();
 
         Sprite* getSprite(SpriteId id);
 
@@ -70,26 +67,16 @@ class UiManager {
         void setMapScale(GLfloat scale);
         void setObjectScale(GLfloat scale);
         void setObjectScale(GLfloat xscale, GLfloat yscale);
+
         void setDrawToGameSpace(); // Prepare to draw to the game scene: use game coords
         void setDrawToScreenSpace(); // Prepare to draw to the screen: use screen coords (i.e. pixels), following OpenGL coord specs (i.e. +x/+y = right/up)
-        void setFont(FontId fontId, FontsizeId fontsizeId);
 
-        void setDrawColor(Uint8 r, Uint8 g, Uint8 b);
-        void setDrawColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
-        void setDrawColor(const SDL_Color& color);
+        void setFont(FontId fontId, FontsizeId fontsizeId);
 
         // Draw functions, defined in Render.cpp
         void drawSprite(float x, float y, SpriteId id);
         void drawSpriteStretched(float x, float y, float width, float height, SpriteId id);
         void drawText(float x, float y, const char* text); // Draws a single unwrapped line, implement wrap later
-
-        void drawPixel(int x, int y);
-        void drawLine(int x1, int y1, int x2, int y2);
-        void drawFillRect(const SDL_Rect& rect);
-        void drawLineRect(const SDL_Rect& rect);
-        void drawLineCircle(float x, float y, float r);
-        void renderTextToScreen(const char *text, const SDL_Color& fg, int x, int y);
-        void renderImageToScreen(SDL_Surface* image, int x, int y);
 };
 
 #endif // UI_MANAGER_HPP

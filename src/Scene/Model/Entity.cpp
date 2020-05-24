@@ -60,18 +60,9 @@ void ImmovableEntity::draw(
         std::function<float(float)> gameToScreenLength,
         UiManager *uiManager) {
 
-    // Just draw a magenta rect that fades with life, as a debug display
-
-    float r = getRadius();
-
-    SDL_Rect rect;
-    gameToScreenCoords(rect.x, rect.y, x-r, y+r);
-    gameToScreenCoords(rect.w, rect.h, x+r, y-r);
-    rect.w -= rect.x;
-    rect.h -= rect.y;
-
-    uiManager->setDrawColor(0xff, 0x00, 0xff, (Uint8)(getLifeFraction()*0xff) );
-    uiManager->drawFillRect(rect);
+    //uiManager->setDrawColor(0xff, 0x00, 0xff, (Uint8)(getLifeFraction()*0xff) );
+    uiManager->setObjectScale(getRadius());
+    uiManager->drawSprite(x, y, SPRITE_ID_CIRCLE);
 }
 
 

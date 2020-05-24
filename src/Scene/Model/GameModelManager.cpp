@@ -163,6 +163,8 @@ void GameModelManager::click() {
 }
 
 void GameModelManager::draw(UiManager *uiManager) {
+    uiManager->setMapScale(modelScale);
+
     auto gameToScreenCoordsFunc = getGameToScreenCoordsFunc(uiManager);
     auto gameToScreenLengthFunc = getGameToScreenLengthFunc();
 

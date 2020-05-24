@@ -132,14 +132,13 @@ void Widget::update(const SDL_Rect &psRect) {
 void Widget::renderText(UiManager *uiManager, const char *text, SDL_Color color) const {
     // Implement text wrap later
 
-    uiManager->renderTextToScreen(text, color, screenRect.x, screenRect.y);
+    uiManager->drawText(screenRect.x, screenRect.y, text);
 }
 
 void Widget::draw(UiManager *uiManager) const {
 	if (getClickable()) {
-        if (getActive()) uiManager->setDrawColor(0x60, 0x60, 0x00);
-        else             uiManager->setDrawColor(0x00, 0x40, 0x60);
-        uiManager->drawFillRect(screenRect);
+        if (getActive()) uiManager->drawSpriteStretched(screenRect.x, screenRect.y, screenRect.w, screenRect.h, SPRITE_ID_WIDGET_BG_ACTIVE_GENERIC);
+        else             uiManager->drawSpriteStretched(screenRect.x, screenRect.y, screenRect.w, screenRect.h, SPRITE_ID_WIDGET_BG_INACTIVE_GENERIC);
     }
 
 	if (drawFunc) drawFunc(this, uiManager);

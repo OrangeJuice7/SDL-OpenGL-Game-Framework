@@ -15,7 +15,6 @@ UiManager::UiManager(const char *windowTitle, int screenWidth, int screenHeight)
         , SCREEN_RECT{0, 0, SCREEN_WIDTH, SCREEN_HEIGHT} {
 
     mainWindow = NULL;
-    renderer = NULL;
 
     uiTick = 0;
     fps = 0;
@@ -39,9 +38,9 @@ void UiManager::draw(Scene* scene) {
     glClear(GL_COLOR_BUFFER_BIT);
     //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // scene->draw(this);
+    scene->draw(this);
 
-    setDrawToGameSpace();
+    /*setDrawToGameSpace();
     setMapScale(64);
 
     setObjectScale(1 + .8f*sin(uiTick*.01618f +.8f));
@@ -80,7 +79,7 @@ void UiManager::draw(Scene* scene) {
     setFont(FONT_ID_MONOSPACE, FONTSIZE_ID_SUBHEADING);
     drawText(0, 264, "The quick brown fox: 1234567890DQIl");
     setFont(FONT_ID_MONOSPACE, FONTSIZE_ID_HEADING);
-    drawText(0, 296, "The quick brown fox: 1234567890DQIl");
+    drawText(0, 296, "The quick brown fox: 1234567890DQIl");*/
 
     //Update screen
     SDL_GL_SwapWindow(mainWindow);
