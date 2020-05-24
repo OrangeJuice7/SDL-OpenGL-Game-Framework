@@ -122,7 +122,7 @@ class Widget {
 		void update(const SDL_Rect &psRect);
 
 		/**  Draw  **/
-		void renderText(UiManager *uiManager, const char *text, SDL_Color color) const;
+		void renderText(UiManager *uiManager, const char *text) const;
 
         void draw(UiManager *uiManager) const;
 };

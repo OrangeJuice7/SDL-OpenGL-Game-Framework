@@ -47,6 +47,13 @@ class ShaderUniform2f : public ShaderUniform<GLvertex2> {
 
         void load();
 };
+class ShaderUniform3f : public ShaderUniform<GLvertex3> {
+    public:
+        ShaderUniform3f();
+        ~ShaderUniform3f();
+
+        void load();
+};
 class ShaderUniform1ui : public ShaderUniform<GLuint> {
     public:
         ShaderUniform1ui();
@@ -69,6 +76,7 @@ class ShaderProgram {
         ShaderUniform2f translateVector;
         ShaderUniform1f mapScale;
         ShaderUniform2f objectScale;
+        ShaderUniform3f colorMask;
         ShaderUniform1ui flags; // smallest uniform size is uint, sadly
 
         // Cached screen dimensions to help with transformations
@@ -103,15 +111,9 @@ class ShaderProgram {
 
         GLuint getID();
 
-        // Push default values for uniforms to the shader program
+        // Reset all uniform values in the shader
         // Assumes this shader is already bound
-        void resetTransform(); // Reset vertex transformations only
-        void resetUniforms(); // Reset everything
-
-        void setFlags(GLuint flags); // Note: will reset previously set flags
-        void addFlags(GLuint flags);
-        void removeFlags(GLuint flags);
-        void resetFlags();
+        void resetUniforms();
 
         // Update the uniforms into the shaders
         // Assumes this shader is already bound
@@ -119,6 +121,15 @@ class ShaderProgram {
         void setMapScale(GLfloat scale); // Length of one coord in pixels
         void setObjectScale(GLfloat scale); // Scale of the object in coords
         void setObjectScale(GLfloat xscale, GLfloat yscale); // scale per dimension
+        void resetTransform();
+
+        void setColorMask(GLcolorRGB color);
+        void resetColorMask();
+
+        void setFlags(GLuint flags); // Note: will reset previously set flags
+        void addFlags(GLuint flags);
+        void removeFlags(GLuint flags);
+        void resetFlags();
 };
 
 #endif // SHADER_PROGRAM_HPP

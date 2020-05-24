@@ -11,6 +11,7 @@ uniform vec2 screenDimensions;
 uniform vec2 translate;
 uniform float mapScale;
 uniform vec2 objectScale;
+uniform vec3 colorMask;
 uniform uint flags;
 
 const uint SHADER_FLAG_ORTHO_MODE = uint(1 << 0);
@@ -47,5 +48,5 @@ void main() {
 
 	textureCoord = vertexTex2D;
 
-	vertexColor = vertexColor4D;
+	vertexColor = vec4(vertexColor4D.rbg * colorMask, vertexColor4D.a);
 }

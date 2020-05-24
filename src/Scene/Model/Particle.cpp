@@ -42,11 +42,8 @@ void Particle::draw(
         std::function<float(float)> gameToScreenLength,
         UiManager *uiManager) {
 
-    float a = getLifeFraction()*0x100;
-    if (a < 0) a = 0;
-    else if (a > 0xff) a = 0xff;
-
-    //uiManager->setDrawColor(0xff, (Uint8)(a), 0x00);
+    float a = getLifeFraction();
+    uiManager->setColorMask({1, a, 0});
     uiManager->setObjectScale(getRadius());
     uiManager->drawSprite(x, y, SPRITE_ID_CIRCLE);
 }

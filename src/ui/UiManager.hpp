@@ -62,14 +62,17 @@ class UiManager {
 
         // Set draw parameters, defined in Render.cpp
         // (mainly just passes the info to this object's underlying ShaderProgram)
-        void resetTransform(); // Sets some values for the transformation that are guaranteed to be valid, though may not make objects visible
         void setTranslate(GLfloat x, GLfloat y);
         void setMapScale(GLfloat scale);
         void setObjectScale(GLfloat scale);
         void setObjectScale(GLfloat xscale, GLfloat yscale);
+        void resetTransform(); // Sets some values for the transformation that are guaranteed to be valid, though may not make objects visible
 
         void setDrawToGameSpace(); // Prepare to draw to the game scene: use game coords
         void setDrawToScreenSpace(); // Prepare to draw to the screen: use screen coords (i.e. pixels), following OpenGL coord specs (i.e. +x/+y = right/up)
+
+        void setColorMask(GLcolorRGB color);
+        void resetColorMask();
 
         void setFont(FontId fontId, FontsizeId fontsizeId);
 

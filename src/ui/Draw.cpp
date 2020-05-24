@@ -25,6 +25,13 @@ void UiManager::setDrawToScreenSpace() {
     shaderProgram.addFlags(SHADER_FLAG_ORTHO_MODE);
 }
 
+void UiManager::setColorMask(GLcolorRGB color) {
+    shaderProgram.setColorMask(color);
+}
+void UiManager::resetColorMask() {
+    shaderProgram.resetColorMask();
+}
+
 void UiManager::setFont(FontId fontId, FontsizeId fontsizeId) {
     textManager.setActiveFont(fontId, fontsizeId);
 }

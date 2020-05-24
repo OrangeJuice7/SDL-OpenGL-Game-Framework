@@ -17,8 +17,8 @@ MenuScene::MenuScene()
 MenuScene::~MenuScene() {}
 
 void MenuScene::loadWidgets() {
-	const static SDL_Color white = {255, 255, 255, 255};
-	const static SDL_Color textColor = {255, 200, 200, 255};
+	const static GLcolorRGB     white = {1.f, 1.f, 1.f};
+	const static GLcolorRGB textColor = {.8f, 1.f, .8f};
 
 	widgetManager.loadWidget( new Widget(
 		{40, 20, 240, 20},
@@ -28,10 +28,9 @@ void MenuScene::loadWidgets() {
 			MessageHandler::postMessage( new SceneTransitMessage( new GameScene() ) );
 		},
 		/*drawFunc*/ [](const Widget* widget, UiManager* uiManager) {
-			SDL_Color textColor;
-			if (widget->getActive()) textColor = {255, 255, 200, 255};
-			else                     textColor = {255, 200, 200, 255};
-			widget->renderText(uiManager, "Click here to go to game", textColor);
+			if (widget->getActive()) uiManager->setColorMask(white);
+			else                     uiManager->setColorMask(textColor);
+			widget->renderText(uiManager, "Click here to go to game");
 		} ) );
 
     widgetManager.loadWidget( new Widget(
@@ -39,7 +38,8 @@ void MenuScene::loadWidgets() {
 		Widget::HORZALIGN_CENTER,
 		Widget::VERTALIGN_TOP,
 		/*drawFunc*/ [&](const Widget* widget, UiManager* uiManager) {
-			widget->renderText(uiManager, "MENU SCENE", textColor);
+			uiManager->setColorMask(textColor);
+			widget->renderText(uiManager, "MENU SCENE");
 		} ) );
 
     widgetManager.loadWidget( new Widget(
@@ -48,7 +48,8 @@ void MenuScene::loadWidgets() {
 		Widget::VERTALIGN_BOTTOM,
 		/*drawFunc*/ [&](const Widget* widget, UiManager* uiManager) {
 			if (!paused) return;
-			widget->renderText(uiManager, "-- PAUSED --", white);
+			uiManager->setColorMask(white);
+			widget->renderText(uiManager, "-- PAUSED --");
 		} ) );
 
     widgetManager.loadWidget( new Widget(
@@ -58,7 +59,8 @@ void MenuScene::loadWidgets() {
 		/*drawFunc*/ [&](const Widget* widget, UiManager* uiManager) {
 			char msg[256];
 			sprintf(msg, "UiTick: %u", uiManager->getUiTick());
-			widget->renderText(uiManager, msg, textColor);
+			uiManager->setColorMask(textColor);
+			widget->renderText(uiManager, msg);
 		} ) );
 
     widgetManager.loadWidget( new Widget(
@@ -68,7 +70,8 @@ void MenuScene::loadWidgets() {
 		/*drawFunc*/ [&](const Widget* widget, UiManager* uiManager) {
 			char msg[256];
 			sprintf(msg, "ModelTick: %u", modelManager->getModelTick());
-			widget->renderText(uiManager, msg, textColor);
+			uiManager->setColorMask(textColor);
+			widget->renderText(uiManager, msg);
 		} ) );
 
     widgetManager.loadWidget( new Widget(
@@ -78,6 +81,7 @@ void MenuScene::loadWidgets() {
 		/*drawFunc*/ [&](const Widget* widget, UiManager* uiManager) {
 			char msg[256];
 			sprintf(msg, "FPS: %.2f", uiManager->fps);
-			widget->renderText(uiManager, msg, textColor);
+			uiManager->setColorMask(textColor);
+			widget->renderText(uiManager, msg);
 		} ) );
 }

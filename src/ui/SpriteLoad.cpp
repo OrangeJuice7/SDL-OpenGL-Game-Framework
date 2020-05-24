@@ -18,14 +18,8 @@ bool SpriteManager::loadData() {
     if (!loadTexturedSprite(SPRITE_ID_TEX3, "data/textures/bit.tga")) return false;
     if (!loadTexturedSprite(SPRITE_ID_TEX4, "data/textures/awesomeface.png")) return false;
 
-    {   GLcolorRGBA colors[] = { {1.f, .3f, .7f,1}, {1.f, .3f, .7f,1}, {1.f, .3f, .7f,1}, {1.f, .3f, .7f,1} };
-        if (!loadGeometricSprite(SPRITE_ID_WIDGET_BG_INACTIVE_GENERIC,
-                                 quadDrawfunc,
-                                 4, quadVertices, colors)) return false;
-    }
-
-    {   GLcolorRGBA colors[] = { {.7f, .7f, .3f,1}, {.7f, .7f, .3f,1}, {.7f, .7f, .3f,1}, {.7f, .7f, .3f,1} };
-        if (!loadGeometricSprite(SPRITE_ID_WIDGET_BG_ACTIVE_GENERIC,
+    {   GLcolorRGBA colors[] = { {1,1,1,.2f}, {1,1,1,.2f}, {1,1,1,.2f}, {1,1,1,.2f} };
+        if (!loadGeometricSprite(SPRITE_ID_WIDGET_BG_DEBUG,
                                  quadDrawfunc,
                                  4, quadVertices, colors)) return false;
     }
@@ -38,7 +32,7 @@ bool SpriteManager::loadData() {
             float angle = ((float) i / NUM_OF_VERTICES) * TWO_PI;
             vertices[i].x = cos(angle);
             vertices[i].y = sin(angle);
-            colors[i] = {.2f, .4f, .8f,1};
+            colors[i] = {1,1,1,1};
         }
 
         if (!loadGeometricSprite(SPRITE_ID_CIRCLE,

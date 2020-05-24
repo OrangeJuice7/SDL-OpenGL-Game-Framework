@@ -60,7 +60,8 @@ void ImmovableEntity::draw(
         std::function<float(float)> gameToScreenLength,
         UiManager *uiManager) {
 
-    //uiManager->setDrawColor(0xff, 0x00, 0xff, (Uint8)(getLifeFraction()*0xff) );
+    float a = getLifeFraction();
+    uiManager->setColorMask({a, 0, a});
     uiManager->setObjectScale(getRadius());
     uiManager->drawSprite(x, y, SPRITE_ID_CIRCLE);
 }

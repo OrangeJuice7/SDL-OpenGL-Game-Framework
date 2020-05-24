@@ -19,6 +19,13 @@ void ShaderUniform2f::load() {
     glUniform2f(loc, value.x, value.y);
 }
 
+ShaderUniform3f::ShaderUniform3f()
+        : ShaderUniform<GLvertex3>() {}
+ShaderUniform3f::~ShaderUniform3f() {}
+void ShaderUniform3f::load() {
+    glUniform3f(loc, value.x, value.y, value.z);
+}
+
 ShaderUniform1ui::ShaderUniform1ui()
         : ShaderUniform<GLuint>() {}
 ShaderUniform1ui::~ShaderUniform1ui() {}
@@ -134,6 +141,7 @@ ShaderProgram::ShaderProgram()
         , translateVector()
         , mapScale()
         , objectScale()
+        , colorMask()
         , flags() {
 
     id = 0;
@@ -189,6 +197,7 @@ bool ShaderProgram::load(
     if (!loadUniform(translateVector, "translate")) return false;
     if (!loadUniform(mapScale, "mapScale")) return false;
     if (!loadUniform(objectScale, "objectScale")) return false;
+    if (!loadUniform(colorMask, "colorMask")) return false;
     if (!loadUniform(flags, "flags")) return false;
 
     return true;
@@ -229,30 +238,9 @@ GLuint ShaderProgram::getID() {
     return id;
 }
 
-void ShaderProgram::resetTransform() {
-    setTranslate(0, 0);
-    setMapScale(16);
-    setObjectScale(1);
-}
 void ShaderProgram::resetUniforms() {
     resetTransform();
     resetFlags();
-}
-
-void ShaderProgram::setFlags(GLuint flags) {
-    this->flags.value = flags;
-    this->flags.load();
-}
-void ShaderProgram::addFlags(GLuint flags) {
-    this->flags.value |= flags;
-    this->flags.load();
-}
-void ShaderProgram::removeFlags(GLuint flags) {
-    this->flags.value &= ~flags;
-    this->flags.load();
-}
-void ShaderProgram::resetFlags() {
-    setFlags(0);
 }
 
 void ShaderProgram::setTranslate(GLfloat x, GLfloat y) {
@@ -272,4 +260,35 @@ void ShaderProgram::setObjectScale(GLfloat xscale, GLfloat yscale) {
     objectScale.value.x = xscale;
     objectScale.value.y = yscale;
     objectScale.load();
+}
+void ShaderProgram::resetTransform() {
+    setTranslate(0, 0);
+    setMapScale(16);
+    setObjectScale(1);
+}
+
+void ShaderProgram::setColorMask(GLcolorRGB color) {
+    colorMask.value.x = color.r;
+    colorMask.value.y = color.g;
+    colorMask.value.z = color.b;
+    colorMask.load();
+}
+void ShaderProgram::resetColorMask() {
+    setColorMask({1,1,1}); // Set all white
+}
+
+void ShaderProgram::setFlags(GLuint flags) {
+    this->flags.value = flags;
+    this->flags.load();
+}
+void ShaderProgram::addFlags(GLuint flags) {
+    this->flags.value |= flags;
+    this->flags.load();
+}
+void ShaderProgram::removeFlags(GLuint flags) {
+    this->flags.value &= ~flags;
+    this->flags.load();
+}
+void ShaderProgram::resetFlags() {
+    setFlags(0);
 }
