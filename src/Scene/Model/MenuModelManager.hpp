@@ -11,7 +11,7 @@ class MenuModelManager : public ModelManager {
         MenuModelManager();
 
         /**  UI  **/
-        void draw(MainUiManager *uiManager);
+        void draw(UiManager *uiManager);
 };
 
 #endif // MENU_MODEL_MANAGER_HPP

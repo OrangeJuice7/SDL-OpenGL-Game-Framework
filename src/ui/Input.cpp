@@ -1,10 +1,10 @@
-#include "MainUiManager.hpp"
+#include "UiManager.hpp"
 
 #include "../Scene/Scene.hpp"
 #include "../MainApp/MessageHandler.hpp"
 #include "../Message/Message.hpp"
 
-void MainUiManager::getInputs(Scene* scene) {
+void UiManager::getInputs(Scene* scene) {
     SDL_Event event;
 
     while (SDL_PollEvent(&event) != 0) {

@@ -1,7 +1,7 @@
 #include "Projectile.hpp"
 
 #include "../../basicmath.hpp"
-#include "../../ui/MainUiManager.hpp"
+#include "../../ui/UiManager.hpp"
 
 ProjectileData::ProjectileData(float radius, float maxLife, float mass, float damage, const ExplosionData* explosionData) {
     this->radius = radius;
@@ -54,7 +54,7 @@ void Projectile::doTick() {
 void Projectile::draw(
         std::function<void(int&, int&, float, float)> gameToScreenCoords,
         std::function<float(float)> gameToScreenLength,
-        MainUiManager *uiManager) {
+        UiManager *uiManager) {
 
     float r = gameToScreenLength(getRadius());
     int sx, sy;

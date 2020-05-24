@@ -1,8 +1,8 @@
-#include "MainUiManager.hpp"
+#include "UiManager.hpp"
 
 #include <cstdio>
 
-bool MainUiManager::init() {
+bool UiManager::init() {
     if(!initSDL()) {
         printf("Could not initialize SDL! SDL_Error: %s\n", SDL_GetError());
         return false;
@@ -36,7 +36,7 @@ bool MainUiManager::init() {
     return true;
 }
 
-void MainUiManager::deinit() {
+void UiManager::deinit() {
     textManager.deinit();
     spriteManager.deinit();
     deinitOpenGL();

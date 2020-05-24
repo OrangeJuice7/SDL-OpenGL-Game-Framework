@@ -6,7 +6,7 @@
 #include "Widget/Widget.hpp"
 #include "../MainApp/MessageHandler.hpp"
 #include "../Message/SceneTransitMessage.hpp"
-#include "../ui/MainUiManager.hpp"
+#include "../ui/UiManager.hpp"
 #include "GameScene.hpp"
 
 MenuScene::MenuScene()
@@ -27,7 +27,7 @@ void MenuScene::loadWidgets() {
 		/*funcOnClick*/ []() {
 			MessageHandler::postMessage( new SceneTransitMessage( new GameScene() ) );
 		},
-		/*drawFunc*/ [](const Widget* widget, MainUiManager* uiManager) {
+		/*drawFunc*/ [](const Widget* widget, UiManager* uiManager) {
 			SDL_Color textColor;
 			if (widget->getActive()) textColor = {255, 255, 200, 255};
 			else                     textColor = {255, 200, 200, 255};
@@ -38,7 +38,7 @@ void MenuScene::loadWidgets() {
 		{0, 20, 160, 20},
 		Widget::HORZALIGN_CENTER,
 		Widget::VERTALIGN_TOP,
-		/*drawFunc*/ [&](const Widget* widget, MainUiManager* uiManager) {
+		/*drawFunc*/ [&](const Widget* widget, UiManager* uiManager) {
 			widget->renderText(uiManager, "MENU SCENE", textColor);
 		} ) );
 
@@ -46,7 +46,7 @@ void MenuScene::loadWidgets() {
 		{20, 80, 160, 20},
 		Widget::HORZALIGN_RIGHT,
 		Widget::VERTALIGN_BOTTOM,
-		/*drawFunc*/ [&](const Widget* widget, MainUiManager* uiManager) {
+		/*drawFunc*/ [&](const Widget* widget, UiManager* uiManager) {
 			if (!paused) return;
 			widget->renderText(uiManager, "-- PAUSED --", white);
 		} ) );
@@ -55,7 +55,7 @@ void MenuScene::loadWidgets() {
 		{20, 60, 160, 20},
 		Widget::HORZALIGN_RIGHT,
 		Widget::VERTALIGN_BOTTOM,
-		/*drawFunc*/ [&](const Widget* widget, MainUiManager* uiManager) {
+		/*drawFunc*/ [&](const Widget* widget, UiManager* uiManager) {
 			char msg[256];
 			sprintf(msg, "UiTick: %u", uiManager->getUiTick());
 			widget->renderText(uiManager, msg, textColor);
@@ -65,7 +65,7 @@ void MenuScene::loadWidgets() {
 		{20, 40, 160, 20},
 		Widget::HORZALIGN_RIGHT,
 		Widget::VERTALIGN_BOTTOM,
-		/*drawFunc*/ [&](const Widget* widget, MainUiManager* uiManager) {
+		/*drawFunc*/ [&](const Widget* widget, UiManager* uiManager) {
 			char msg[256];
 			sprintf(msg, "ModelTick: %u", modelManager->getModelTick());
 			widget->renderText(uiManager, msg, textColor);
@@ -75,7 +75,7 @@ void MenuScene::loadWidgets() {
 		{20, 20, 160, 20},
 		Widget::HORZALIGN_RIGHT,
 		Widget::VERTALIGN_BOTTOM,
-		/*drawFunc*/ [&](const Widget* widget, MainUiManager* uiManager) {
+		/*drawFunc*/ [&](const Widget* widget, UiManager* uiManager) {
 			char msg[256];
 			sprintf(msg, "FPS: %.2f", uiManager->fps);
 			widget->renderText(uiManager, msg, textColor);

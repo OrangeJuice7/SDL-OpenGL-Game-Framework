@@ -1,4 +1,4 @@
-#include "MainUiManager.hpp"
+#include "UiManager.hpp"
 
 #include <cstdio>
 #include "GLUtil.hpp"
@@ -6,7 +6,7 @@
 #define VERTEX_SHADER_FILEPATH "src/ui/default.vert"
 #define FRAGMENT_SHADER_FILEPATH "src/ui/default.frag"
 
-bool MainUiManager::initOpenGL() {
+bool UiManager::initOpenGL() {
     // Use OpenGL 3.3 core
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
@@ -96,7 +96,7 @@ bool MainUiManager::initOpenGL() {
     return true;
 }
 
-void MainUiManager::deinitOpenGL() {
+void UiManager::deinitOpenGL() {
     // Deallocate shader program
 	shaderProgram.free();
 }

@@ -1,8 +1,8 @@
-#include "MainUiManager.hpp"
+#include "UiManager.hpp"
 
 #include <cstdio>
 
-bool MainUiManager::initRenderer() {
+bool UiManager::initRenderer() {
     renderer = SDL_CreateRenderer(mainWindow, -1, SDL_RENDERER_ACCELERATED);
     if (renderer == NULL) {
         printf("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
@@ -12,7 +12,7 @@ bool MainUiManager::initRenderer() {
     return true;
 }
 
-void MainUiManager::deinitRenderer() {
+void UiManager::deinitRenderer() {
     SDL_DestroyRenderer(renderer);
     renderer = NULL;
 }

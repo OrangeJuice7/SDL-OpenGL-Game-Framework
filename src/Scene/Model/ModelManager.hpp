@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <functional>
 #include <SDL2/SDL.h>
-class MainUiManager;
+class UiManager;
 
 class ModelManager {
     protected:
@@ -17,7 +17,7 @@ class ModelManager {
         // Actual update function
         virtual void updateOneTick();
 
-        std::function<void(int&, int&, float, float)> getGameToScreenCoordsFunc(MainUiManager *uiManager);
+        std::function<void(int&, int&, float, float)> getGameToScreenCoordsFunc(UiManager *uiManager);
         std::function<float(float)> getGameToScreenLengthFunc();
 
     public:
@@ -46,7 +46,7 @@ class ModelManager {
         virtual void click();
         virtual void releaseMouse();
 
-        virtual void draw(MainUiManager *uiManager);
+        virtual void draw(UiManager *uiManager);
 };
 
 #endif // MODEL_MANAGER_HPP

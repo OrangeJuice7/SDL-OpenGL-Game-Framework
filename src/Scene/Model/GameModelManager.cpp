@@ -1,7 +1,7 @@
 #include "GameModelManager.hpp"
 
 #include "../../basicmath.hpp"
-#include "../../ui/MainUiManager.hpp"
+#include "../../ui/UiManager.hpp"
 
 GameModelManager::GameModelManager()
         : ModelManager(32)
@@ -162,7 +162,7 @@ void GameModelManager::click() {
     //
 }
 
-void GameModelManager::draw(MainUiManager *uiManager) {
+void GameModelManager::draw(UiManager *uiManager) {
     auto gameToScreenCoordsFunc = getGameToScreenCoordsFunc(uiManager);
     auto gameToScreenLengthFunc = getGameToScreenLengthFunc();
 

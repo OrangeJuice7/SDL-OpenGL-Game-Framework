@@ -1,12 +1,12 @@
 #include "Widget.hpp"
 
-#include "../../ui/MainUiManager.hpp"
+#include "../../ui/UiManager.hpp"
 
 Widget::Widget(
         SDL_Rect rect,
         HorizontalAlignment horzAlign,
         VerticalAlignment vertAlign,
-        std::function<void(const Widget*, MainUiManager*)> drawFunc )
+        std::function<void(const Widget*, UiManager*)> drawFunc )
 
         : Widget(rect, horzAlign, vertAlign, false, nullptr, nullptr, drawFunc) {}
 
@@ -15,7 +15,7 @@ Widget::Widget(
         HorizontalAlignment horzAlign,
         VerticalAlignment vertAlign,
         std::function<void()> funcOnClick,
-        std::function<void(const Widget*, MainUiManager*)> drawFunc )
+        std::function<void(const Widget*, UiManager*)> drawFunc )
 
         : Widget(rect, horzAlign, vertAlign, true, funcOnClick, nullptr, drawFunc) {}
 
@@ -25,7 +25,7 @@ Widget::Widget(
         VerticalAlignment vertAlign,
         std::function<void()> funcOnClick,
         std::function<void()> funcOnRelease,
-        std::function<void(const Widget*, MainUiManager*)> drawFunc )
+        std::function<void(const Widget*, UiManager*)> drawFunc )
 
         : Widget(rect, horzAlign, vertAlign, true, funcOnClick, funcOnRelease, drawFunc) {}
 
@@ -36,7 +36,7 @@ Widget::Widget(
 		bool clickable,
 		std::function<void()> funcOnClick,
 		std::function<void()> funcOnRelease,
-		std::function<void(const Widget*, MainUiManager*)> drawFunc ) {
+		std::function<void(const Widget*, UiManager*)> drawFunc ) {
 
     this->rect = rect;
     this->horzAlign = horzAlign;
@@ -129,13 +129,13 @@ void Widget::update(const SDL_Rect &psRect) {
 	}
 }
 
-void Widget::renderText(MainUiManager *uiManager, const char *text, SDL_Color color) const {
+void Widget::renderText(UiManager *uiManager, const char *text, SDL_Color color) const {
     // Implement text wrap later
 
     uiManager->renderTextToScreen(text, color, screenRect.x, screenRect.y);
 }
 
-void Widget::draw(MainUiManager *uiManager) const {
+void Widget::draw(UiManager *uiManager) const {
 	if (getClickable()) {
         if (getActive()) uiManager->setDrawColor(0x60, 0x60, 0x00);
         else             uiManager->setDrawColor(0x00, 0x40, 0x60);

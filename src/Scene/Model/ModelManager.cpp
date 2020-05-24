@@ -1,6 +1,6 @@
 #include "ModelManager.hpp"
 
-#include "../../ui/MainUiManager.hpp"
+#include "../../ui/UiManager.hpp"
 
 ModelManager::ModelManager(float initialModelScale) {
     this->initialModelScale = initialModelScale;
@@ -58,7 +58,7 @@ void ModelManager::pickActiveEntity(float x, float y) {}
 void ModelManager::click() {}
 void ModelManager::releaseMouse() {}
 
-std::function<void(int&, int&, float, float)> ModelManager::getGameToScreenCoordsFunc(MainUiManager *uiManager) {
+std::function<void(int&, int&, float, float)> ModelManager::getGameToScreenCoordsFunc(UiManager *uiManager) {
     return [=](int& screenX, int& screenY, float gameX, float gameY) {
         gameToScreenCoords(uiManager->SCREEN_RECT, screenX, screenY, gameX, gameY);
     };
@@ -68,4 +68,4 @@ std::function<float(float)> ModelManager::getGameToScreenLengthFunc() {
         return gameToScreenLength(gameLength);
     };
 }
-void ModelManager::draw(MainUiManager *uiManager) {}
+void ModelManager::draw(UiManager *uiManager) {}

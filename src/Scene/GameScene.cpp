@@ -6,7 +6,7 @@
 #include "Widget/Widget.hpp"
 #include "../MainApp/MessageHandler.hpp"
 #include "../Message/SceneTransitMessage.hpp"
-#include "../ui/MainUiManager.hpp"
+#include "../ui/UiManager.hpp"
 #include "MenuScene.hpp"
 
 GameScene::GameScene()
@@ -42,7 +42,7 @@ void GameScene::loadWidgets() {
 		/*funcOnClick*/ []() {
 			MessageHandler::postMessage( new SceneTransitMessage( new MenuScene() ) );
 		},
-		/*drawFunc*/ [](const Widget* widget, MainUiManager* uiManager) {
+		/*drawFunc*/ [](const Widget* widget, UiManager* uiManager) {
 			SDL_Color textColor;
 			if (widget->getActive()) textColor = {255, 255, 200, 255};
 			else                     textColor = {200, 255, 200, 255};
@@ -54,7 +54,7 @@ void GameScene::loadWidgets() {
 		{0, 20, 160, 20},
 		Widget::HORZALIGN_CENTER,
 		Widget::VERTALIGN_TOP,
-		/*drawFunc*/ [&](const Widget* widget, MainUiManager* uiManager) {
+		/*drawFunc*/ [&](const Widget* widget, UiManager* uiManager) {
 			widget->renderText(uiManager, "GAME SCENE", textColor);
 		} );
 	widgetManager.loadWidget(newWidget);
@@ -66,7 +66,7 @@ void GameScene::loadWidgets() {
 		/*funcOnClick*/ [model]() {
 			model->spawnParticleExplosion(100, 4, 1, .1f, .2f);
 		},
-		/*drawFunc*/ [](const Widget* widget, MainUiManager* uiManager) {
+		/*drawFunc*/ [](const Widget* widget, UiManager* uiManager) {
 			widget->renderText(uiManager, "test", textColor);
 		} );
     newWidget->addChild( new Widget(
@@ -77,7 +77,7 @@ void GameScene::loadWidgets() {
 		/*funcOnRelease*/ [model]() {
 			model->spawnParticleExplosion(100, 4, -1, .1f, .2f);
 		},
-		/*drawFunc*/ [](const Widget* widget, MainUiManager* uiManager) {
+		/*drawFunc*/ [](const Widget* widget, UiManager* uiManager) {
 			// Circle test
 			/*SDL_Rect rect = widget->getScreenRect();
 			int x = rect.x + rect.w/2;
@@ -95,7 +95,7 @@ void GameScene::loadWidgets() {
 		{0, 20, 360, 60},
 		Widget::HORZALIGN_CENTER,
 		Widget::VERTALIGN_BOTTOM,
-		/*drawFunc*/ [model](const Widget* widget, MainUiManager* uiManager) {
+		/*drawFunc*/ [model](const Widget* widget, UiManager* uiManager) {
 			Mob *pMob = model->getActiveMob();
 			if (!pMob) return;
 
@@ -109,7 +109,7 @@ void GameScene::loadWidgets() {
 		{20, 80, 160, 20},
 		Widget::HORZALIGN_RIGHT,
 		Widget::VERTALIGN_BOTTOM,
-		/*drawFunc*/ [this](const Widget* widget, MainUiManager* uiManager) {
+		/*drawFunc*/ [this](const Widget* widget, UiManager* uiManager) {
 			if (!paused) return;
 			widget->renderText(uiManager, "-- PAUSED --", white);
 		} );
@@ -119,7 +119,7 @@ void GameScene::loadWidgets() {
 		{20, 60, 160, 20},
 		Widget::HORZALIGN_RIGHT,
 		Widget::VERTALIGN_BOTTOM,
-		/*drawFunc*/ [](const Widget* widget, MainUiManager* uiManager) {
+		/*drawFunc*/ [](const Widget* widget, UiManager* uiManager) {
 			char msg[256];
 			sprintf(msg, "UiTick: %u", uiManager->getUiTick());
 			widget->renderText(uiManager, msg, textColor);
@@ -130,7 +130,7 @@ void GameScene::loadWidgets() {
 		{20, 40, 160, 20},
 		Widget::HORZALIGN_RIGHT,
 		Widget::VERTALIGN_BOTTOM,
-		/*drawFunc*/ [model](const Widget* widget, MainUiManager* uiManager) {
+		/*drawFunc*/ [model](const Widget* widget, UiManager* uiManager) {
 			char msg[256];
 			sprintf(msg, "ModelTick: %u", model->getModelTick());
 			widget->renderText(uiManager, msg, textColor);
@@ -141,7 +141,7 @@ void GameScene::loadWidgets() {
 		{20, 20, 160, 20},
 		Widget::HORZALIGN_RIGHT,
 		Widget::VERTALIGN_BOTTOM,
-		/*drawFunc*/ [](const Widget* widget, MainUiManager* uiManager) {
+		/*drawFunc*/ [](const Widget* widget, UiManager* uiManager) {
 			char msg[256];
 			sprintf(msg, "FPS: %.2f", uiManager->fps);
 			widget->renderText(uiManager, msg, textColor);

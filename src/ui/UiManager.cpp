@@ -1,9 +1,9 @@
-#include "MainUiManager.hpp"
+#include "UiManager.hpp"
 
 #include <cmath>
 #include "../Scene/Scene.hpp"
 
-MainUiManager::MainUiManager(const char *windowTitle, int screenWidth, int screenHeight)
+UiManager::UiManager(const char *windowTitle, int screenWidth, int screenHeight)
         : shaderProgram()
         , spriteManager()
         , textManager()
@@ -20,21 +20,21 @@ MainUiManager::MainUiManager(const char *windowTitle, int screenWidth, int scree
     uiTick = 0;
     fps = 0;
 }
-MainUiManager::~MainUiManager() {}
+UiManager::~UiManager() {}
 
-Uint32 MainUiManager::getUiTick() {
+Uint32 UiManager::getUiTick() {
     return uiTick;
 }
 
-void MainUiManager::sleep(float duration) {
+void UiManager::sleep(float duration) {
     SDL_Delay(duration*1000);
 }
 
-Sprite* MainUiManager::getSprite(SpriteId id) {
+Sprite* UiManager::getSprite(SpriteId id) {
     return spriteManager.getSprite(id);
 }
 
-void MainUiManager::draw(Scene* scene) {
+void UiManager::draw(Scene* scene) {
     // Clear color buffer
     glClear(GL_COLOR_BUFFER_BIT);
     //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

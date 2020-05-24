@@ -4,7 +4,7 @@
 #include <forward_list>
 #include <functional>
 #include "../../basicmath.hpp"
-class MainUiManager;
+class UiManager;
 
 template <class TEntity>
 class EntityManager {
@@ -40,7 +40,7 @@ class EntityManager {
         void draw(
                 std::function<void(int&, int&, float, float)> gameToScreenCoords,
                 std::function<float(float)> gameToScreenLength,
-                MainUiManager *uiManager);
+                UiManager *uiManager);
 };
 
 
@@ -148,7 +148,7 @@ template <class TEntity>
 void EntityManager<TEntity>::draw(
         std::function<void(int&, int&, float, float)> gameToScreenCoords,
         std::function<float(float)> gameToScreenLength,
-        MainUiManager *uiManager) {
+        UiManager *uiManager) {
 
     // Implement draw-culling some time
     for (TEntity &entity : entities) {

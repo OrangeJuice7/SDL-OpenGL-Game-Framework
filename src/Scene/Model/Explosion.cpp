@@ -1,7 +1,7 @@
 #include "Explosion.hpp"
 
 #include "../../basicmath.hpp"
-#include "../../ui/MainUiManager.hpp"
+#include "../../ui/UiManager.hpp"
 
 ExplosionData::ExplosionData(float radius, float maxLife, float maxDamage) {
     this->radius = radius;
@@ -57,7 +57,7 @@ void Explosion::doTick() {
 void Explosion::draw(
         std::function<void(int&, int&, float, float)> gameToScreenCoords,
         std::function<float(float)> gameToScreenLength,
-        MainUiManager *uiManager) {
+        UiManager *uiManager) {
 
     float r = gameToScreenLength(getRadius());
     int sx, sy;

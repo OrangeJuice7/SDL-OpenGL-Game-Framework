@@ -62,7 +62,7 @@ void Scene::handleMouseMDownEvent() {}
 void Scene::handleMouseMUpEvent() {}
 void Scene::handleMouseWheelEvent(Sint32 delta) {}
 
-void Scene::draw(MainUiManager *uiManager) {
+void Scene::draw(UiManager *uiManager) {
     modelManager->draw(uiManager); // draw model first
     widgetManager.draw(uiManager); // draw widgets on top
 }

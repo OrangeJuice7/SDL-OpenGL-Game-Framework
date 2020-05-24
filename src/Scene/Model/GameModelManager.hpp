@@ -42,7 +42,7 @@ class GameModelManager : public ModelManager {
         void pickActiveEntity(float x, float y);
         void click();
 
-        void draw(MainUiManager *uiManager);
+        void draw(UiManager *uiManager);
 };
 
 #endif // GAME_MODEL_MANAGER_HPP

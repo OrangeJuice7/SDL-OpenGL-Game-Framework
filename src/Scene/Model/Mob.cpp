@@ -1,7 +1,7 @@
 #include "Mob.hpp"
 
 #include "../../basicmath.hpp"
-#include "../../ui/MainUiManager.hpp"
+#include "../../ui/UiManager.hpp"
 
 MobData::MobData(float radius, float maxLife, float mass) {
     this->radius = radius;
@@ -39,7 +39,7 @@ void Mob::doTick() {
 void Mob::draw(
         std::function<void(int&, int&, float, float)> gameToScreenCoords,
         std::function<float(float)> gameToScreenLength,
-        MainUiManager *uiManager) {
+        UiManager *uiManager) {
 
     float r = gameToScreenLength(getRadius());
     int sx, sy;

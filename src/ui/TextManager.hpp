@@ -47,7 +47,6 @@ class GlyphSprite : public Sprite {
 struct Glyph { // Rasterized glyph
     GlyphSprite sprite;
     // Width and height data already captured in texture
-    // (Coord system: +x/+y = right/up)
     GLuint left; // distance between left of glyph and x=0
     GLuint top; // distance between top of glyph and y=0
     GLfloat advance; // x-distance between the origin points of this glyph and the next

@@ -2,7 +2,7 @@
 #define ENTITY_HPP
 
 #include <functional>
-class MainUiManager;
+class UiManager;
 
 class ImmovableEntity {
     public:
@@ -27,11 +27,11 @@ class ImmovableEntity {
 
         bool isWithinScreen(
                 std::function<void(int&, int&, float, float)> gameToScreenCoords,
-                MainUiManager *uiManager) const;
+                UiManager *uiManager) const;
         virtual void draw(
                 std::function<void(int&, int&, float, float)> gameToScreenCoords,
                 std::function<float(float)> gameToScreenLength,
-                MainUiManager *uiManager);
+                UiManager *uiManager);
 };
 
 class Entity : public ImmovableEntity {

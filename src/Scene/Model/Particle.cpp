@@ -1,7 +1,7 @@
 #include "Particle.hpp"
 
 #include "../../basicmath.hpp"
-#include "../../ui/MainUiManager.hpp"
+#include "../../ui/UiManager.hpp"
 
 Particle::Particle() : Particle(0, 0, 0, 0, 1, 1, 1) {}
 Particle::Particle(float x, float y, float xvel, float yvel, float radius, float maxLife, float mass)
@@ -40,7 +40,7 @@ void Particle::doTick() {
 void Particle::draw(
         std::function<void(int&, int&, float, float)> gameToScreenCoords,
         std::function<float(float)> gameToScreenLength,
-        MainUiManager *uiManager) {
+        UiManager *uiManager) {
 
     float r = gameToScreenLength(getRadius());
     int sx, sy;

@@ -1,5 +1,5 @@
-#ifndef MAIN_UI_MANAGER_HPP
-#define MAIN_UI_MANAGER_HPP
+#ifndef UI_MANAGER_HPP
+#define UI_MANAGER_HPP
 
 #include <SDL2/SDL.h>
 #include <GL/glew.h>
@@ -10,7 +10,7 @@
 #include "InputState.hpp"
 class Scene;
 
-class MainUiManager {
+class UiManager {
     protected:
         // SDL
         SDL_Window* mainWindow;
@@ -49,8 +49,8 @@ class MainUiManager {
 
         float fps; // For display purposes only; is written to by MainApp.
 
-        MainUiManager(const char *windowTitle, int screenWidth, int screenHeight);
-        ~MainUiManager();
+        UiManager(const char *windowTitle, int screenWidth, int screenHeight);
+        ~UiManager();
         bool init();
         void deinit();
 
@@ -90,4 +90,4 @@ class MainUiManager {
         void renderImageToScreen(SDL_Surface* image, int x, int y);
 };
 
-#endif // MAIN_UI_MANAGER_HPP
+#endif // UI_MANAGER_HPP

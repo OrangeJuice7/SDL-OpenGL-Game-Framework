@@ -1,36 +1,36 @@
-#include "MainUiManager.hpp"
+#include "UiManager.hpp"
 
 #include "../basicmath.hpp"
 
-void MainUiManager::resetTransform() {
+void UiManager::resetTransform() {
     shaderProgram.resetTransform();
 }
-void MainUiManager::setTranslate(GLfloat x, GLfloat y) {
+void UiManager::setTranslate(GLfloat x, GLfloat y) {
     shaderProgram.setTranslate(x, y);
 }
-void MainUiManager::setMapScale(GLfloat scale) {
+void UiManager::setMapScale(GLfloat scale) {
     shaderProgram.setMapScale(scale);
 }
-void MainUiManager::setObjectScale(GLfloat scale) {
+void UiManager::setObjectScale(GLfloat scale) {
     shaderProgram.setObjectScale(scale);
 }
 
-void MainUiManager::setDrawToGameSpace() {
+void UiManager::setDrawToGameSpace() {
     shaderProgram.removeFlags(SHADER_FLAG_ORTHO_MODE);
 }
-void MainUiManager::setDrawToScreenSpace() {
+void UiManager::setDrawToScreenSpace() {
     shaderProgram.addFlags(SHADER_FLAG_ORTHO_MODE);
 }
 
-void MainUiManager::setFont(FontId fontId, FontsizeId fontsizeId) {
+void UiManager::setFont(FontId fontId, FontsizeId fontsizeId) {
     textManager.setActiveFont(fontId, fontsizeId);
 }
 
-void MainUiManager::drawSprite(float x, float y, SpriteId id) {
+void UiManager::drawSprite(float x, float y, SpriteId id) {
     setTranslate(x, y);
     getSprite(id)->draw();
 }
-void MainUiManager::drawText(float x, float y, const char* text) {
+void UiManager::drawText(float x, float y, const char* text) {
     shaderProgram.addFlags(SHADER_FLAG_RENDER_TEXT);
     for (int i = 0; text[i] != '\0'; ++i) {
         setTranslate(x, y);
@@ -41,33 +41,33 @@ void MainUiManager::drawText(float x, float y, const char* text) {
 
 
 
-void MainUiManager::setDrawColor(Uint8 r, Uint8 g, Uint8 b) {
+void UiManager::setDrawColor(Uint8 r, Uint8 g, Uint8 b) {
     setDrawColor(r, g, b, 0xff);
 }
-void MainUiManager::setDrawColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
+void UiManager::setDrawColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
     SDL_SetRenderDrawColor(renderer, r, g, b, a);
 }
-void MainUiManager::setDrawColor(const SDL_Color& color) {
+void UiManager::setDrawColor(const SDL_Color& color) {
     setDrawColor(color.r, color.g, color.b, color.a);
 }
 
-void MainUiManager::drawPixel(int x, int y) {
+void UiManager::drawPixel(int x, int y) {
     SDL_RenderDrawPoint(renderer, x, y);
 }
 
-void MainUiManager::drawLine(int x1, int y1, int x2, int y2) {
+void UiManager::drawLine(int x1, int y1, int x2, int y2) {
     SDL_RenderDrawLine(renderer, x1, y1, x2, y2);
 }
 
-void MainUiManager::drawFillRect(const SDL_Rect& rect) {
+void UiManager::drawFillRect(const SDL_Rect& rect) {
     SDL_RenderFillRect( renderer, &rect );
 }
 
-void MainUiManager::drawLineRect(const SDL_Rect& rect) {
+void UiManager::drawLineRect(const SDL_Rect& rect) {
     SDL_RenderDrawRect( renderer, &rect );
 }
 
-void MainUiManager::drawLineCircle(float x, float y, float r) {
+void UiManager::drawLineCircle(float x, float y, float r) {
     int numOfPoints = (int)(TWO_PI * sqrt(r)) +1;
 
     SDL_Point *points = new SDL_Point[numOfPoints];
@@ -83,13 +83,13 @@ void MainUiManager::drawLineCircle(float x, float y, float r) {
     delete[] points;
 }
 
-void MainUiManager::renderTextToScreen(const char *text, const SDL_Color& fg, int x, int y) {
+void UiManager::renderTextToScreen(const char *text, const SDL_Color& fg, int x, int y) {
     /*Texture texture;
     texture.loadFromText(mainFont, text, fg);
     texture.render(x, y);*/
 }
 
-void MainUiManager::renderImageToScreen(SDL_Surface* image, int x, int y) {
+void UiManager::renderImageToScreen(SDL_Surface* image, int x, int y) {
     /*Texture texture;
     texture.loadFromSurface(image);
     texture.render(x, y);*/

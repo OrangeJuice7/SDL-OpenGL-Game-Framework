@@ -2,7 +2,7 @@
 
 #include <SDL2/SDL.h>
 #include "../../basicmath.hpp"
-#include "../../ui/MainUiManager.hpp"
+#include "../../ui/UiManager.hpp"
 
 ImmovableEntity::ImmovableEntity() : ImmovableEntity(0, 0, 1) {}
 ImmovableEntity::ImmovableEntity(float x, float y, float life) {
@@ -44,7 +44,7 @@ void ImmovableEntity::doTick() {}
 
 bool ImmovableEntity::isWithinScreen(
         std::function<void(int&, int&, float, float)> gameToScreenCoords,
-        MainUiManager *uiManager) const {
+        UiManager *uiManager) const {
 
     // Bounding box check
     int bx, bX, by, bY;
@@ -58,7 +58,7 @@ bool ImmovableEntity::isWithinScreen(
 void ImmovableEntity::draw(
         std::function<void(int&, int&, float, float)> gameToScreenCoords,
         std::function<float(float)> gameToScreenLength,
-        MainUiManager *uiManager) {
+        UiManager *uiManager) {
 
     // Just draw a magenta rect that fades with life, as a debug display
 
