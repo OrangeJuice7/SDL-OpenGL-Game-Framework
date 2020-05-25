@@ -38,7 +38,7 @@ void UiManager::draw(Scene* scene) {
     glClear(GL_COLOR_BUFFER_BIT);
     //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    scene->draw(this);
+    scene->draw(*this);
 
     //Update screen
     SDL_GL_SwapWindow(mainWindow);

@@ -37,7 +37,7 @@ class Scene {
         virtual void handleMouseWheelEvent(Sint32 delta); // positive delta: away from the user
 
         // Draws to the uiManager (called by the uiManager)
-        void draw(UiManager *uiManager);
+        void draw(UiManager &uiManager);
 
         /**  Model  **/
         uint32_t getModelTick();

@@ -34,7 +34,7 @@ class Explosion : public ImmovableEntity {
         virtual void draw(
                 std::function<void(int&, int&, float, float)> gameToScreenCoords,
                 std::function<float(float)> gameToScreenLength,
-                UiManager *uiManager);
+                UiManager &uiManager);
 };
 
 #endif // EXPLOSION_HPP

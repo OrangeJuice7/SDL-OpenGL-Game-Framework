@@ -85,19 +85,16 @@
 		<Unit filename="src/basicmath.cpp" />
 		<Unit filename="src/basicmath.hpp" />
 		<Unit filename="src/main.cpp" />
+		<Unit filename="src/ui/Draw.cpp" />
 		<Unit filename="src/ui/GLUtil.cpp" />
 		<Unit filename="src/ui/GLUtil.hpp" />
 		<Unit filename="src/ui/Init.cpp" />
 		<Unit filename="src/ui/InitOpenGL.cpp" />
-		<Unit filename="src/ui/InitRenderer.cpp" />
 		<Unit filename="src/ui/InitSDL.cpp" />
 		<Unit filename="src/ui/InitWindow.cpp" />
 		<Unit filename="src/ui/Input.cpp" />
 		<Unit filename="src/ui/InputState.cpp" />
 		<Unit filename="src/ui/InputState.hpp" />
-		<Unit filename="src/ui/MainUiManager.cpp" />
-		<Unit filename="src/ui/MainUiManager.hpp" />
-		<Unit filename="src/ui/Render.cpp" />
 		<Unit filename="src/ui/ShaderProgram.cpp" />
 		<Unit filename="src/ui/ShaderProgram.hpp" />
 		<Unit filename="src/ui/Sprite.cpp" />
@@ -110,6 +107,8 @@
 		<Unit filename="src/ui/TextManager.hpp" />
 		<Unit filename="src/ui/Texture.cpp" />
 		<Unit filename="src/ui/Texture.hpp" />
+		<Unit filename="src/ui/UiManager.cpp" />
+		<Unit filename="src/ui/UiManager.hpp" />
 		<Unit filename="src/ui/default.frag" />
 		<Unit filename="src/ui/default.vert" />
 		<Extensions>

@@ -39,10 +39,10 @@ void Mob::doTick() {
 void Mob::draw(
         std::function<void(int&, int&, float, float)> gameToScreenCoords,
         std::function<float(float)> gameToScreenLength,
-        UiManager *uiManager) {
+        UiManager &uiManager) {
 
     float a = getLifeFraction();
-    uiManager->setColorMask({.5f, a, a});
-    uiManager->setObjectScale(getRadius());
-    uiManager->drawSprite(x, y, SPRITE_ID_CIRCLE);
+    uiManager.setColorMask({.5f, a, a});
+    uiManager.setObjectScale(getRadius());
+    uiManager.drawSprite(x, y, SPRITE_ID_CIRCLE);
 }

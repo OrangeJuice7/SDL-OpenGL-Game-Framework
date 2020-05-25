@@ -40,11 +40,11 @@ void Particle::doTick() {
 void Particle::draw(
         std::function<void(int&, int&, float, float)> gameToScreenCoords,
         std::function<float(float)> gameToScreenLength,
-        UiManager *uiManager) {
+        UiManager &uiManager) {
 
     float a = getLifeFraction();
-    uiManager->setColorMask({1, a, 0});
-    uiManager->setObjectScale(getRadius());
-    uiManager->drawSprite(x, y, SPRITE_ID_CIRCLE);
+    uiManager.setColorMask({1, a, 0});
+    uiManager.setObjectScale(getRadius());
+    uiManager.drawSprite(x, y, SPRITE_ID_CIRCLE);
 }
 

@@ -24,16 +24,16 @@ void GameModelManager::updateOneTick() {
     //spawnParticleExplosion(2, 0, 0, .1f, .2f);
 
     /**  Update the entities individually **/
-    mobs.doTick([=](const Mob* m) {
+    mobs.doTick([=](const Mob& m) {
         // Dereference activeMob / playerMob
-        if (activeMob == m) activeMob = nullptr;
-        if (playerMob == m) playerMob = nullptr;
+        if (activeMob == &m) activeMob = nullptr;
+        if (playerMob == &m) playerMob = nullptr;
 
         // Spawn (particle) explosion
-        spawnParticleExplosion(100, m->x, m->y, .8f, .4f);
+        spawnParticleExplosion(100, m.x, m.y, .8f, .4f);
 
         // Respawn a mob somewhere
-        const MobData* data = (MobData*)m->data; // Really needs to be replaced once a better Entity system is in
+        const MobData* data = (MobData*)m.data; // Really needs to be replaced once a better Entity system is in
         if (playerMob == nullptr) spawnPlayerMob(*data, 0, 0);
         else spawnMob(*data, getrand()*16 -8, getrand()*16 -8);
     });
@@ -162,8 +162,8 @@ void GameModelManager::click() {
     //
 }
 
-void GameModelManager::draw(UiManager *uiManager) {
-    uiManager->setMapScale(modelScale);
+void GameModelManager::draw(UiManager &uiManager) {
+    uiManager.setMapScale(modelScale);
 
     auto gameToScreenCoordsFunc = getGameToScreenCoordsFunc(uiManager);
     auto gameToScreenLengthFunc = getGameToScreenLengthFunc();

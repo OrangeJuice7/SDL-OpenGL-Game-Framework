@@ -27,11 +27,11 @@ class ImmovableEntity {
 
         bool isWithinScreen(
                 std::function<void(int&, int&, float, float)> gameToScreenCoords,
-                UiManager *uiManager) const;
+                UiManager &uiManager) const;
         virtual void draw(
                 std::function<void(int&, int&, float, float)> gameToScreenCoords,
                 std::function<float(float)> gameToScreenLength,
-                UiManager *uiManager);
+                UiManager &uiManager);
 };
 
 class Entity : public ImmovableEntity {

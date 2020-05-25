@@ -44,7 +44,7 @@ void ImmovableEntity::doTick() {}
 
 bool ImmovableEntity::isWithinScreen(
         std::function<void(int&, int&, float, float)> gameToScreenCoords,
-        UiManager *uiManager) const {
+        UiManager &uiManager) const {
 
     // Bounding box check
     int bx, bX, by, bY;
@@ -52,18 +52,18 @@ bool ImmovableEntity::isWithinScreen(
     gameToScreenCoords(bx, by, x-r, y+r);
     gameToScreenCoords(bX, bY, x+r, y-r);
 
-    return (bX >= 0 && bx < uiManager->SCREEN_RECT.w &&
-            bY >= 0 && by < uiManager->SCREEN_RECT.h );
+    return (bX >= 0 && bx < uiManager.SCREEN_RECT.w &&
+            bY >= 0 && by < uiManager.SCREEN_RECT.h );
 }
 void ImmovableEntity::draw(
         std::function<void(int&, int&, float, float)> gameToScreenCoords,
         std::function<float(float)> gameToScreenLength,
-        UiManager *uiManager) {
+        UiManager &uiManager) {
 
     float a = getLifeFraction();
-    uiManager->setColorMask({a, 0, a});
-    uiManager->setObjectScale(getRadius());
-    uiManager->drawSprite(x, y, SPRITE_ID_CIRCLE);
+    uiManager.setColorMask({a, 0, a});
+    uiManager.setObjectScale(getRadius());
+    uiManager.drawSprite(x, y, SPRITE_ID_CIRCLE);
 }
 
 

@@ -58,14 +58,14 @@ void ModelManager::pickActiveEntity(float x, float y) {}
 void ModelManager::click() {}
 void ModelManager::releaseMouse() {}
 
-std::function<void(int&, int&, float, float)> ModelManager::getGameToScreenCoordsFunc(UiManager *uiManager) {
-    return [=](int& screenX, int& screenY, float gameX, float gameY) {
-        gameToScreenCoords(uiManager->SCREEN_RECT, screenX, screenY, gameX, gameY);
+std::function<void(int&, int&, float, float)> ModelManager::getGameToScreenCoordsFunc(UiManager &uiManager) {
+    return [&](int& screenX, int& screenY, float gameX, float gameY) {
+        gameToScreenCoords(uiManager.SCREEN_RECT, screenX, screenY, gameX, gameY);
     };
 }
 std::function<float(float)> ModelManager::getGameToScreenLengthFunc() {
-    return [=](float gameLength) -> float {
+    return [&](float gameLength) -> float {
         return gameToScreenLength(gameLength);
     };
 }
-void ModelManager::draw(UiManager *uiManager) {}
+void ModelManager::draw(UiManager &uiManager) {}

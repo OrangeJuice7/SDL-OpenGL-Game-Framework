@@ -25,7 +25,7 @@ class EntityManager {
         void clearEntities();
 
         void doTick();
-        void doTick(std::function<void(const TEntity*)> entityDeletedFunc); // Lets the parent dereference any entity it might be pointing to that has been deleted
+        void doTick(std::function<void(const TEntity&)> entityDeletedFunc); // Lets the parent dereference any entity it might be pointing to that has been deleted
 
         void checkCollisionsSelf(
                 std::function<void(TEntity&, TEntity&)> collisionFunc );
@@ -40,7 +40,7 @@ class EntityManager {
         void draw(
                 std::function<void(int&, int&, float, float)> gameToScreenCoords,
                 std::function<float(float)> gameToScreenLength,
-                UiManager *uiManager);
+                UiManager &uiManager);
 };
 
 
@@ -77,11 +77,11 @@ void EntityManager<TEntity>::doTick() {
     }
 }
 template <class TEntity>
-void EntityManager<TEntity>::doTick(std::function<void(const TEntity*)> entityDeletedFunc) {
+void EntityManager<TEntity>::doTick(std::function<void(const TEntity&)> entityDeletedFunc) {
     // Remove dead entities
     entities.remove_if( [this, entityDeletedFunc](const TEntity& entity) -> bool {
         if (entity.isDead()) {
-            entityDeletedFunc(&entity);
+            entityDeletedFunc(entity);
             return true;
         } else return false;
     } );
@@ -148,7 +148,7 @@ template <class TEntity>
 void EntityManager<TEntity>::draw(
         std::function<void(int&, int&, float, float)> gameToScreenCoords,
         std::function<float(float)> gameToScreenLength,
-        UiManager *uiManager) {
+        UiManager &uiManager) {
 
     // Implement draw-culling some time
     for (TEntity &entity : entities) {

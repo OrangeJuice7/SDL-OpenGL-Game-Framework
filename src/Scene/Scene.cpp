@@ -63,12 +63,12 @@ void Scene::handleMouseMDownEvent() {}
 void Scene::handleMouseMUpEvent() {}
 void Scene::handleMouseWheelEvent(Sint32 delta) {}
 
-void Scene::draw(UiManager *uiManager) {
+void Scene::draw(UiManager &uiManager) {
     // Draw model first
-    uiManager->setDrawToGameSpace();
+    uiManager.setDrawToGameSpace();
     modelManager->draw(uiManager);
 
     // Draw widgets on top
-    uiManager->setDrawToScreenSpace();
+    uiManager.setDrawToScreenSpace();
     widgetManager.draw(uiManager);
 }

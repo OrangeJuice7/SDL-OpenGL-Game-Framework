@@ -22,7 +22,7 @@ class Particle : public Entity {
         virtual void draw(
                 std::function<void(int&, int&, float, float)> gameToScreenCoords,
                 std::function<float(float)> gameToScreenLength,
-                UiManager *uiManager);
+                UiManager &uiManager);
 };
 
 #endif // PARTICLE_HPP

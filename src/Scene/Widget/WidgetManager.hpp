@@ -23,7 +23,7 @@ class WidgetManager {
         bool click();
         bool releaseMouse();
 
-        void draw(UiManager *uiManager);
+        void draw(UiManager &uiManager);
 };
 
 #endif // WIDGET_MANAGER_HPP

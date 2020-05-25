@@ -12,6 +12,6 @@ void MenuModelManager::updateOneTick() {
     //
 }
 
-void MenuModelManager::draw(UiManager *uiManager) {
+void MenuModelManager::draw(UiManager &uiManager) {
     //
 }

@@ -17,7 +17,7 @@ class ModelManager {
         // Actual update function
         virtual void updateOneTick();
 
-        std::function<void(int&, int&, float, float)> getGameToScreenCoordsFunc(UiManager *uiManager);
+        std::function<void(int&, int&, float, float)> getGameToScreenCoordsFunc(UiManager &uiManager);
         std::function<float(float)> getGameToScreenLengthFunc();
 
     public:
@@ -46,7 +46,7 @@ class ModelManager {
         virtual void click();
         virtual void releaseMouse();
 
-        virtual void draw(UiManager *uiManager);
+        virtual void draw(UiManager &uiManager);
 };
 
 #endif // MODEL_MANAGER_HPP

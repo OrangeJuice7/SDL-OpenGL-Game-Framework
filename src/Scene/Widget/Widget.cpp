@@ -6,7 +6,7 @@ Widget::Widget(
         SDL_Rect rect,
         HorizontalAlignment horzAlign,
         VerticalAlignment vertAlign,
-        std::function<void(const Widget*, UiManager*)> drawFunc )
+        std::function<void(const Widget&, UiManager&)> drawFunc )
 
         : Widget(rect, horzAlign, vertAlign, false, nullptr, nullptr, drawFunc) {}
 
@@ -15,7 +15,7 @@ Widget::Widget(
         HorizontalAlignment horzAlign,
         VerticalAlignment vertAlign,
         std::function<void()> funcOnClick,
-        std::function<void(const Widget*, UiManager*)> drawFunc )
+        std::function<void(const Widget&, UiManager&)> drawFunc )
 
         : Widget(rect, horzAlign, vertAlign, true, funcOnClick, nullptr, drawFunc) {}
 
@@ -25,7 +25,7 @@ Widget::Widget(
         VerticalAlignment vertAlign,
         std::function<void()> funcOnClick,
         std::function<void()> funcOnRelease,
-        std::function<void(const Widget*, UiManager*)> drawFunc )
+        std::function<void(const Widget&, UiManager&)> drawFunc )
 
         : Widget(rect, horzAlign, vertAlign, true, funcOnClick, funcOnRelease, drawFunc) {}
 
@@ -36,7 +36,7 @@ Widget::Widget(
 		bool clickable,
 		std::function<void()> funcOnClick,
 		std::function<void()> funcOnRelease,
-		std::function<void(const Widget*, UiManager*)> drawFunc ) {
+		std::function<void(const Widget&, UiManager&)> drawFunc ) {
 
     this->rect = rect;
     this->horzAlign = horzAlign;
@@ -129,21 +129,21 @@ void Widget::update(const SDL_Rect &psRect) {
 	}
 }
 
-void Widget::renderText(UiManager *uiManager, const char *text) const {
+void Widget::renderText(UiManager &uiManager, const char *text) const {
     // Implement text wrap later
 
-    uiManager->setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
-    uiManager->drawText(screenRect.x, screenRect.y, text);
+    uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
+    uiManager.drawText(screenRect.x, screenRect.y, text);
 }
 
-void Widget::draw(UiManager *uiManager) const {
+void Widget::draw(UiManager &uiManager) const {
 	if (getClickable()) {
-        if (getActive()) uiManager->setColorMask({.4f, .4f, .0f});
-        else             uiManager->setColorMask({.0f, .3f, .4f});
-        uiManager->drawSpriteStretched(screenRect.x, screenRect.y, screenRect.w, screenRect.h, SPRITE_ID_WIDGET_BG_DEBUG);
+        if (getActive()) uiManager.setColorMask({.4f, .4f, .0f});
+        else             uiManager.setColorMask({.0f, .3f, .4f});
+        uiManager.drawSpriteStretched(screenRect.x, screenRect.y, screenRect.w, screenRect.h, SPRITE_ID_WIDGET_BG_DEBUG);
     }
 
-	if (drawFunc) drawFunc(this, uiManager);
+	if (drawFunc) drawFunc(*this, uiManager);
 
 	// call draw for all the children
 	for (Widget* child : children) {
