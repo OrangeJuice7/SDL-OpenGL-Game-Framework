@@ -25,7 +25,7 @@ void UiManager::setDrawToScreenSpace() {
     shaderProgram.addFlags(SHADER_FLAG_ORTHO_MODE);
 }
 
-void UiManager::setColorMask(GLcolorRGB color) {
+void UiManager::setColorMask(const GLcolorRGB& color) {
     shaderProgram.setColorMask(color);
 }
 void UiManager::resetColorMask() {

@@ -21,7 +21,7 @@ UiManager::UiManager(const char *windowTitle, int screenWidth, int screenHeight)
 }
 UiManager::~UiManager() {}
 
-Uint32 UiManager::getUiTick() {
+Uint32 UiManager::getUiTick() const {
     return uiTick;
 }
 

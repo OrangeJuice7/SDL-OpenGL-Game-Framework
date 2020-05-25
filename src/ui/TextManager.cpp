@@ -176,8 +176,8 @@ bool TextManager::init() {
 }
 void TextManager::deinit() {}
 
-GLfloat TextManager::getTextLength(FontId fontId, FontsizeId fontsizeId, const char* text) {
-    Font *font = &(fonts[fontId][fontsizeId]);
+GLfloat TextManager::getTextLength(FontId fontId, FontsizeId fontsizeId, const char* text) const {
+    const Font *font = &(fonts[fontId][fontsizeId]);
     float length = 0;
 
     // Loop through the whole text
@@ -186,13 +186,13 @@ GLfloat TextManager::getTextLength(FontId fontId, FontsizeId fontsizeId, const c
     }
     return length;
 }
-GLfloat TextManager::getTextLength(const char* text) {
+GLfloat TextManager::getTextLength(const char* text) const {
     return getTextLength(activeFontId, activeFontsizeId, text);
 }
-GLfloat TextManager::getFontHeight(FontId fontId, FontsizeId fontsizeId) {
+GLfloat TextManager::getFontHeight(FontId fontId, FontsizeId fontsizeId) const {
     return fonts[fontId][fontsizeId].height;
 }
-GLfloat TextManager::getFontHeight() {
+GLfloat TextManager::getFontHeight() const {
     return getFontHeight(activeFontId, activeFontsizeId);
 }
 

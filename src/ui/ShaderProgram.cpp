@@ -234,7 +234,7 @@ void ShaderProgram::unbind() {
     glUseProgram(0);
 }
 
-GLuint ShaderProgram::getID() {
+GLuint ShaderProgram::getID() const {
     return id;
 }
 
@@ -267,7 +267,7 @@ void ShaderProgram::resetTransform() {
     setObjectScale(1);
 }
 
-void ShaderProgram::setColorMask(GLcolorRGB color) {
+void ShaderProgram::setColorMask(const GLcolorRGB& color) {
     colorMask.value.x = color.r;
     colorMask.value.y = color.g;
     colorMask.value.z = color.b;

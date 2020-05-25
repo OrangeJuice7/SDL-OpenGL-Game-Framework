@@ -58,7 +58,7 @@ void SpriteManager::deinit() {
     }
 }
 
-Sprite* SpriteManager::getSprite(SpriteId id) {
+Sprite* SpriteManager::getSprite(SpriteId id) const {
     if (id == SPRITE_ID_COUNT) return nullptr;
     return sprites[id];
 }

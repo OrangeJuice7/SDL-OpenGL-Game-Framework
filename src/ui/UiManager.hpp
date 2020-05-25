@@ -51,7 +51,7 @@ class UiManager {
         bool init();
         void deinit();
 
-        Uint32 getUiTick();
+        Uint32 getUiTick() const;
         void sleep(float duration); // in seconds, capped at millisecond precision
 
         // Collect hardware inputs and pass them to scene for interpretation
@@ -71,7 +71,7 @@ class UiManager {
         void setDrawToGameSpace(); // Prepare to draw to the game scene: use game coords
         void setDrawToScreenSpace(); // Prepare to draw to the screen: use screen coords (i.e. pixels), following OpenGL coord specs (i.e. +x/+y = right/up)
 
-        void setColorMask(GLcolorRGB color);
+        void setColorMask(const GLcolorRGB& color);
         void resetColorMask();
 
         void setFont(FontId fontId, FontsizeId fontsizeId);

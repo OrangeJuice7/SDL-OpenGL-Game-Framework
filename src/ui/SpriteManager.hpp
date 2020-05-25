@@ -36,7 +36,7 @@ class SpriteManager {
 
         // Gets the sprite specified by the id.
         // Returns nullptr if id is out of range.
-        Sprite* getSprite(SpriteId id);
+        Sprite* getSprite(SpriteId id) const;
 };
 
 #endif // SPRITE_MANAGER_HPP

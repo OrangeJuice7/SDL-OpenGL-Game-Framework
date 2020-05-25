@@ -87,10 +87,10 @@ class TextManager {
 
         // Getters of useful params
         // Versions with missing ID params means the function will return the value for the current active font
-        GLfloat getTextLength(FontId fontId, FontsizeId fontsizeId, const char* text);
-        GLfloat getTextLength(const char* text);
-        GLfloat getFontHeight(FontId fontId, FontsizeId fontsizeId);
-        GLfloat getFontHeight();
+        GLfloat getTextLength(FontId fontId, FontsizeId fontsizeId, const char* text) const;
+        GLfloat getTextLength(const char* text) const;
+        GLfloat getFontHeight(FontId fontId, FontsizeId fontsizeId) const;
+        GLfloat getFontHeight() const;
 
         void setActiveFont(FontId fontId, FontsizeId fontsizeId);
         // Later: load font texture atlas into GPU

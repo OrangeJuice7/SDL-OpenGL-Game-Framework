@@ -109,7 +109,7 @@ class ShaderProgram {
         bool bind();
         void unbind();
 
-        GLuint getID();
+        GLuint getID() const;
 
         // Reset all uniform values in the shader
         // Assumes this shader is already bound
@@ -123,7 +123,7 @@ class ShaderProgram {
         void setObjectScale(GLfloat xscale, GLfloat yscale); // scale per dimension
         void resetTransform();
 
-        void setColorMask(GLcolorRGB color);
+        void setColorMask(const GLcolorRGB& color);
         void resetColorMask();
 
         void setFlags(GLuint flags); // Note: will reset previously set flags
