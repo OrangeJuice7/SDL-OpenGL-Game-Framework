@@ -15,11 +15,12 @@ Windows:
 - Clone this repo to your computer.
 - Grab the libraries that are stated in the readme and put the .dlls in the same location as where the executable will be.
 	- DLLs you will need: `freetype`, `SDL2`, `zlib1`
-- Make sure yoru C++ compiler knows where to find the libraries and headers.
+	- If you are using Code::Blocks, you can leave the DLLs in the root directory.
+- Make sure your C++ compiler knows where to find the libraries and headers.
 - Compile the source code with these options: `-DGLEW_STATIC -lmingw32 -lSDL2main -lSDL2 -lglew32s -lSOIL -lopengl32 -lfreetype`
 	- This is already set up for you if you have Code::Blocks on your computer: Just open the .cbp project file.
 	- Note: The MinGW compiler will give a warning saying ".drectve \`/DEFAULTLIB:"LIBCMT" /DEFAULTLIB:"OLDNAMES" ' unrecognized". This warning is, from what I've read, due to an incompatibility with GLEW and MinGW, and is harmless. You just have to ignore it.
-- Run the program and interact with it using the mouse and keyboard.
+- Run the program and interact with it using the mouse and keyboard. Try out the features in the next subsection.
 
 ### Demo Features / Verifying the setup
 - Currently, <kbd>Q</kbd> switches between the `MenuScene` and `GameScene`, as does clicking the Widget at the topleft of the screen.
@@ -36,6 +37,7 @@ Windows:
 
 
 ## Design
+This section describes how the code base is organized.
 
 ### Architecture
 ![](ArchitectureDiagram.png)
@@ -70,7 +72,7 @@ The `UiManager` handles all low-level I/O, including setting up I/O functionalit
 
 The `UiManager` contains several subclasses to handle specialized areas:
 
-- `MouseState`, `KeyboardState` record the input state of the input devices.
+- `MouseState`, `KeyboardState` are used to record the input state of the input devices.
 - `ShaderProgram` defines and provides an interface for the shader program used by OpenGL. In particular, it helps to load and compile GLSL shader code, and defines an interface to load uniform values into them.
 - `SpriteManager` handles `Sprite`s: all graphical elements are `Sprite`s. There are two main kinds of `Sprites`: `TexturedSprite`s which host and render a texture, and `GeometricSprite`s which render coloured geometric primitives.
 	- `Texture`s handle individual image loading and handling with OpenGL.
