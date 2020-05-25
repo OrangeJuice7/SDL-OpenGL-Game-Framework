@@ -2,7 +2,9 @@
 ## Introduction
 
 A generic project framework using C++, SDL and OpenGL for making 2D games. Designed to be modular and portable.
-Suitable for building a variety of genres, such as: Arcade or shmup, platformer, RPG/roguelike, strategy, board or puzzle, building or management.
+Suitable for building a variety of genres, such as: Arcade or shmup, RPG/roguelike, strategy, building or management.
+
+Read the guide [here](guide.md).
 
 
 
@@ -20,9 +22,6 @@ The authors would like to express appreciation for the following tutorials for t
 
 ### 3rd-party Textures
 - LearnOpenGL: [crate.jpg](https://learnopengl.com/img/textures/container.jpg), [awesomeface.png](https://learnopengl.com/img/textures/awesomeface.png)
-
-### 3rd-party Audio
-(none)
 
 ### Other Resources Used
 - [Commissioner font](https://fontesk.com/commissioner-typeface/) (OFL)
