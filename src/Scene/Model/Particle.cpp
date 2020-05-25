@@ -1,7 +1,7 @@
 #include "Particle.hpp"
 
 #include "../../basicmath.hpp"
-#include "../../MainUiManager/MainUiManager.hpp"
+#include "../../ui/UiManager.hpp"
 
 Particle::Particle() : Particle(0, 0, 0, 0, 1, 1, 1) {}
 Particle::Particle(float x, float y, float xvel, float yvel, float radius, float maxLife, float mass)
@@ -37,20 +37,10 @@ void Particle::doTick() {
     mass *= .95f;
 }
 
-void Particle::draw(
-        std::function<void(int&, int&, float, float)> gameToScreenCoords,
-        std::function<float(float)> gameToScreenLength,
-        MainUiManager *uiManager) {
-
-    float r = gameToScreenLength(getRadius());
-    int sx, sy;
-    gameToScreenCoords(sx, sy, x, y);
-
-    float a = getLifeFraction()*0x100;
-    if (a < 0) a = 0;
-    else if (a > 0xff) a = 0xff;
-
-    uiManager->setDrawColor(0xff, (Uint8)(a), 0x00);
-    uiManager->drawLineCircle(sx, sy, r);
+void Particle::draw(UiManager &uiManager) {
+    float a = getLifeFraction();
+    uiManager.setColorMask({1, a, 0});
+    uiManager.setObjectScale(getRadius());
+    uiManager.drawSprite(x, y, SPRITE_ID_CIRCLE);
 }
 

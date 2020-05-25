@@ -27,10 +27,7 @@ class Mob : public Entity {
         float getMass() const;
 
         virtual void doTick();
-        virtual void draw(
-                std::function<void(int&, int&, float, float)> gameToScreenCoords,
-                std::function<float(float)> gameToScreenLength,
-                MainUiManager *uiManager);
+        virtual void draw(UiManager &uiManager);
 };
 
 #endif // MOB_HPP

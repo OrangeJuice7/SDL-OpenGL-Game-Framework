@@ -1,7 +1,7 @@
 #include "Projectile.hpp"
 
 #include "../../basicmath.hpp"
-#include "../../MainUiManager/MainUiManager.hpp"
+#include "../../ui/UiManager.hpp"
 
 ProjectileData::ProjectileData(float radius, float maxLife, float mass, float damage, const ExplosionData* explosionData) {
     this->radius = radius;
@@ -51,20 +51,10 @@ void Projectile::doTick() {
         ( 0.0f - yvel)*.0001f);
 }
 
-void Projectile::draw(
-        std::function<void(int&, int&, float, float)> gameToScreenCoords,
-        std::function<float(float)> gameToScreenLength,
-        MainUiManager *uiManager) {
-
-    float r = gameToScreenLength(getRadius());
-    int sx, sy;
-    gameToScreenCoords(sx, sy, x, y);
-
-    float a = getLifeFraction()*0x100;
-    if (a < 0) a = 0;
-    else if (a > 0xff) a = 0xff;
-
-    uiManager->setDrawColor(0xff, (Uint8)(a), 0x00);
-    uiManager->drawLineCircle(sx, sy, r);
+void Projectile::draw(UiManager &uiManager) {
+    float a = getLifeFraction();
+    uiManager.setColorMask({1, a, 0});
+    uiManager.setObjectScale(getRadius());
+    uiManager.drawSprite(x, y, SPRITE_ID_CIRCLE);
 }
 

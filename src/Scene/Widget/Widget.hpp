@@ -4,7 +4,7 @@
 #include <functional>
 #include <forward_list>
 #include <SDL2/SDL.h> // for SDL_Rect
-class MainUiManager;
+class UiManager;
 
 /**
  *  A Widget is fundamentally a specified section of the screen that (optionally) detects mouse clicks.
@@ -57,7 +57,7 @@ class Widget {
 
 		// The function that this widget executes on draw
 		// If set to nullptr, doesn't draw anything
-		std::function<void(const Widget*, MainUiManager*)> drawFunc;
+		std::function<void(const Widget&, UiManager&)> drawFunc;
 
 		// psRect: Parent screen rect, (i.e. also actual screen coords with topleft alignment)
 		void calcScreenRect(const SDL_Rect &psRect);
@@ -71,14 +71,14 @@ class Widget {
 			bool clickable,
 			std::function<void()> funcOnClick,
             std::function<void()> funcOnRelease,
-			std::function<void(const Widget*, MainUiManager*)> drawFunc );
+			std::function<void(const Widget&, UiManager&)> drawFunc );
 
         // Unclickable Widget constructor
         Widget(
 			SDL_Rect rect,
 			HorizontalAlignment horzAlign,
 			VerticalAlignment vertAlign,
-			std::function<void(const Widget*, MainUiManager*)> drawFunc );
+			std::function<void(const Widget&, UiManager&)> drawFunc );
 
         // Click but no release constructor
         Widget(
@@ -86,7 +86,7 @@ class Widget {
 			HorizontalAlignment horzAlign,
 			VerticalAlignment vertAlign,
 			std::function<void()> funcOnClick,
-			std::function<void(const Widget*, MainUiManager*)> drawFunc );
+			std::function<void(const Widget&, UiManager&)> drawFunc );
 
         // Click and release constructor
         Widget(
@@ -95,7 +95,7 @@ class Widget {
 			VerticalAlignment vertAlign,
 			std::function<void()> funcOnClick,
             std::function<void()> funcOnRelease,
-			std::function<void(const Widget*, MainUiManager*)> drawFunc );
+			std::function<void(const Widget&, UiManager&)> drawFunc );
 
 		virtual ~Widget();
 
@@ -122,9 +122,9 @@ class Widget {
 		void update(const SDL_Rect &psRect);
 
 		/**  Draw  **/
-		void renderText(MainUiManager *uiManager, const char *text, SDL_Color color) const;
+		void renderText(UiManager &uiManager, const char *text) const;
 
-        void draw(MainUiManager *uiManager) const;
+        void draw(UiManager &uiManager) const;
 };
 
 #endif // WIDGET_HPP

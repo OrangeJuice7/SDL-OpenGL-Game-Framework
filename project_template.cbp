@@ -13,7 +13,6 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
-					<Add directory="include" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -39,28 +38,15 @@
 			<Add option="-Wno-unused-parameter" />
 			<Add option="-Wall" />
 			<Add option="-std=c++11" />
+			<Add option="-DGLEW_STATIC" />
 		</Compiler>
 		<Linker>
-			<Add option="-lmingw32 -lSDL2main -lSDL2 -lSDL2_ttf -lSDL2_image" />
+			<Add option="-lmingw32 -lSDL2main -lSDL2 -lglew32s -lSOIL -lopengl32 -lfreetype" />
 		</Linker>
 		<Unit filename="src/MainApp/MainApp.cpp" />
 		<Unit filename="src/MainApp/MainApp.hpp" />
 		<Unit filename="src/MainApp/MessageHandler.cpp" />
 		<Unit filename="src/MainApp/MessageHandler.hpp" />
-		<Unit filename="src/MainUiManager/Init.cpp" />
-		<Unit filename="src/MainUiManager/InitFont.cpp" />
-		<Unit filename="src/MainUiManager/InitRenderer.cpp" />
-		<Unit filename="src/MainUiManager/InitSDL.cpp" />
-		<Unit filename="src/MainUiManager/InitTextures.cpp" />
-		<Unit filename="src/MainUiManager/InitWindow.cpp" />
-		<Unit filename="src/MainUiManager/Input.cpp" />
-		<Unit filename="src/MainUiManager/InputState.cpp" />
-		<Unit filename="src/MainUiManager/InputState.hpp" />
-		<Unit filename="src/MainUiManager/MainUiManager.cpp" />
-		<Unit filename="src/MainUiManager/MainUiManager.hpp" />
-		<Unit filename="src/MainUiManager/Render.cpp" />
-		<Unit filename="src/MainUiManager/Texture.cpp" />
-		<Unit filename="src/MainUiManager/Texture.hpp" />
 		<Unit filename="src/Message/Message.cpp" />
 		<Unit filename="src/Message/Message.hpp" />
 		<Unit filename="src/Message/SceneTransitMessage.cpp" />
@@ -99,6 +85,34 @@
 		<Unit filename="src/basicmath.cpp" />
 		<Unit filename="src/basicmath.hpp" />
 		<Unit filename="src/main.cpp" />
+		<Unit filename="src/ui/Draw.cpp" />
+		<Unit filename="src/ui/GLUtil.cpp" />
+		<Unit filename="src/ui/GLUtil.hpp" />
+		<Unit filename="src/ui/Init.cpp" />
+		<Unit filename="src/ui/InitOpenGL.cpp" />
+		<Unit filename="src/ui/InitSDL.cpp" />
+		<Unit filename="src/ui/InitWindow.cpp" />
+		<Unit filename="src/ui/Input.cpp" />
+		<Unit filename="src/ui/InputState.cpp" />
+		<Unit filename="src/ui/InputState.hpp" />
+		<Unit filename="src/ui/ModelCamera.cpp" />
+		<Unit filename="src/ui/ModelCamera.hpp" />
+		<Unit filename="src/ui/ShaderProgram.cpp" />
+		<Unit filename="src/ui/ShaderProgram.hpp" />
+		<Unit filename="src/ui/Sprite.cpp" />
+		<Unit filename="src/ui/Sprite.hpp" />
+		<Unit filename="src/ui/SpriteId.hpp" />
+		<Unit filename="src/ui/SpriteLoad.cpp" />
+		<Unit filename="src/ui/SpriteManager.cpp" />
+		<Unit filename="src/ui/SpriteManager.hpp" />
+		<Unit filename="src/ui/TextManager.cpp" />
+		<Unit filename="src/ui/TextManager.hpp" />
+		<Unit filename="src/ui/Texture.cpp" />
+		<Unit filename="src/ui/Texture.hpp" />
+		<Unit filename="src/ui/UiManager.cpp" />
+		<Unit filename="src/ui/UiManager.hpp" />
+		<Unit filename="src/ui/default.frag" />
+		<Unit filename="src/ui/default.vert" />
 		<Extensions>
 			<code_completion />
 			<envvars />

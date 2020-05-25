@@ -2,7 +2,7 @@
 
 #include <SDL2/SDL.h>
 #include "../../basicmath.hpp"
-#include "../../MainUiManager/MainUiManager.hpp"
+#include "../../ui/UiManager.hpp"
 
 ImmovableEntity::ImmovableEntity() : ImmovableEntity(0, 0, 1) {}
 ImmovableEntity::ImmovableEntity(float x, float y, float life) {
@@ -42,36 +42,22 @@ void ImmovableEntity::kill() {
 
 void ImmovableEntity::doTick() {}
 
-bool ImmovableEntity::isWithinScreen(
-        std::function<void(int&, int&, float, float)> gameToScreenCoords,
-        MainUiManager *uiManager) const {
-
+bool ImmovableEntity::isWithinScreen(UiManager &uiManager) const {
     // Bounding box check
-    int bx, bX, by, bY;
+    float bx, by, bX, bY;
     float r = getRadius();
-    gameToScreenCoords(bx, by, x-r, y+r);
-    gameToScreenCoords(bX, bY, x+r, y-r);
+    uiManager.gameToScreenCoords(bx, by, x-r, y-r);
+    uiManager.gameToScreenCoords(bX, bY, x+r, y+r);
 
-    return (bX >= 0 && bx < uiManager->SCREEN_RECT.w &&
-            bY >= 0 && by < uiManager->SCREEN_RECT.h );
+    return (bX >= 0 && bx < uiManager.SCREEN_RECT.w &&
+            bY >= 0 && by < uiManager.SCREEN_RECT.h );
 }
-void ImmovableEntity::draw(
-        std::function<void(int&, int&, float, float)> gameToScreenCoords,
-        std::function<float(float)> gameToScreenLength,
-        MainUiManager *uiManager) {
+void ImmovableEntity::draw(UiManager &uiManager) {
 
-    // Just draw a magenta rect that fades with life, as a debug display
-
-    float r = getRadius();
-
-    SDL_Rect rect;
-    gameToScreenCoords(rect.x, rect.y, x-r, y+r);
-    gameToScreenCoords(rect.w, rect.h, x+r, y-r);
-    rect.w -= rect.x;
-    rect.h -= rect.y;
-
-    uiManager->setDrawColor(0xff, 0x00, 0xff, (Uint8)(getLifeFraction()*0xff) );
-    uiManager->drawFillRect(rect);
+    float a = getLifeFraction();
+    uiManager.setColorMask({a, 0, a});
+    uiManager.setObjectScale(getRadius());
+    uiManager.drawSprite(x, y, SPRITE_ID_CIRCLE);
 }
 
 

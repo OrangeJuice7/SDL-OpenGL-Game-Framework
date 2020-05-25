@@ -1,13 +1,13 @@
-#include "MainUiManager.hpp"
+#include "UiManager.hpp"
 
-bool MainUiManager::initWindow() {
+bool UiManager::initWindow() {
     mainWindow = SDL_CreateWindow(
             WINDOW_TITLE,
             SDL_WINDOWPOS_UNDEFINED,
             SDL_WINDOWPOS_UNDEFINED,
             SCREEN_WIDTH,
             SCREEN_HEIGHT,
-            SDL_WINDOW_SHOWN);
+            SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
 
     if (mainWindow == NULL) {
         return false;
@@ -16,7 +16,7 @@ bool MainUiManager::initWindow() {
     return true;
 }
 
-void MainUiManager::deinitWindow() {
+void UiManager::deinitWindow() {
     SDL_DestroyWindow(mainWindow);
     mainWindow = NULL;
 }

@@ -2,7 +2,7 @@
 #define WIDGET_MANAGER_HPP
 
 #include <vector>
-class MainUiManager;
+class UiManager;
 class Widget;
 
 class WidgetManager {
@@ -23,7 +23,7 @@ class WidgetManager {
         bool click();
         bool releaseMouse();
 
-        void draw(MainUiManager *uiManager);
+        void draw(UiManager &uiManager);
 };
 
 #endif // WIDGET_MANAGER_HPP

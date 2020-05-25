@@ -4,7 +4,7 @@
 #include <forward_list>
 #include <functional>
 #include "../../basicmath.hpp"
-class MainUiManager;
+class UiManager;
 
 template <class TEntity>
 class EntityManager {
@@ -25,7 +25,7 @@ class EntityManager {
         void clearEntities();
 
         void doTick();
-        void doTick(std::function<void(const TEntity*)> entityDeletedFunc); // Lets the parent dereference any entity it might be pointing to that has been deleted
+        void doTick(std::function<void(const TEntity&)> entityDeletedFunc); // Lets the parent dereference any entity it might be pointing to that has been deleted
 
         void checkCollisionsSelf(
                 std::function<void(TEntity&, TEntity&)> collisionFunc );
@@ -37,10 +37,7 @@ class EntityManager {
 
         TEntity* pickEntity(float x, float y);
 
-        void draw(
-                std::function<void(int&, int&, float, float)> gameToScreenCoords,
-                std::function<float(float)> gameToScreenLength,
-                MainUiManager *uiManager);
+        void draw(UiManager &uiManager);
 };
 
 
@@ -77,11 +74,11 @@ void EntityManager<TEntity>::doTick() {
     }
 }
 template <class TEntity>
-void EntityManager<TEntity>::doTick(std::function<void(const TEntity*)> entityDeletedFunc) {
+void EntityManager<TEntity>::doTick(std::function<void(const TEntity&)> entityDeletedFunc) {
     // Remove dead entities
     entities.remove_if( [this, entityDeletedFunc](const TEntity& entity) -> bool {
         if (entity.isDead()) {
-            entityDeletedFunc(&entity);
+            entityDeletedFunc(entity);
             return true;
         } else return false;
     } );
@@ -145,15 +142,10 @@ TEntity* EntityManager<TEntity>::pickEntity(float x, float y) {
 }
 
 template <class TEntity>
-void EntityManager<TEntity>::draw(
-        std::function<void(int&, int&, float, float)> gameToScreenCoords,
-        std::function<float(float)> gameToScreenLength,
-        MainUiManager *uiManager) {
-
-    // Implement draw-culling some time
+void EntityManager<TEntity>::draw(UiManager &uiManager) {
     for (TEntity &entity : entities) {
-        if (entity.isWithinScreen(gameToScreenCoords, uiManager))
-            entity.draw(gameToScreenCoords, gameToScreenLength, uiManager);
+        if (entity.isWithinScreen(uiManager))
+            entity.draw(uiManager);
     }
 }
 

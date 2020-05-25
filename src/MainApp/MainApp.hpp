@@ -2,12 +2,12 @@
 #define MAIN_APP_HPP_INCLUDED
 
 #include "MessageHandler.hpp"
-#include "../MainUiManager/MainUiManager.hpp"
+#include "../ui/UiManager.hpp"
 class Scene;
 
 class MainApp {
     protected:
-        MainUiManager uiManager;
+        UiManager uiManager;
         Scene *currScene; // should always exist
 
         bool quitFlag;

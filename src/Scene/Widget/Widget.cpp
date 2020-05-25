@@ -1,12 +1,12 @@
 #include "Widget.hpp"
 
-#include "../../MainUiManager/MainUiManager.hpp"
+#include "../../ui/UiManager.hpp"
 
 Widget::Widget(
         SDL_Rect rect,
         HorizontalAlignment horzAlign,
         VerticalAlignment vertAlign,
-        std::function<void(const Widget*, MainUiManager*)> drawFunc )
+        std::function<void(const Widget&, UiManager&)> drawFunc )
 
         : Widget(rect, horzAlign, vertAlign, false, nullptr, nullptr, drawFunc) {}
 
@@ -15,7 +15,7 @@ Widget::Widget(
         HorizontalAlignment horzAlign,
         VerticalAlignment vertAlign,
         std::function<void()> funcOnClick,
-        std::function<void(const Widget*, MainUiManager*)> drawFunc )
+        std::function<void(const Widget&, UiManager&)> drawFunc )
 
         : Widget(rect, horzAlign, vertAlign, true, funcOnClick, nullptr, drawFunc) {}
 
@@ -25,7 +25,7 @@ Widget::Widget(
         VerticalAlignment vertAlign,
         std::function<void()> funcOnClick,
         std::function<void()> funcOnRelease,
-        std::function<void(const Widget*, MainUiManager*)> drawFunc )
+        std::function<void(const Widget&, UiManager&)> drawFunc )
 
         : Widget(rect, horzAlign, vertAlign, true, funcOnClick, funcOnRelease, drawFunc) {}
 
@@ -36,7 +36,7 @@ Widget::Widget(
 		bool clickable,
 		std::function<void()> funcOnClick,
 		std::function<void()> funcOnRelease,
-		std::function<void(const Widget*, MainUiManager*)> drawFunc ) {
+		std::function<void(const Widget&, UiManager&)> drawFunc ) {
 
     this->rect = rect;
     this->horzAlign = horzAlign;
@@ -81,9 +81,9 @@ void Widget::calcScreenRect(const SDL_Rect &psRect) {
 		case HORZALIGN_RIGHT : screenRect.x += psRect.w   - rect.x - rect.w  ; break;
 	}
 	switch (vertAlign) {
-		case VERTALIGN_TOP   : screenRect.y += rect.y; break;
+		case VERTALIGN_BOTTOM: screenRect.y += rect.y; break;
 		case VERTALIGN_CENTER: screenRect.y += psRect.h/2 + rect.y - rect.h/2; break;
-		case VERTALIGN_BOTTOM: screenRect.y += psRect.h   - rect.y - rect.h  ; break;
+		case VERTALIGN_TOP   : screenRect.y += psRect.h   - rect.y - rect.h  ; break;
 	}
 }
 
@@ -129,20 +129,21 @@ void Widget::update(const SDL_Rect &psRect) {
 	}
 }
 
-void Widget::renderText(MainUiManager *uiManager, const char *text, SDL_Color color) const {
+void Widget::renderText(UiManager &uiManager, const char *text) const {
     // Implement text wrap later
 
-    uiManager->renderTextToScreen(text, color, screenRect.x, screenRect.y);
+    uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
+    uiManager.drawText(screenRect.x, screenRect.y, text);
 }
 
-void Widget::draw(MainUiManager *uiManager) const {
+void Widget::draw(UiManager &uiManager) const {
 	if (getClickable()) {
-        if (getActive()) uiManager->setDrawColor(0x60, 0x60, 0x00);
-        else             uiManager->setDrawColor(0x00, 0x40, 0x60);
-        uiManager->drawFillRect(screenRect);
+        if (getActive()) uiManager.setColorMask({.4f, .4f, .0f});
+        else             uiManager.setColorMask({.0f, .3f, .4f});
+        uiManager.drawSpriteStretched(screenRect.x, screenRect.y, screenRect.w, screenRect.h, SPRITE_ID_WIDGET_BG_DEBUG);
     }
 
-	if (drawFunc) drawFunc(this, uiManager);
+	if (drawFunc) drawFunc(*this, uiManager);
 
 	// call draw for all the children
 	for (Widget* child : children) {

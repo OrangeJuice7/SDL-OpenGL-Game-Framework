@@ -3,9 +3,9 @@
 
 #include <cstdint>
 #include <SDL2/SDL.h>
-#include "../MainUiManager/InputState.hpp"
+#include "../ui/InputState.hpp"
 #include "Widget/WidgetManager.hpp"
-class MainUiManager;
+class UiManager;
 class ModelManager;
 
 class Scene {
@@ -37,10 +37,10 @@ class Scene {
         virtual void handleMouseWheelEvent(Sint32 delta); // positive delta: away from the user
 
         // Draws to the uiManager (called by the uiManager)
-        void draw(MainUiManager *uiManager);
+        void draw(UiManager &uiManager);
 
         /**  Model  **/
-        uint32_t getModelTick();
+        uint32_t getModelTick() const;
         void doTick();
 };
 

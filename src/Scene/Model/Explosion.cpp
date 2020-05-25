@@ -1,7 +1,7 @@
 #include "Explosion.hpp"
 
 #include "../../basicmath.hpp"
-#include "../../MainUiManager/MainUiManager.hpp"
+#include "../../ui/UiManager.hpp"
 
 ExplosionData::ExplosionData(float radius, float maxLife, float maxDamage) {
     this->radius = radius;
@@ -54,20 +54,10 @@ void Explosion::doTick() {
     --life;
 }
 
-void Explosion::draw(
-        std::function<void(int&, int&, float, float)> gameToScreenCoords,
-        std::function<float(float)> gameToScreenLength,
-        MainUiManager *uiManager) {
-
-    float r = gameToScreenLength(getRadius());
-    int sx, sy;
-    gameToScreenCoords(sx, sy, x, y);
-
-    float a = getLifeFraction()*0x100;
-    if (a < 0) a = 0;
-    else if (a > 0xff) a = 0xff;
-
-    uiManager->setDrawColor(0xff, (Uint8)(a), 0x00);
-    uiManager->drawLineCircle(sx, sy, r);
+void Explosion::draw(UiManager &uiManager) {
+    float a = getLifeFraction();
+    uiManager.setColorMask({1, a, 0});
+    uiManager.setObjectScale(getRadius());
+    uiManager.drawSprite(x, y, SPRITE_ID_CIRCLE);
 }
 

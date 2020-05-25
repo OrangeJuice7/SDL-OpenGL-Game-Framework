@@ -1,10 +1,10 @@
-#include "MainUiManager.hpp"
+#include "UiManager.hpp"
 
 #include "../Scene/Scene.hpp"
 #include "../MainApp/MessageHandler.hpp"
 #include "../Message/Message.hpp"
 
-void MainUiManager::getInputs(Scene* scene) {
+void UiManager::getInputs(Scene* scene) {
     SDL_Event event;
 
     while (SDL_PollEvent(&event) != 0) {
@@ -33,6 +33,7 @@ void MainUiManager::getInputs(Scene* scene) {
 
             case SDL_MOUSEMOTION:
                 SDL_GetMouseState(&mouseState.x, &mouseState.y);
+                mouseState.y = SCREEN_HEIGHT - mouseState.y; // Flip y-direction to be consistent with OpenGL
                 break;
 
             case SDL_MOUSEBUTTONDOWN:
@@ -60,6 +61,8 @@ void MainUiManager::getInputs(Scene* scene) {
     }
 
     // Update the scene with the current input state (called every frame because even if the input state doesn't change, the scene may)
+    // Todo: Let the Scene remember its own state, which is triggered based on the input presses?
+    screenToGameCoords(mouseState.gameX, mouseState.gameY, mouseState.x, mouseState.y);
     scene->updateFromMouse(SCREEN_RECT, mouseState);
     scene->updateFromKeys(keyboardState);
 }

@@ -1,6 +1,6 @@
 #include "WidgetManager.hpp"
 
-#include "../../MainUiManager/MainUiManager.hpp"
+#include "../../ui/UiManager.hpp"
 #include "Widget.hpp"
 
 WidgetManager::WidgetManager() {
@@ -65,9 +65,9 @@ bool WidgetManager::releaseMouse() {
     return false;
 }
 
-void WidgetManager::draw(MainUiManager *uiManager) {
+void WidgetManager::draw(UiManager &uiManager) {
     for (Widget* widget : widgets) {
-		widget->update(uiManager->SCREEN_RECT);
+		widget->update(uiManager.SCREEN_RECT);
 	}
     for (Widget* widget : widgets) {
 		widget->draw(uiManager);

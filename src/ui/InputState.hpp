@@ -5,7 +5,8 @@
 #include <unordered_map>
 
 struct MouseState {
-    int x, y;
+    int x, y; // Screen coords, +x/+y = right/up
+    float gameX, gameY; // Translation into game coords
     bool isLDown,
          isRDown,
          isMDown;
