@@ -81,9 +81,9 @@ void Widget::calcScreenRect(const SDL_Rect &psRect) {
 		case HORZALIGN_RIGHT : screenRect.x += psRect.w   - rect.x - rect.w  ; break;
 	}
 	switch (vertAlign) {
-		case VERTALIGN_TOP   : screenRect.y += rect.y; break;
+		case VERTALIGN_BOTTOM: screenRect.y += rect.y; break;
 		case VERTALIGN_CENTER: screenRect.y += psRect.h/2 + rect.y - rect.h/2; break;
-		case VERTALIGN_BOTTOM: screenRect.y += psRect.h   - rect.y - rect.h  ; break;
+		case VERTALIGN_TOP   : screenRect.y += psRect.h   - rect.y - rect.h  ; break;
 	}
 }
 
