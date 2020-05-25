@@ -110,6 +110,7 @@ class ShaderProgram {
         void unbind();
 
         GLuint getID() const;
+        bool hasFlag(GLuint flag) const;
 
         // Reset all uniform values in the shader
         // Assumes this shader is already bound
@@ -117,9 +118,9 @@ class ShaderProgram {
 
         // Update the uniforms into the shaders
         // Assumes this shader is already bound
-        void setTranslate(GLfloat x, GLfloat y); // In coords (+x/+y direction is right/up)
-        void setMapScale(GLfloat scale); // Length of one coord in pixels
-        void setObjectScale(GLfloat scale); // Scale of the object in coords
+        void setTranslate(GLfloat x, GLfloat y); // In game coords (+x/+y direction is right/up)
+        void setMapScale(GLfloat scale); // Length of one game coord in pixels
+        void setObjectScale(GLfloat scale); // Scale of the object in game coords
         void setObjectScale(GLfloat xscale, GLfloat yscale); // scale per dimension
         void resetTransform();
 

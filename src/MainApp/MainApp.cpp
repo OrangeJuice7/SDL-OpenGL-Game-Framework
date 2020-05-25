@@ -103,6 +103,8 @@ void MainApp::quit() {
 }
 
 void MainApp::transitScene(Scene* newScene) {
+    if (newScene == nullptr) return; // Reject transiting to a nullptr Scene
+
     delete currScene;
     currScene = newScene;
 }

@@ -1,6 +1,5 @@
 #include "UiManager.hpp"
 
-#include <cmath>
 #include "../Scene/Scene.hpp"
 
 UiManager::UiManager(const char *windowTitle, int screenWidth, int screenHeight)
@@ -9,12 +8,14 @@ UiManager::UiManager(const char *windowTitle, int screenWidth, int screenHeight)
         , textManager()
         , mouseState()
         , keyboardState()
+        , _dummy_camera(1)
         , WINDOW_TITLE(windowTitle)
         , SCREEN_WIDTH(screenWidth)
         , SCREEN_HEIGHT(screenHeight)
         , SCREEN_RECT{0, 0, SCREEN_WIDTH, SCREEN_HEIGHT} {
 
-    mainWindow = NULL;
+    mainWindow = nullptr;
+    camera = &_dummy_camera;
 
     uiTick = 0;
     fps = 0;
@@ -25,12 +26,21 @@ Uint32 UiManager::getUiTick() const {
     return uiTick;
 }
 
-void UiManager::sleep(float duration) {
-    SDL_Delay(duration*1000);
+Sprite* UiManager::getSprite(SpriteId id) const {
+    return spriteManager.getSprite(id);
 }
 
-Sprite* UiManager::getSprite(SpriteId id) {
-    return spriteManager.getSprite(id);
+void UiManager::screenToGameCoords(float& gameX, float& gameY, float screenX, float screenY) {
+    gameX = (screenX - SCREEN_WIDTH /2)/camera->getScale() + camera->getX();
+    gameY = (screenY - SCREEN_HEIGHT/2)/camera->getScale() + camera->getY();
+}
+void UiManager::gameToScreenCoords(float& screenX, float& screenY, float gameX, float gameY) {
+    screenX = (gameX - camera->getX())*camera->getScale() + SCREEN_WIDTH /2;
+    screenY = (gameY - camera->getY())*camera->getScale() + SCREEN_HEIGHT/2;
+}
+
+void UiManager::sleep(float duration) {
+    SDL_Delay(duration*1000);
 }
 
 void UiManager::draw(Scene* scene) {

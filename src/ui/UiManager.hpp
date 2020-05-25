@@ -8,6 +8,7 @@
 #include "SpriteManager.hpp"
 #include "TextManager.hpp"
 #include "InputState.hpp"
+#include "ModelCamera.hpp"
 class Scene;
 
 class UiManager {
@@ -26,6 +27,9 @@ class UiManager {
         KeyboardState keyboardState;
 
         // Utility
+        const ModelCamera *camera; // Reference to a ModelCamera in a Scene
+        ModelCamera _dummy_camera; // Exists only to make sure camera is not nullptr
+
         Uint32 uiTick;
 
         bool initSDL();
@@ -36,12 +40,15 @@ class UiManager {
         void deinitOpenGL();
         void deinitWindow();
 
-        Sprite* getSprite(SpriteId id);
+        Sprite* getSprite(SpriteId id) const;
 
     public:
         const char *WINDOW_TITLE;
+
+        // Screen dimensions
+        // Won't be constant anymore in the future for arbitrary window resizes
         const int SCREEN_WIDTH;
-        const int SCREEN_HEIGHT; // Won't be constant anymore in the future for arbitrary window resizes
+        const int SCREEN_HEIGHT;
         const SDL_Rect SCREEN_RECT;
 
         float fps; // For display purposes only; is written to by MainApp.
@@ -57,13 +64,19 @@ class UiManager {
         // Collect hardware inputs and pass them to scene for interpretation
         void getInputs(Scene* scene);
 
+        // Converts screen coords to game coords. Primarily used to convert mouse input.
+        // Screen coords are in the way OpenGL is specified to draw them (i.e. +x/+y = right/up, origin at lower left corner)
+        void screenToGameCoords(float& gameX, float& gameY, float screenX, float screenY);
+        // Converts game coords to screen coords. Primarily used to check if something is visible, and thus whether drawing can be skipped.
+        void gameToScreenCoords(float& screenX, float& screenY, float gameX, float gameY);
+
         // Draws the scene to screen
         void draw(Scene* scene);
 
         // Set draw parameters, defined in Render.cpp
         // (mainly just passes the info to this object's underlying ShaderProgram)
-        void setTranslate(GLfloat x, GLfloat y);
-        void setMapScale(GLfloat scale);
+        void setCamera(const ModelCamera &camera);
+        void setObjectTranslate(GLfloat x, GLfloat y);
         void setObjectScale(GLfloat scale);
         void setObjectScale(GLfloat xscale, GLfloat yscale);
         void resetTransform(); // Sets some values for the transformation that are guaranteed to be valid, though may not make objects visible

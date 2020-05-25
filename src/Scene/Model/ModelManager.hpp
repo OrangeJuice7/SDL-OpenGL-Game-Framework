@@ -4,43 +4,28 @@
 #include <cstdint>
 #include <functional>
 #include <SDL2/SDL.h>
+#include "../../ui/ModelCamera.hpp"
 class UiManager;
 
 class ModelManager {
     protected:
-        /**  Camera  **/
-        float modelScale, initialModelScale; // pixels per game coord
-        float cameraX, cameraY; // position of the center of the camera in game coords
-
         uint32_t modelTick;
 
         // Actual update function
         virtual void updateOneTick();
 
-        std::function<void(int&, int&, float, float)> getGameToScreenCoordsFunc(UiManager &uiManager);
-        std::function<float(float)> getGameToScreenLengthFunc();
-
     public:
+        ModelCamera camera; // Expose camera for free manipulation
+
         ModelManager(float initialModelScale);
         virtual ~ModelManager();
 
-        uint32_t getModelTick();
-        float getModelScale();
-        float getCameraX();
-        float getCameraY();
+        uint32_t getModelTick() const;
 
         // Wraps updateOneTick() in some admin
         void doTick();
 
         /**  UI  **/
-        void screenToGameCoords(const SDL_Rect &screenRect, float& gameX, float& gameY, int screenX, int screenY) const;
-        void gameToScreenCoords(const SDL_Rect &screenRect, int& screenX, int& screenY, float gameX, float gameY) const;
-        float gameToScreenLength(float gameLength) const;
-
-        void resetCamera();
-        void moveCamera(float x, float y); // Move the camera by (x,y)
-        void scaleCamera(float scale); // Scale the modelScale by a factor of scale
-
         // (x,y) in game coordinates
         virtual void pickActiveEntity(float x, float y);
         virtual void click();

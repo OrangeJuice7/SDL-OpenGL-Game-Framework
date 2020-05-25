@@ -37,11 +37,7 @@ void Particle::doTick() {
     mass *= .95f;
 }
 
-void Particle::draw(
-        std::function<void(int&, int&, float, float)> gameToScreenCoords,
-        std::function<float(float)> gameToScreenLength,
-        UiManager &uiManager) {
-
+void Particle::draw(UiManager &uiManager) {
     float a = getLifeFraction();
     uiManager.setColorMask({1, a, 0});
     uiManager.setObjectScale(getRadius());

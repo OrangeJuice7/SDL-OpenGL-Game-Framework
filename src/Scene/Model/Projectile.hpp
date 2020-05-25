@@ -35,10 +35,7 @@ class Projectile : public Entity {
         void damageEntity(ImmovableEntity &e);
 
         virtual void doTick();
-        virtual void draw(
-                std::function<void(int&, int&, float, float)> gameToScreenCoords,
-                std::function<float(float)> gameToScreenLength,
-                UiManager &uiManager);
+        virtual void draw(UiManager &uiManager);
 };
 
 #endif // PROJECTILE_HPP

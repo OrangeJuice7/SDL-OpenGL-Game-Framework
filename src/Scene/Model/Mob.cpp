@@ -36,11 +36,7 @@ void Mob::doTick() {
     }
 }
 
-void Mob::draw(
-        std::function<void(int&, int&, float, float)> gameToScreenCoords,
-        std::function<float(float)> gameToScreenLength,
-        UiManager &uiManager) {
-
+void Mob::draw(UiManager &uiManager) {
     float a = getLifeFraction();
     uiManager.setColorMask({.5f, a, a});
     uiManager.setObjectScale(getRadius());

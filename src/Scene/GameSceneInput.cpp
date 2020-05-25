@@ -10,11 +10,11 @@
 
 void GameScene::updateFromMouse(const SDL_Rect &screenRect, const MouseState &mouseState) {
     // Pan camera
-    {   float panAmount = cameraMoveRate / modelManager->getModelScale(); // convert pixels per frame to game coords per frame
-             if (mouseState.x <=              moveCameraScreenBorder) modelManager->moveCamera(-panAmount,0);
-        else if (mouseState.x >= screenRect.w-moveCameraScreenBorder) modelManager->moveCamera( panAmount,0);
-             if (mouseState.y <=              moveCameraScreenBorder) modelManager->moveCamera(0, panAmount);
-        else if (mouseState.y >= screenRect.h-moveCameraScreenBorder) modelManager->moveCamera(0,-panAmount);
+    {   float panAmount = cameraMoveRate / modelManager->camera.getScale(); // convert pixels per frame to game coords per frame
+             if (mouseState.x <=              moveCameraScreenBorder) modelManager->camera.move(-panAmount,0);
+        else if (mouseState.x >= screenRect.w-moveCameraScreenBorder) modelManager->camera.move( panAmount,0);
+             if (mouseState.y <=              moveCameraScreenBorder) modelManager->camera.move(0,-panAmount);
+        else if (mouseState.y >= screenRect.h-moveCameraScreenBorder) modelManager->camera.move(0, panAmount);
     }
 
     // Fire bullets
@@ -25,13 +25,9 @@ void GameScene::updateFromMouse(const SDL_Rect &screenRect, const MouseState &mo
               py = playerMob->y;
         float pr = playerMob->getRadius();
 
-        // Get cursor position in game coords
-        float gameX, gameY;
-        modelManager->screenToGameCoords(screenRect, gameX, gameY, mouseState.x, mouseState.y);
-
         // Get direction vector of cursor from player
-        float dirX = gameX - px,
-              dirY = gameY - py;
+        float dirX = mouseState.gameX - px,
+              dirY = mouseState.gameY - py;
 
         // Normalize direction vector
         float dist = getdist(dirX, dirY);
@@ -112,12 +108,12 @@ void GameScene::handleKeyUpEvent(SDL_Keycode key) {
 }
 
 void GameScene::handleMouseMDownEvent() {
-    modelManager->resetCamera();
+    modelManager->camera.reset();
 }
 void GameScene::handleMouseWheelEvent(Sint32 delta) {
     if (delta > 0) { // away from user
-        modelManager->scaleCamera(cameraScaleFactor); // zoom in
+        modelManager->camera.scale(cameraScaleFactor); // zoom in
     } else if (delta < 0) { // towards user
-        modelManager->scaleCamera(1/cameraScaleFactor); // zoom out
+        modelManager->camera.scale(1.f/cameraScaleFactor); // zoom out
     }
 }

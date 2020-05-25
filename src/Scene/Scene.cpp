@@ -14,7 +14,7 @@ Scene::~Scene() {
 	delete modelManager;
 }
 
-uint32_t Scene::getModelTick() {
+uint32_t Scene::getModelTick() const {
     return modelManager->getModelTick();
 }
 
@@ -37,10 +37,7 @@ void Scene::updateFromMouse(const SDL_Rect &screenRect, const MouseState &mouseS
     if ( widgetManager.pickActiveWidget(mouseState.x, mouseState.y) ) return;
 
 	// Check for Model intercepts
-	{   float gameX, gameY;
-        modelManager->screenToGameCoords(screenRect, gameX, gameY, mouseState.x, mouseState.y);
-        modelManager->pickActiveEntity(gameX, gameY);
-	}
+	modelManager->pickActiveEntity(mouseState.gameX, mouseState.gameY);
 }
 void Scene::updateFromKeys(const KeyboardState &keyboardState) {}
 void Scene::handleMouseLDownEvent() {
@@ -64,6 +61,10 @@ void Scene::handleMouseMUpEvent() {}
 void Scene::handleMouseWheelEvent(Sint32 delta) {}
 
 void Scene::draw(UiManager &uiManager) {
+    // Assign camera
+    // (Would it be better to do this on Scene load, rather than per draw call?)
+    uiManager.setCamera(modelManager->camera);
+
     // Draw model first
     uiManager.setDrawToGameSpace();
     modelManager->draw(uiManager);

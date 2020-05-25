@@ -51,11 +51,7 @@ void Projectile::doTick() {
         ( 0.0f - yvel)*.0001f);
 }
 
-void Projectile::draw(
-        std::function<void(int&, int&, float, float)> gameToScreenCoords,
-        std::function<float(float)> gameToScreenLength,
-        UiManager &uiManager) {
-
+void Projectile::draw(UiManager &uiManager) {
     float a = getLifeFraction();
     uiManager.setColorMask({1, a, 0});
     uiManager.setObjectScale(getRadius());

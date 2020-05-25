@@ -39,10 +39,6 @@ void main() {
 	// x2 because OpenGL by default takes the window to be coords -1 to 1, i.e. the window is 2 coords wide in each direction
     pos /= screenDimensions / 2.f;
 
-    // If orthographic, translate to bottom left corner
-	if (hasFlag(SHADER_FLAG_ORTHO_MODE))
-        pos -= vec2(1, 1);
-
     // Set gl_Position
     gl_Position = vec4(pos, 0, 1);
 

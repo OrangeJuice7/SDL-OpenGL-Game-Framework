@@ -237,6 +237,9 @@ void ShaderProgram::unbind() {
 GLuint ShaderProgram::getID() const {
     return id;
 }
+bool ShaderProgram::hasFlag(GLuint flag) const {
+    return (flags.value & flag); // non-zero means true
+}
 
 void ShaderProgram::resetUniforms() {
     resetTransform();

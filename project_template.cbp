@@ -95,6 +95,8 @@
 		<Unit filename="src/ui/Input.cpp" />
 		<Unit filename="src/ui/InputState.cpp" />
 		<Unit filename="src/ui/InputState.hpp" />
+		<Unit filename="src/ui/ModelCamera.cpp" />
+		<Unit filename="src/ui/ModelCamera.hpp" />
 		<Unit filename="src/ui/ShaderProgram.cpp" />
 		<Unit filename="src/ui/ShaderProgram.hpp" />
 		<Unit filename="src/ui/Sprite.cpp" />

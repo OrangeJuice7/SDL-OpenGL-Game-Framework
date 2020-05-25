@@ -25,13 +25,8 @@ class ImmovableEntity {
         void kill();
         virtual void doTick();
 
-        bool isWithinScreen(
-                std::function<void(int&, int&, float, float)> gameToScreenCoords,
-                UiManager &uiManager) const;
-        virtual void draw(
-                std::function<void(int&, int&, float, float)> gameToScreenCoords,
-                std::function<float(float)> gameToScreenLength,
-                UiManager &uiManager);
+        bool isWithinScreen(UiManager &uiManager) const; // currently defunct
+        virtual void draw(UiManager &uiManager);
 };
 
 class Entity : public ImmovableEntity {

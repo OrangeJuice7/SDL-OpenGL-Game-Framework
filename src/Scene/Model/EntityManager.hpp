@@ -37,10 +37,7 @@ class EntityManager {
 
         TEntity* pickEntity(float x, float y);
 
-        void draw(
-                std::function<void(int&, int&, float, float)> gameToScreenCoords,
-                std::function<float(float)> gameToScreenLength,
-                UiManager &uiManager);
+        void draw(UiManager &uiManager);
 };
 
 
@@ -145,15 +142,10 @@ TEntity* EntityManager<TEntity>::pickEntity(float x, float y) {
 }
 
 template <class TEntity>
-void EntityManager<TEntity>::draw(
-        std::function<void(int&, int&, float, float)> gameToScreenCoords,
-        std::function<float(float)> gameToScreenLength,
-        UiManager &uiManager) {
-
-    // Implement draw-culling some time
+void EntityManager<TEntity>::draw(UiManager &uiManager) {
     for (TEntity &entity : entities) {
-        if (entity.isWithinScreen(gameToScreenCoords, uiManager))
-            entity.draw(gameToScreenCoords, gameToScreenLength, uiManager);
+        if (entity.isWithinScreen(uiManager))
+            entity.draw(uiManager);
     }
 }
 

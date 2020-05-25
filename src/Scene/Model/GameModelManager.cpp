@@ -163,13 +163,8 @@ void GameModelManager::click() {
 }
 
 void GameModelManager::draw(UiManager &uiManager) {
-    uiManager.setMapScale(modelScale);
-
-    auto gameToScreenCoordsFunc = getGameToScreenCoordsFunc(uiManager);
-    auto gameToScreenLengthFunc = getGameToScreenLengthFunc();
-
-    mobs.draw(gameToScreenCoordsFunc, gameToScreenLengthFunc, uiManager);
-    projectiles.draw(gameToScreenCoordsFunc, gameToScreenLengthFunc, uiManager);
-    explosions.draw(gameToScreenCoordsFunc, gameToScreenLengthFunc, uiManager);
-    particles.draw(gameToScreenCoordsFunc, gameToScreenLengthFunc, uiManager);
+    mobs.draw(uiManager);
+    projectiles.draw(uiManager);
+    explosions.draw(uiManager);
+    particles.draw(uiManager);
 }

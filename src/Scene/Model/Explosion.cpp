@@ -54,11 +54,7 @@ void Explosion::doTick() {
     --life;
 }
 
-void Explosion::draw(
-        std::function<void(int&, int&, float, float)> gameToScreenCoords,
-        std::function<float(float)> gameToScreenLength,
-        UiManager &uiManager) {
-
+void Explosion::draw(UiManager &uiManager) {
     float a = getLifeFraction();
     uiManager.setColorMask({1, a, 0});
     uiManager.setObjectScale(getRadius());

@@ -40,7 +40,7 @@ class Scene {
         void draw(UiManager &uiManager);
 
         /**  Model  **/
-        uint32_t getModelTick();
+        uint32_t getModelTick() const;
         void doTick();
 };
 
