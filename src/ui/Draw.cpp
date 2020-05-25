@@ -8,8 +8,8 @@ void UiManager::setCamera(const ModelCamera &camera) {
 void UiManager::setObjectTranslate(GLfloat x, GLfloat y) {
     if (shaderProgram.hasFlag(SHADER_FLAG_ORTHO_MODE)) {
         // Translate origin to lower left of screen
-        x -= SCREEN_WIDTH / 2.f;
-        y -= SCREEN_HEIGHT / 2.f;
+        x -= SCREEN_HALF_WIDTH;
+        y -= SCREEN_HALF_HEIGHT;
     } else {
         x -= camera->getX();
         y -= camera->getY();

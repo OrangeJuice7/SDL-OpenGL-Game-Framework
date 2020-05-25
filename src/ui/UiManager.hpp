@@ -49,6 +49,8 @@ class UiManager {
         // Won't be constant anymore in the future for arbitrary window resizes
         const int SCREEN_WIDTH;
         const int SCREEN_HEIGHT;
+        const float SCREEN_HALF_WIDTH; // Half-sizes to save some runtime computations
+        const float SCREEN_HALF_HEIGHT;
         const SDL_Rect SCREEN_RECT;
 
         float fps; // For display purposes only; is written to by MainApp.
