@@ -100,8 +100,8 @@ The `WidgetManager` handles the GUI of the `Scene`. The GUI is defined in terms 
 #### Model
 ![](ModelClassDiagram.png)
 
-The Model contains the actual state of the game, as well as methods to interact with, update and draw them. The parent `Scene` may pass commands to the Model directly, or it may also pass user input to the `WidgetManager` which would then translate them into Model commands.
+The Model contains the actual state of the game, as well as methods to interact with them, update them, and draw them to a given `UiManager`. The parent `Scene` may pass commands to the Model directly, or it may also pass user input to the `WidgetManager` which would then translate them into Model commands.
 
 While the `GameScene` makes the heaviest use of the Model, other `Scene`s may also use the Model to display backdrops and animations.
 
-The `ModelManager` is a base class that tracks camera and timing information about the game state, and defines methods on camera manipulation, conversion between game and screen coordinates, drawing to the screen, and updating its own state based on input or a game tick. Its derivatives would track actual game entities using `EntityManager`s, and define further methods to manipulate the game entities, such as spawning new entities.
+The `ModelManager` is a base class that tracks timing information about the game state, exposes a camera that defines the relationship between game and screen coordinates, and defines methods on updating its own state based on input or a game tick. Its derivatives such as `GameModelManager` would track actual game entities using `EntityManager`s, and define further methods to manipulate the game entities, such as spawning new entities.
