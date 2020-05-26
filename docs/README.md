@@ -1,5 +1,14 @@
 # SDL/OpenGL Game Framework
 ## Introduction
+This is a game template written in C++, and uses SDL and OpenGL for low-level I/O. Inspired by the complexity and freedom of games such as Dwarf Fortress, RimWorld, Terraria, Minecraft, Factorio etc. that let the player explore and exploit, as well as the simple graphical and mechanical fun of Minecraft, Red Alert 2, Amorphous+ etc. that provide endless hours of fun simply due to how well the limited components interact with each other, this template aspires to draw from the best aspects of these games, and is ultimately developed in the direction of colonysim-type games. Due to similar mechanics (world map, units, items/resources etc.), this template could also be modified reasonably easily to make a strategy or RPG/roguelike game.
+
+Apart from the cliche requirements of being fast and powerful, this game template is written with the following aspects in mind:
+- **Control**. Specify and process exactly what you want. Clean and fast. 3rd party libraries are limited to the low level, the rest is up to you. (Although you're free to integrate higher level libraries for your own needs.)
+- **Modular**. The code is organized and easy to adapt and maintain, while remaining powerful. OOP is heavily used.
+- **2D**. Not every game needs to be a 3D FPS. Simplicity makes creating content faster (compare making a 2D sprite sheet vs a 3D rigged model - which one is easier to do and to do *well*?). If executed well, 2D is crisp, runs fast, and can be just as awesome. I wish I could credit all the beautiful 2D games out there, big or small.
+- **Portable**. Not as much of a top priority, but there is some beauty in a program that works on multiple systems. The more people who can use it, the better. 3rd party libraries are kept to a minimum, and where they are used, they are checked for portability before they are integrated. At the very least, this project should run on the main PC OSes: Windows, MacOS and Linux.
+
+In addition, this project is geared towards making a colonysim game.
 
 A generic project framework using C++, SDL and OpenGL for making 2D games. Designed to be modular and portable.
 Suitable for building a variety of genres, such as: Arcade or shmup, RPG/roguelike, strategy, building or management.
