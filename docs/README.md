@@ -1,8 +1,8 @@
 # SDL/OpenGL Game Framework
 ## Introduction
-This is a game template written in C++, and uses SDL and OpenGL for low-level I/O.
+This is a game framework/template written in C++, and uses SDL and OpenGL for low-level I/O.
 
-Inspired by the complexity and freedom of games such as *Dwarf Fortress*, *RimWorld*, *Terraria*, *Minecraft*, *Factorio* etc. that let the player explore and exploit, as well as the simple graphical and mechanical fun of *Minecraft*, *Red Alert 2*, *Amorphous+* etc. that despite their ultimately limited components, provide endless hours of fun simply due to how well those components interact with each other, this template aspires to draw from the best aspects of these games, and is ultimately developed in the direction of open-world action-adventure RPGs and/or colonysims. Due to similar mechanics (world map, units, items/resources etc.), this template could also be modified reasonably easily to make a strategy or hack n' slash game.
+Inspired by the complexity and freedom of games such as *Dwarf Fortress*, *RimWorld*, *Terraria*, *Minecraft*, *Factorio* etc. that let the player explore and exploit, as well as the simple graphical and mechanical fun of *Minecraft*, *Red Alert 2*, *Amorphous+* etc. that despite their ultimately limited components, provide endless hours of fun simply due to how well said components interact with each other, this template aspires to draw from the best aspects of these games, and is ultimately developed in the direction of open-world action-adventure RPGs and/or colonysims. Due to similar mechanics (world map, units, items/resources etc.), this template could also be modified reasonably easily to make a strategy or hack n' slash game.
 
 On top of the cliché requirements of being fast and powerful, this game template is written with the following aspects in mind:
 - **Control**. Specify and process exactly what you want. Clean and fast. 3rd party libraries are limited to the low level, the rest is up to you. (You're free to integrate higher level libraries for your own needs.)
@@ -10,14 +10,16 @@ On top of the cliché requirements of being fast and powerful, this game templat
 - **2D**. Not every game needs to be a 3D FPS. Simplicity makes creating content faster (compare making a 2D sprite sheet vs a 3D rigged model - which one is easier to do and to do *well*?). If executed well, 2D is crisp, runs fast, and can be just as awesome. I wish I could credit all the beautiful 2D games out there, big or small.
 - **Portable**. Not as much of a top priority, but there is some beauty in a program that works on multiple systems. The more people who can use it, the better. 3rd party libraries are kept to a minimum, and where they are used, they are checked for portability before they are integrated. At the very least, this project should run on the main PC OSes: Windows, MacOS and Linux.
 
-Read the guide [here](guide.md).
+For an explanation of how this template works and how to use it, read this project's guide [here](guide.md).
 
 
 
 ## Acknowledgements
-The authors would like to express appreciation for the following tutorials for their technical guidance:
+I would like to express appreciation for the following tutorials for their technical guidance:
 - [Lazy Foo's SDL Tutorial](http://lazyfoo.net/tutorials/SDL) for setting up SDL2.
 - [LearnOpenGL](https://learnopengl.com/) for setting up modern OpenGL.
+
+The following subsections list 3rd party resources used in this project. The license is mentioned in brackets.
 
 ### 3rd-party Libraries
 - [Simple DirectMedia Layer (SDL2)](https://www.libsdl.org/download-2.0.php) (zlib): Hardware interfacing
