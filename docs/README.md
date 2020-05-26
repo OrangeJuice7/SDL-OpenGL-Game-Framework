@@ -1,8 +1,10 @@
 # SDL/OpenGL Game Framework
 ## Introduction
-This is a game template written in C++, and uses SDL and OpenGL for low-level I/O. Inspired by the complexity and freedom of games such as Dwarf Fortress, RimWorld, Terraria, Minecraft, Factorio etc. that let the player explore and exploit, as well as the simple graphical and mechanical fun of Minecraft, Red Alert 2, Amorphous+ etc. that provide endless hours of fun simply due to how well the limited components interact with each other, this template aspires to draw from the best aspects of these games, and is ultimately developed in the direction of colonysim-type games. Due to similar mechanics (world map, units, items/resources etc.), this template could also be modified reasonably easily to make a strategy or RPG/roguelike game.
+This is a game template written in C++, and uses SDL and OpenGL for low-level I/O.
 
-Apart from the cliche requirements of being fast and powerful, this game template is written with the following aspects in mind:
+Inspired by the complexity and freedom of games such as Dwarf Fortress, RimWorld, Terraria, Minecraft, Factorio etc. that let the player explore and exploit, as well as the simple graphical and mechanical fun of Minecraft, Red Alert 2, Amorphous+ etc. that despite their ultimately limited components, provide endless hours of fun simply due to how well those components interact with each other, this template aspires to draw from the best aspects of these games, and is ultimately developed in the direction of open-world action-adventure RPGs and/or colonysims. Due to similar mechanics (world map, units, items/resources etc.), this template could also be modified reasonably easily to make a strategy or hack n' slash game.
+
+Apart from the cliché requirements of being fast and powerful, this game template is written with the following aspects in mind:
 - **Control**. Specify and process exactly what you want. Clean and fast. 3rd party libraries are limited to the low level, the rest is up to you. (Although you're free to integrate higher level libraries for your own needs.)
 - **Modular**. The code is organized and easy to adapt and maintain, while remaining powerful. OOP is heavily used.
 - **2D**. Not every game needs to be a 3D FPS. Simplicity makes creating content faster (compare making a 2D sprite sheet vs a 3D rigged model - which one is easier to do and to do *well*?). If executed well, 2D is crisp, runs fast, and can be just as awesome. I wish I could credit all the beautiful 2D games out there, big or small.
