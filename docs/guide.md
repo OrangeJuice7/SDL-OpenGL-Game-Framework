@@ -20,7 +20,9 @@ Windows:
 - Compile the source code with these options: `-DGLEW_STATIC -lmingw32 -lSDL2main -lSDL2 -lglew32s -lSOIL -lopengl32 -lfreetype`
 	- This is already set up for you if you have Code::Blocks on your computer: Just open the .cbp project file.
 	- Note: The MinGW compiler will give a warning saying ".drectve \`/DEFAULTLIB:"LIBCMT" /DEFAULTLIB:"OLDNAMES" ' unrecognized". This warning is, from what I've read, due to an incompatibility with GLEW and MinGW, and is harmless. You just have to ignore it.
-- Run the program and interact with it using the mouse and keyboard. Try out the features in the next subsection.
+- Run the program and interact with it using the mouse and keyboard. You should see the screen below. Try out the features in the next subsection.
+
+![](menu.png)
 
 ### Demo Features / Verifying the setup
 - Currently, <kbd>Q</kbd> switches between the `MenuScene` and `GameScene`, as does clicking the Widget at the topleft of the screen.
@@ -33,6 +35,7 @@ Windows:
 	- The mouse may also be moved to the edges of the screen to pan the camera.
 	- The camera can also be zoomed in and out by scrolling the mouse wheel.
 	- The camera can be reset by clicking the mouse wheel.
+- <kbd>F2</kbd> Takes a screenshot of the game and saves it as a BMP in the project's root directory.
 
 
 

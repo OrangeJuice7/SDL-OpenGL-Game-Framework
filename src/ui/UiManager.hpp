@@ -76,6 +76,8 @@ class UiManager {
         // Draws the scene to screen
         void draw(Scene* scene);
 
+        void saveScreenshot(const char* filename);
+
         // Set draw parameters, defined in Render.cpp
         // (mainly just passes the info to this object's underlying ShaderProgram)
         void setCamera(const ModelCamera &camera);

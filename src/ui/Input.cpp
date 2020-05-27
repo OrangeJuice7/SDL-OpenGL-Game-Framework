@@ -21,6 +21,13 @@ void UiManager::getInputs(Scene* scene) {
                 {   SDL_Keycode key = event.key.keysym.sym;
                     keyboardState.keys[key] = true;
                     scene->handleKeyDownEvent(key);
+
+                    // Print screen
+                    if (key == SDLK_F2) {
+                        char filename[32];
+                        sprintf(filename, "screen%d", uiTick);
+                        saveScreenshot(filename);
+                    }
                 }
                 break;
 

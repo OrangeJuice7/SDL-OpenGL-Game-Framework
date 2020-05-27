@@ -1,5 +1,7 @@
 #include "UiManager.hpp"
 
+#include <cstdio>
+#include <SOIL.h> // For screenshots
 #include "../Scene/Scene.hpp"
 
 UiManager::UiManager(const char *windowTitle, int screenWidth, int screenHeight)
@@ -57,4 +59,12 @@ void UiManager::draw(Scene* scene) {
     SDL_GL_SwapWindow(mainWindow);
 
     ++uiTick;
+}
+
+void UiManager::saveScreenshot(const char* filename) {
+    char fullFilename[256];
+    sprintf(fullFilename, "%s.bmp", filename);
+
+    // Sadly SOIL does not support PNG saving
+    SOIL_save_screenshot(fullFilename, SOIL_SAVE_TYPE_BMP, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 }

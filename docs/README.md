@@ -1,4 +1,6 @@
 # SDL/OpenGL Game Framework
+![](teaser.png)
+
 ## Introduction
 This is a game framework/template written in C++, and uses SDL and OpenGL for low-level I/O. This is a personal project where I hope to discover from the ground up just what it takes to make a good game, and if feasible, build a commercial game on top of in the future. I hope others could also use or at least learn from (aspects of) it, as I have.
 
