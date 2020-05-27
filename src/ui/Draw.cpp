@@ -1,6 +1,6 @@
 #include "UiManager.hpp"
 
-#include "../basicmath.hpp"
+#include "../util/math.hpp"
 
 void UiManager::setCamera(const ModelCamera &camera) {
     this->camera = &camera;

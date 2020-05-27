@@ -1,6 +1,6 @@
 #include "Mob.hpp"
 
-#include "../../basicmath.hpp"
+#include "../../util/math.hpp"
 #include "../../ui/UiManager.hpp"
 
 MobData::MobData(float radius, float maxLife, float mass) {

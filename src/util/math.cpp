@@ -1,4 +1,4 @@
-#include "basicmath.hpp"
+#include "math.hpp"
 
 float getrand() {
     return (float)rand()/RAND_MAX;

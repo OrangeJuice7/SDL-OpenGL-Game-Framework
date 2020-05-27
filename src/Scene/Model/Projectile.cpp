@@ -1,6 +1,6 @@
 #include "Projectile.hpp"
 
-#include "../../basicmath.hpp"
+#include "../../util/math.hpp"
 #include "../../ui/UiManager.hpp"
 
 ProjectileData::ProjectileData(float radius, float maxLife, float mass, float damage, const ExplosionData* explosionData) {

@@ -4,7 +4,7 @@
 #include "../Message/Message.hpp"
 #include "../Scene/Scene.hpp"
 #include "../Scene/MenuScene.hpp"
-#include "../Timer.hpp"
+#include "../util/Timer.hpp"
 
 MainApp::MainApp()
         : uiManager("[PROJECT TITLE]", 1280, 720)

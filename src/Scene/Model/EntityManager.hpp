@@ -3,7 +3,7 @@
 
 #include <forward_list>
 #include <functional>
-#include "../../basicmath.hpp"
+#include "../../util/math.hpp"
 class UiManager;
 
 template <class TEntity>

@@ -1,6 +1,6 @@
 #include "Particle.hpp"
 
-#include "../../basicmath.hpp"
+#include "../../util/math.hpp"
 #include "../../ui/UiManager.hpp"
 
 Particle::Particle() : Particle(0, 0, 0, 0, 1, 1, 1) {}

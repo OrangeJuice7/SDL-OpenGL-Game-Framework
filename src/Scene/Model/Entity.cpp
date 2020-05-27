@@ -1,7 +1,7 @@
 #include "Entity.hpp"
 
 #include <SDL2/SDL.h>
-#include "../../basicmath.hpp"
+#include "../../util/math.hpp"
 #include "../../ui/UiManager.hpp"
 
 ImmovableEntity::ImmovableEntity() : ImmovableEntity(0, 0, 1) {}

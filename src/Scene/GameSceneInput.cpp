@@ -1,6 +1,6 @@
 #include "GameScene.hpp"
 
-#include "../basicmath.hpp"
+#include "../util/math.hpp"
 #include "Model/GameModelManager.hpp"
 
 #include "../MainApp/MessageHandler.hpp"

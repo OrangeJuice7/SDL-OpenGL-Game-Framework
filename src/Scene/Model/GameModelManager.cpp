@@ -1,6 +1,6 @@
 #include "GameModelManager.hpp"
 
-#include "../../basicmath.hpp"
+#include "../../util/math.hpp"
 #include "../../ui/UiManager.hpp"
 
 GameModelManager::GameModelManager()

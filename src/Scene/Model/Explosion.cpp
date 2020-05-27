@@ -1,6 +1,6 @@
 #include "Explosion.hpp"
 
-#include "../../basicmath.hpp"
+#include "../../util/math.hpp"
 #include "../../ui/UiManager.hpp"
 
 ExplosionData::ExplosionData(float radius, float maxLife, float maxDamage) {

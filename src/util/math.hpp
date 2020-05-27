@@ -1,5 +1,5 @@
-#ifndef BASICMATH_HPP_INCLUDED
-#define BASICMATH_HPP_INCLUDED
+#ifndef MATH_HPP_INCLUDED
+#define MATH_HPP_INCLUDED
 
 #include <cstdlib> // for rand()
 #include <cmath>
@@ -18,4 +18,4 @@ float getdist2(float x, float y); // squared distance
 float getdist(float x, float y); // distance
 float Lpnorm(float x, float y, float p);
 
-#endif // BASICMATH_HPP_INCLUDED
+#endif // MATH_HPP_INCLUDED

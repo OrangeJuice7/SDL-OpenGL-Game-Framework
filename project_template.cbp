@@ -80,10 +80,6 @@
 		<Unit filename="src/Scene/Widget/Widget.hpp" />
 		<Unit filename="src/Scene/Widget/WidgetManager.cpp" />
 		<Unit filename="src/Scene/Widget/WidgetManager.hpp" />
-		<Unit filename="src/Timer.cpp" />
-		<Unit filename="src/Timer.hpp" />
-		<Unit filename="src/basicmath.cpp" />
-		<Unit filename="src/basicmath.hpp" />
 		<Unit filename="src/main.cpp" />
 		<Unit filename="src/ui/Draw.cpp" />
 		<Unit filename="src/ui/GLUtil.cpp" />
@@ -113,6 +109,10 @@
 		<Unit filename="src/ui/UiManager.hpp" />
 		<Unit filename="src/ui/default.frag" />
 		<Unit filename="src/ui/default.vert" />
+		<Unit filename="src/util/Timer.cpp" />
+		<Unit filename="src/util/Timer.hpp" />
+		<Unit filename="src/util/math.cpp" />
+		<Unit filename="src/util/math.hpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

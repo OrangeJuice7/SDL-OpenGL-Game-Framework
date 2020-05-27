@@ -1,6 +1,6 @@
 #include "SpriteManager.hpp"
 
-#include "../basicmath.hpp"
+#include "../util/math.hpp"
 
 GLvertex2 quadVertices[] = { {-1,-1}, {1,-1}, {-1,1}, {1,1} };
 void quadDrawfunc() {
