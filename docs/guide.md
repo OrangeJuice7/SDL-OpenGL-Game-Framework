@@ -37,6 +37,8 @@ Windows:
 	- The camera can be reset by clicking the mouse wheel.
 - <kbd>F2</kbd> Takes a screenshot of the game and saves it as a BMP in the project's root directory.
 
+![](teaser.png)
+
 
 
 ## Design
@@ -54,7 +56,7 @@ Independent of `MainApp` and indeed the rest of the program is the `MessageHandl
 When the whole program starts, an instance of `MainApp` is created. `init()` is called to initialize the rest of the systems, then `run()`. `run()` executes an endless loop:
 
 - Poll for inputs
-	- `MainApp` tells `UiManager` to pass `Scene` raw inputs.
+	- `MainApp` tells the `UiManager` to collect raw inputs from the user and pass them to the `Scene`.
 	- `Scene` processes the input into changes to its internal state (in particular the state of its components, the `WidgetManager` and `ModelManager`), or `Message`s to post to the `MessageHandler`:
 		- Keyboard input is interpreted immediately.
 		- The `WidgetManager` is checked to see if the the mouse triggers any `Widget`s.
