@@ -5,6 +5,7 @@
 #include "Model/MenuModelManager.hpp"
 #include "Widget/Widget.hpp"
 #include "../MainApp/MessageHandler.hpp"
+#include "../Message/Message.hpp"
 #include "../Message/SceneTransitMessage.hpp"
 #include "../ui/UiManager.hpp"
 #include "GameScene.hpp"
@@ -31,6 +32,19 @@ void MenuScene::loadWidgets() {
 			if (widget.getActive()) uiManager.setColorMask(white);
 			else                    uiManager.setColorMask(textColor);
 			widget.renderText(uiManager, "Click here to go to game");
+		} ) );
+
+	widgetManager.loadWidget( new Widget(
+		{40, 60, 60, 40},
+		Widget::HORZALIGN_LEFT,
+		Widget::VERTALIGN_BOTTOM,
+		/*funcOnClick*/ []() {
+			MessageHandler::postMessage( new QuitMessage() );
+		},
+		/*drawFunc*/ [](const Widget& widget, UiManager& uiManager) {
+			if (widget.getActive()) uiManager.setColorMask(white);
+			else                    uiManager.setColorMask(textColor);
+			widget.renderText(uiManager, "Quit");
 		} ) );
 
     widgetManager.loadWidget( new Widget(

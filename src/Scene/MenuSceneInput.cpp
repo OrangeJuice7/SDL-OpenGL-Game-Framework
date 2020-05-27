@@ -12,7 +12,7 @@ void MenuScene::handleKeyDownEvent(SDL_Keycode key) {
             break;
 
         case SDLK_SPACE:
-            //
+            paused = !paused;
             break;
 
         case SDLK_LEFT:
