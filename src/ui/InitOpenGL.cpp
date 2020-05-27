@@ -90,7 +90,6 @@ bool UiManager::initOpenGL() {
         printf("Could not bind shader program!\n");
         return false;
     }
-    shaderProgram.setScreenDimensions(SCREEN_WIDTH, SCREEN_HEIGHT);
     shaderProgram.resetUniforms();
 
     return true;

@@ -6,7 +6,7 @@ void UiManager::setCamera(const ModelCamera &camera) {
     this->camera = &camera;
 }
 void UiManager::setObjectTranslate(GLfloat x, GLfloat y) {
-    if (shaderProgram.hasFlag(SHADER_FLAG_ORTHO_MODE)) {
+    if (orthoMode) {
         // Translate origin to lower left of screen
         x -= SCREEN_HALF_WIDTH;
         y -= SCREEN_HALF_HEIGHT;
@@ -14,7 +14,7 @@ void UiManager::setObjectTranslate(GLfloat x, GLfloat y) {
         x -= camera->getX();
         y -= camera->getY();
     }
-    shaderProgram.setTranslate(x, y);
+    shaderProgram.setObjectTranslate(x, y);
 }
 void UiManager::setObjectScale(GLfloat scale) {
     shaderProgram.setObjectScale(scale);
@@ -27,13 +27,19 @@ void UiManager::resetTransform() {
 }
 
 void UiManager::setDrawToGameSpace() {
-    shaderProgram.removeFlags(SHADER_FLAG_ORTHO_MODE);
+    orthoMode = false;
 
     // Load camera settings
-    shaderProgram.setMapScale(camera->getScale());
+    shaderProgram.setCoordToScreenScale(
+        camera->getScale() / SCREEN_HALF_WIDTH,
+        camera->getScale() / SCREEN_HALF_HEIGHT);
 }
 void UiManager::setDrawToScreenSpace() {
-    shaderProgram.addFlags(SHADER_FLAG_ORTHO_MODE);
+    orthoMode = true;
+
+    shaderProgram.setCoordToScreenScale(
+        1.f / SCREEN_HALF_WIDTH,
+        1.f / SCREEN_HALF_HEIGHT);
 }
 
 void UiManager::setColorMask(const GLcolorRGB& color) {

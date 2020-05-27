@@ -18,6 +18,7 @@ UiManager::UiManager(const char *windowTitle, int screenWidth, int screenHeight)
 
     mainWindow = nullptr;
     camera = &_dummy_camera;
+    orthoMode = false;
 
     uiTick = 0;
     fps = 0;

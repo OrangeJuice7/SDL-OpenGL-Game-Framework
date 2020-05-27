@@ -29,6 +29,7 @@ class UiManager {
         // Utility
         const ModelCamera *camera; // Reference to a ModelCamera in a Scene
         ModelCamera _dummy_camera; // Exists only to make sure camera is not nullptr
+        bool orthoMode;
 
         Uint32 uiTick;
 

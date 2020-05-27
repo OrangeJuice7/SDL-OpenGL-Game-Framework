@@ -137,9 +137,8 @@ bool loadShader(GLuint glProgramID, GLenum shaderType, const char* shaderSourceP
 
 
 ShaderProgram::ShaderProgram()
-        : screenDimensions()
-        , translateVector()
-        , mapScale()
+        : coordToScreenScale()
+        , objectTranslate()
         , objectScale()
         , colorMask()
         , flags() {
@@ -193,9 +192,8 @@ bool ShaderProgram::load(
     }
 
     // Load uniforms
-    if (!loadUniform(screenDimensions, "screenDimensions")) return false;
-    if (!loadUniform(translateVector, "translate")) return false;
-    if (!loadUniform(mapScale, "mapScale")) return false;
+    if (!loadUniform(coordToScreenScale, "coordToScreenScale")) return false;
+    if (!loadUniform(objectTranslate, "objectTranslate")) return false;
     if (!loadUniform(objectScale, "objectScale")) return false;
     if (!loadUniform(colorMask, "colorMask")) return false;
     if (!loadUniform(flags, "flags")) return false;
@@ -206,12 +204,6 @@ bool ShaderProgram::load(
 void ShaderProgram::free() {
     // Delete program
     glDeleteProgram(id);
-}
-
-void ShaderProgram::setScreenDimensions(int width, int height) {
-    screenDimensions.value.x = ( width >= 1) ?  width : 1;
-    screenDimensions.value.y = (height >= 1) ? height : 1;
-    screenDimensions.load();
 }
 
 bool ShaderProgram::bind() {
@@ -246,15 +238,16 @@ void ShaderProgram::resetUniforms() {
     resetFlags();
 }
 
-void ShaderProgram::setTranslate(GLfloat x, GLfloat y) {
-    // Note: better to expand the struct out to reduce ambiguity
-    translateVector.value.x = x;
-    translateVector.value.y = y;
-    translateVector.load();
+void ShaderProgram::setCoordToScreenScale(GLfloat xscale, GLfloat yscale) {
+    coordToScreenScale.value.x = xscale;
+    coordToScreenScale.value.y = yscale;
+    coordToScreenScale.load();
 }
-void ShaderProgram::setMapScale(GLfloat scale) {
-    mapScale.value = scale;
-    mapScale.load();
+void ShaderProgram::setObjectTranslate(GLfloat x, GLfloat y) {
+    // Note: better to expand the struct out to reduce ambiguity
+    objectTranslate.value.x = x;
+    objectTranslate.value.y = y;
+    objectTranslate.load();
 }
 void ShaderProgram::setObjectScale(GLfloat scale) {
     setObjectScale(scale, scale);
@@ -265,8 +258,8 @@ void ShaderProgram::setObjectScale(GLfloat xscale, GLfloat yscale) {
     objectScale.load();
 }
 void ShaderProgram::resetTransform() {
-    setTranslate(0, 0);
-    setMapScale(16);
+    setCoordToScreenScale(1, 1);
+    setObjectTranslate(0, 0);
     setObjectScale(1);
 }
 

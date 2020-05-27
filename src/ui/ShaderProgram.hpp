@@ -64,24 +64,18 @@ class ShaderUniform1ui : public ShaderUniform<GLuint> {
 
 
 
-const GLuint SHADER_FLAG_ORTHO_MODE = 1 << 0;
-const GLuint SHADER_FLAG_RENDER_TEXT = 1 << 1;
+const GLuint SHADER_FLAG_RENDER_TEXT = 1 << 0;
 
 class ShaderProgram {
     protected:
         GLuint id; // Program ID
 
         // Shader uniforms
-        ShaderUniform2f screenDimensions;
-        ShaderUniform2f translateVector;
-        ShaderUniform1f mapScale;
+        ShaderUniform2f coordToScreenScale;
+        ShaderUniform2f objectTranslate;
         ShaderUniform2f objectScale;
         ShaderUniform3f colorMask;
         ShaderUniform1ui flags; // smallest uniform size is uint, sadly
-
-        // Cached screen dimensions to help with transformations
-        int screenWidth;
-        int screenHeight;
 
         // Retrieves uniform info (just location for now) from the shader
         // Returns true on success
@@ -101,9 +95,6 @@ class ShaderProgram {
                 const char* fragmentShaderFilepath);
         virtual void free();
 
-        // Sets screenWidth/screenHeight to 1 if given width/height is less than 1
-        void setScreenDimensions(int width, int height);
-
         // Sets this program as the current shader program
         // Requires a loaded program
         bool bind();
@@ -118,8 +109,8 @@ class ShaderProgram {
 
         // Update the uniforms into the shaders
         // Assumes this shader is already bound
-        void setTranslate(GLfloat x, GLfloat y); // In game coords (+x/+y direction is right/up)
-        void setMapScale(GLfloat scale); // Length of one game coord in pixels
+        void setCoordToScreenScale(GLfloat xscale, GLfloat yscale); // Translates from pixels (for ortho) or game coords (otherwise) to OpenGL screen coords
+        void setObjectTranslate(GLfloat x, GLfloat y); // In game coords (+x/+y direction is right/up)
         void setObjectScale(GLfloat scale); // Scale of the object in game coords
         void setObjectScale(GLfloat xscale, GLfloat yscale); // scale per dimension
         void resetTransform();
