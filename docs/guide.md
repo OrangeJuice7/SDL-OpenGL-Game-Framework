@@ -45,24 +45,29 @@ This section describes how the code base is organized.
 ### Architecture
 ![](ArchitectureDiagram.png)
 
-The `MainApp` hosts all the other components, and tracks application-wide data such as frames per second (FPS). It contains methods to initialize, run and de-initialize the whole program. It also contains methods that allow `Message`s to affect its underlying data.
+The `MainApp` hosts all the other components, and tracks application-wide data such as frames per second (FPS). It contains methods to initialize (`init()`), run (`run()`) and de-initialize (`deinit()`) the whole program. It also contains methods that allow `Message`s to affect its underlying data.
 
 Independent of `MainApp` and indeed the rest of the program is the `MessageHandler`. `MessageHandler` is a singleton class which collects `Message`s posted to it by any part of the main program, and lets a `MainApp` instance clear the `Message`s.
 
-When the whole program starts, an instance of `MainApp` is created. `init()` is called, then `run()`. `run()` executes an endless loop:
+![](ArchitectureLayerDiagram.png)
+
+When the whole program starts, an instance of `MainApp` is created. `init()` is called to initialize the rest of the systems, then `run()`. `run()` executes an endless loop:
 
 - Poll for inputs
 	- `MainApp` tells `UiManager` to pass `Scene` raw inputs.
-	- `Scene` parses the inputs into internal actions that are effected immediately, and `Message`s that are posted to `MessageHandler`.
+	- `Scene` processes the input into changes to its internal state (in particular the state of its components, the `WidgetManager` and `ModelManager`), or `Message`s to post to the `MessageHandler`:
+		- Keyboard input is interpreted immediately.
+		- The `WidgetManager` is checked to see if the the mouse triggers any `Widget`s.
+		- If the mouse did not, the `ModelManager` is checked to see if the the mouse triggers any model events, such as clicking an entity. (The Model typically does not post `Message`s.)
 	- `MainApp` clears all `Message`s from `MessageHandler`.
 - Update
 	- `MainApp` tells `Scene` to update itself by 1 tick. `Scene` may post more `Message`s.
 	- `MainApp` clears `Message`s.
 - Draw
-	- `MainApp` tells `Scene` to draw, passing it `UiManager`.
-	- `Scene` tells `UiManager` what to draw based on its `Widget`s and `Model`.
+	- `MainApp` tells `Scene` to draw, passing it a reference to the `UiManager`.
+	- `Scene` sets up `UiManager` and passes it to the `ModelManager` then `WidgetManager` (so that the `Widget`s are drawn on top of the model). The `WidgetManager` may also read from the model state to determine what to draw (e.g. to print a statistic).
 
-When `run()` is exited, `deinit()` is called, then the program ends.
+When `run()` is exited, `deinit()` is called to clean up the rest of the system, then the program ends.
 
 ### UiManager
 ![](UiManagerClassDiagram.png)
@@ -107,4 +112,4 @@ The Model contains the actual state of the game, as well as methods to interact 
 
 While the `GameScene` makes the heaviest use of the Model, other `Scene`s may also use the Model to display backdrops and animations.
 
-The `ModelManager` is a base class that tracks timing information about the game state, exposes a camera that defines the relationship between game and screen coordinates, and defines methods on updating its own state based on input or a game tick. Its derivatives such as `GameModelManager` would track actual game entities using `EntityManager`s, and define further methods to manipulate the game entities, such as spawning new entities.
+The `ModelManager` is a base class that tracks timing information about the game state, exposes a `ModelCamera` that helps the `UiManager` define the conversion between game and screen coordinates, and defines methods on updating its own state based on input or a game tick. Its derivatives such as `GameModelManager` would track actual game entities using `EntityManager`s, and define further methods to manipulate the game entities, such as spawning new entities.
