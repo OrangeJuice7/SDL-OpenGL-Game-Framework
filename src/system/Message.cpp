@@ -1,6 +1,6 @@
 #include "Message.hpp"
 
-#include "../MainApp/MainApp.hpp"
+#include "MainApp.hpp"
 
 Message::~Message() {}
 

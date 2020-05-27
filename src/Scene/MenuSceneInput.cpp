@@ -1,8 +1,8 @@
 #include "MenuScene.hpp"
 
-#include "../MainApp/MessageHandler.hpp"
-#include "../Message/Message.hpp"
-#include "../Message/SceneTransitMessage.hpp"
+#include "../system/MessageHandler.hpp"
+#include "../system/Message.hpp"
+#include "../system/SceneTransitMessage.hpp"
 #include "GameScene.hpp"
 
 void MenuScene::handleKeyDownEvent(SDL_Keycode key) {

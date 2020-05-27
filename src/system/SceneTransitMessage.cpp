@@ -1,6 +1,6 @@
 #include "SceneTransitMessage.hpp"
 
-#include "../MainApp/MainApp.hpp"
+#include "MainApp.hpp"
 
 SceneTransitMessage::SceneTransitMessage(Scene *scene) {
     this->scene = scene;

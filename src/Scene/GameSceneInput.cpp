@@ -3,9 +3,9 @@
 #include "../util/math.hpp"
 #include "Model/GameModelManager.hpp"
 
-#include "../MainApp/MessageHandler.hpp"
-#include "../Message/Message.hpp"
-#include "../Message/SceneTransitMessage.hpp"
+#include "../system/MessageHandler.hpp"
+#include "../system/Message.hpp"
+#include "../system/SceneTransitMessage.hpp"
 #include "MenuScene.hpp"
 
 void GameScene::updateFromMouse(const SDL_Rect &screenRect, const MouseState &mouseState) {

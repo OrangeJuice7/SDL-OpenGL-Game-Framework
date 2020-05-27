@@ -1,8 +1,8 @@
 #include "UiManager.hpp"
 
 #include "../Scene/Scene.hpp"
-#include "../MainApp/MessageHandler.hpp"
-#include "../Message/Message.hpp"
+#include "../system/MessageHandler.hpp"
+#include "../system/Message.hpp"
 
 void UiManager::getInputs(Scene* scene) {
     SDL_Event event;

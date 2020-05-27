@@ -1,7 +1,7 @@
 #include "MessageHandler.hpp"
 
 #include "MainApp.hpp"
-#include "../Message/Message.hpp"
+#include "Message.hpp"
 
 MessageHandler* MessageHandler::instance = new MessageHandler;
 

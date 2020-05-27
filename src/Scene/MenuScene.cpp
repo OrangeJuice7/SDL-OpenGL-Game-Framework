@@ -4,9 +4,9 @@
 #include <SDL2/SDL.h>
 #include "Model/MenuModelManager.hpp"
 #include "Widget/Widget.hpp"
-#include "../MainApp/MessageHandler.hpp"
-#include "../Message/Message.hpp"
-#include "../Message/SceneTransitMessage.hpp"
+#include "../system/MessageHandler.hpp"
+#include "../system/Message.hpp"
+#include "../system/SceneTransitMessage.hpp"
 #include "../ui/UiManager.hpp"
 #include "GameScene.hpp"
 

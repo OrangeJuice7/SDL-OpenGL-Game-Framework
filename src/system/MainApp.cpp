@@ -1,7 +1,7 @@
 #include "MainApp.hpp"
 
 #include <cstdio>
-#include "../Message/Message.hpp"
+#include "Message.hpp"
 #include "../Scene/Scene.hpp"
 #include "../Scene/MenuScene.hpp"
 #include "../util/Timer.hpp"
