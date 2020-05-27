@@ -55,19 +55,20 @@ Independent of `MainApp` and indeed the rest of the program is the `MessageHandl
 
 When the whole program starts, an instance of `MainApp` is created. `init()` is called to initialize the rest of the systems, then `run()`. `run()` executes an endless loop:
 
-- Poll for inputs
-	- `MainApp` tells the `UiManager` to collect raw inputs from the user and pass them to the `Scene`.
-	- `Scene` processes the input into changes to its internal state (in particular the state of its components, the `WidgetManager` and `ModelManager`), or `Message`s to post to the `MessageHandler`:
-		- Keyboard input is interpreted immediately.
-		- The `WidgetManager` is checked to see if the the mouse triggers any `Widget`s.
-		- If the mouse did not, the `ModelManager` is checked to see if the the mouse triggers any model events, such as clicking an entity. (The Model typically does not post `Message`s.)
-	- `MainApp` clears all `Message`s from `MessageHandler`.
-- Update
-	- `MainApp` tells `Scene` to update itself by 1 tick. `Scene` may post more `Message`s.
-	- `MainApp` clears `Message`s.
-- Draw
-	- `MainApp` tells `Scene` to draw, passing it a reference to the `UiManager`.
-	- `Scene` sets up `UiManager` and passes it to the `ModelManager` then `WidgetManager` (so that the `Widget`s are drawn on top of the model). The `WidgetManager` may also read from the model state to determine what to draw (e.g. to print a statistic).
+1. Poll for inputs
+	1. `MainApp` tells the `UiManager` to collect raw inputs from the user and pass them to the `Scene`.
+		- The `UiManager` may interpret and act on some of the input itself, in particular input from the window such as resizing and minimization. It transforms and passes the rest of the input to the `Scene`.
+	2. `Scene` similarly processes some of the input itself, and passes the rest to the `WidgetManager` and `ModelManager`.
+		1. Keyboard input is interpreted immediately.
+		2. The `WidgetManager` is checked to see if the the mouse triggers any `Widget`s.
+		3. If the mouse did not, the `ModelManager` is checked to see if the the mouse triggers any model events, such as clicking an entity.
+	3. Any input processing may involve posting `Message`s to the `MessageHandler` (although the Model typically does not). After all the input has been processed, `MainApp` clears all the `Message`s from the `MessageHandler`.
+2. Update
+	1. `MainApp` tells `Scene` to update itself by 1 tick. `Scene` may post more `Message`s.
+	2. `MainApp` clears `Message`s.
+3. Draw
+	1. `MainApp` tells `Scene` to draw, passing it a reference to the `UiManager`.
+	2. `Scene` sets up `UiManager` and passes it to the `ModelManager` then `WidgetManager` (so that the `Widget`s are drawn on top of the model). The `WidgetManager` may also read from the model state to determine what to draw (e.g. to print a statistic).
 
 When `run()` is exited, `deinit()` is called to clean up the rest of the system, then the program ends.
 
