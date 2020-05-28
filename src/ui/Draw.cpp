@@ -8,8 +8,8 @@ void UiManager::setCamera(const ModelCamera &camera) {
 void UiManager::setObjectTranslate(GLfloat x, GLfloat y) {
     if (orthoMode) {
         // Translate origin to lower left of screen
-        x -= SCREEN_HALF_WIDTH;
-        y -= SCREEN_HALF_HEIGHT;
+        x -= screenHalfWidth;
+        y -= screenHalfHeight;
     } else {
         x -= camera->getX();
         y -= camera->getY();
@@ -31,15 +31,15 @@ void UiManager::setDrawToGameSpace() {
 
     // Load camera settings
     shaderProgram.setCoordToScreenScale(
-        camera->getScale() / SCREEN_HALF_WIDTH,
-        camera->getScale() / SCREEN_HALF_HEIGHT);
+        camera->getScale() / screenHalfWidth,
+        camera->getScale() / screenHalfHeight);
 }
 void UiManager::setDrawToScreenSpace() {
     orthoMode = true;
 
     shaderProgram.setCoordToScreenScale(
-        1.f / SCREEN_HALF_WIDTH,
-        1.f / SCREEN_HALF_HEIGHT);
+        1.f / screenHalfWidth,
+        1.f / screenHalfHeight);
 }
 
 void UiManager::setColorMask(const GLcolorRGB& color) {

@@ -16,6 +16,9 @@ class UiManager {
         // SDL
         SDL_Window* mainWindow;
         bool isFullscreen;
+        SDL_Rect screenRect; // Screen dimensions
+        float screenHalfWidth; // Half-sizes to save some runtime computations
+        float screenHalfHeight;
 
         // OpenGL
         SDL_GLContext glContext; // Rendering context
@@ -44,26 +47,24 @@ class UiManager {
 
         Sprite* getSprite(SpriteId id) const;
 
+        void setScreenRect(int width, int height);
+
     public:
         const char *WINDOW_TITLE;
 
-        // Screen dimensions
-        // Won't be constant anymore in the future for arbitrary window resizes
-        const int SCREEN_WIDTH;
-        const int SCREEN_HEIGHT;
-        const float SCREEN_HALF_WIDTH; // Half-sizes to save some runtime computations
-        const float SCREEN_HALF_HEIGHT;
-        const SDL_Rect SCREEN_RECT;
-
         float fps; // For display purposes only; is written to by MainApp.
 
-        UiManager(const char *windowTitle, int screenWidth, int screenHeight);
+        UiManager(const char *windowTitle);
         ~UiManager();
         bool init();
         void deinit();
 
         Uint32 getUiTick() const;
         bool getIsFullscreen() const;
+        int getScreenWidth() const;
+        int getScreenHeight() const;
+        const SDL_Rect& getScreenRect() const;
+
         void sleep(float duration); // in seconds, capped at millisecond precision
 
         // Collect hardware inputs and pass them to scene for interpretation
@@ -79,6 +80,8 @@ class UiManager {
         void setFullscreen();
         void setWindowed();
         void toggleFullscreen();
+
+        void updateWindowSize(int width, int height);
 
         // Draws the scene to screen
         void draw(Scene* scene);

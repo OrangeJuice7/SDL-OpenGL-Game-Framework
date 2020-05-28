@@ -37,7 +37,7 @@ bool UiManager::initOpenGL() {
     }
 
     // Set the viewport
-    glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    glViewport(0, 0, getScreenWidth(), getScreenHeight());
 
     // Initialize clear color
     // Some dark blue, just to check if graphics are working, and if there's any coloured object hidden by the bg

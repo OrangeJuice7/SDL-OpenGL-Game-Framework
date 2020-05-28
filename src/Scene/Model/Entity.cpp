@@ -49,8 +49,8 @@ bool ImmovableEntity::isWithinScreen(UiManager &uiManager) const {
     uiManager.gameToScreenCoords(bx, by, x-r, y-r);
     uiManager.gameToScreenCoords(bX, bY, x+r, y+r);
 
-    return (bX >= 0 && bx < uiManager.SCREEN_RECT.w &&
-            bY >= 0 && by < uiManager.SCREEN_RECT.h );
+    return (bX >= 0 && bx < uiManager.getScreenWidth() &&
+            bY >= 0 && by < uiManager.getScreenHeight() );
 }
 void ImmovableEntity::draw(UiManager &uiManager) {
 

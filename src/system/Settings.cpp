@@ -73,8 +73,10 @@ StringSetting::~StringSetting() {}
 
 
 /**   Initialize Settings here!   **/
-BoolSetting Settings::isFullscreen("isFullscreen", false);
-FloatSetting Settings::initialGameModelScale("initialGameModelScale", 32, 8, 128);
+BoolSetting     Settings::isFullscreen("isFullscreen", false);
+IntSetting      Settings::screenWidth("screenWidth", 1280, 256, 1920); // Let the lowest resolution be 144p (256x144), and highest is 1080p (1920x1080)
+IntSetting      Settings::screenHeight("screenHeight", 720, 144, 1080);
+FloatSetting    Settings::initialGameModelScale("initialGameModelScale", 32, 8, 128);
 
 Settings* Settings::instance = new Settings(); // Note: Should come AFTER the settings have been constructed!
 Settings::Settings()
@@ -82,6 +84,8 @@ Settings::Settings()
 
     /**   Build the lookup table of Settings here!   **/
     addSettingToLookup(isFullscreen);
+    addSettingToLookup(screenWidth);
+    addSettingToLookup(screenHeight);
     addSettingToLookup(initialGameModelScale);
 }
 Settings::~Settings() {} // Do not force the app to save on exit, let the app ask for it manually.

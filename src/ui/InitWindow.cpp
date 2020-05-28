@@ -5,16 +5,17 @@
 
 bool UiManager::initWindow() {
     isFullscreen = Settings::isFullscreen.get();
+    setScreenRect(Settings::screenWidth.get(), Settings::screenHeight.get());
 
-    {   Uint32 flags = SDL_WINDOW_OPENGL;
+    {   Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
         if (isFullscreen) flags |= SDL_WINDOW_FULLSCREEN;
 
         mainWindow = SDL_CreateWindow(
                 WINDOW_TITLE,
                 SDL_WINDOWPOS_UNDEFINED,
                 SDL_WINDOWPOS_UNDEFINED,
-                SCREEN_WIDTH,
-                SCREEN_HEIGHT,
+                getScreenWidth(),
+                getScreenHeight(),
                 flags);
     }
 
@@ -36,4 +37,6 @@ void UiManager::deinitWindow() {
     mainWindow = NULL;
 
     Settings::isFullscreen.set(isFullscreen);
+    Settings::screenWidth.set(getScreenWidth());
+    Settings::screenHeight.set(getScreenHeight());
 }

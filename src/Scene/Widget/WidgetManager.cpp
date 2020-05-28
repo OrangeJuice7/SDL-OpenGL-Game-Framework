@@ -67,7 +67,7 @@ bool WidgetManager::releaseMouse() {
 
 void WidgetManager::draw(UiManager &uiManager) {
     for (Widget* widget : widgets) {
-		widget->update(uiManager.SCREEN_RECT);
+		widget->update(uiManager.getScreenRect());
 	}
     for (Widget* widget : widgets) {
 		widget->draw(uiManager);

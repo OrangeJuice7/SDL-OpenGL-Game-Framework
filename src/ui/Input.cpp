@@ -1,5 +1,6 @@
 #include "UiManager.hpp"
 
+#include <cstdio>
 #include "../Scene/Scene.hpp"
 #include "../system/MessageHandler.hpp"
 #include "../system/Message.hpp"
@@ -15,6 +16,18 @@ void UiManager::getInputs(Scene* scene) {
 
             case SDL_QUIT:
                 MessageHandler::postMessage( new QuitMessage() );
+                break;
+
+            case SDL_WINDOWEVENT:
+                if (event.window.windowID == SDL_GetWindowID(mainWindow)) {
+                    switch (event.window.event) {
+                        default: break; // Ignore other window event types
+
+                        case SDL_WINDOWEVENT_SIZE_CHANGED:
+                            updateWindowSize(event.window.data1, event.window.data2);
+                            break;
+                    }
+                }
                 break;
 
             case SDL_KEYDOWN:
@@ -43,7 +56,7 @@ void UiManager::getInputs(Scene* scene) {
 
             case SDL_MOUSEMOTION:
                 SDL_GetMouseState(&mouseState.x, &mouseState.y);
-                mouseState.y = SCREEN_HEIGHT - mouseState.y; // Flip y-direction to be consistent with OpenGL
+                mouseState.y = getScreenHeight() - mouseState.y; // Flip y-direction to be consistent with OpenGL
                 break;
 
             case SDL_MOUSEBUTTONDOWN:
@@ -73,6 +86,6 @@ void UiManager::getInputs(Scene* scene) {
     // Update the scene with the current input state (called every frame because even if the input state doesn't change, the scene may)
     // Todo: Let the Scene remember its own state, which is triggered based on the input presses?
     screenToGameCoords(mouseState.gameX, mouseState.gameY, mouseState.x, mouseState.y);
-    scene->updateFromMouse(SCREEN_RECT, mouseState);
+    scene->updateFromMouse(getScreenRect(), mouseState);
     scene->updateFromKeys(keyboardState);
 }
