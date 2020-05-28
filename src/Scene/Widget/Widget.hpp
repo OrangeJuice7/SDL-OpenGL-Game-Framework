@@ -26,6 +26,8 @@ class Widget : public GuiRegion {
 
 		// Whether this Widget is selected (e.g. if the mouse is over it)
 		bool active;
+		// Whether this Widget is visible (if not, then it's neither drawn nor clickable, nor are any of its children visible)
+		bool visible;
 
 		// Child widgets
 		// Note: Child widgets should lie fully within the bounds of their parents. Otherwise, they should be separate widgets.
@@ -43,6 +45,7 @@ class Widget : public GuiRegion {
 			HorizontalAlignment horzAlign,
 			VerticalAlignment vertAlign,
 			bool clickable,
+			bool visible,
 			std::function<void()> funcOnClick,
             std::function<void()> funcOnRelease,
 			std::function<void(const Widget&, UiManager&)> drawFunc );
@@ -52,6 +55,7 @@ class Widget : public GuiRegion {
 			SDL_Rect rect,
 			HorizontalAlignment horzAlign,
 			VerticalAlignment vertAlign,
+			bool visible,
 			std::function<void(const Widget&, UiManager&)> drawFunc );
 
         // Click but no release constructor
@@ -59,6 +63,7 @@ class Widget : public GuiRegion {
 			SDL_Rect rect,
 			HorizontalAlignment horzAlign,
 			VerticalAlignment vertAlign,
+			bool visible,
 			std::function<void()> funcOnClick,
 			std::function<void(const Widget&, UiManager&)> drawFunc );
 
@@ -67,6 +72,7 @@ class Widget : public GuiRegion {
 			SDL_Rect rect,
 			HorizontalAlignment horzAlign,
 			VerticalAlignment vertAlign,
+			bool visible,
 			std::function<void()> funcOnClick,
             std::function<void()> funcOnRelease,
 			std::function<void(const Widget&, UiManager&)> drawFunc );
@@ -75,6 +81,7 @@ class Widget : public GuiRegion {
 
         bool getActive() const;
         bool getClickable() const;
+        bool getVisible() const;
 
 		void addChild(Widget* widget);
 
@@ -89,6 +96,8 @@ class Widget : public GuiRegion {
         void deactivate();
         void click();
         void releaseMouse();
+        void show();
+        void hide();
 
 		/**  Update  **/
 		// psRect: Parent screen rect, also taken from the bottom-left corner

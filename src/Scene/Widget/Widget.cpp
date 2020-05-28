@@ -6,34 +6,38 @@ Widget::Widget(
         SDL_Rect rect,
         HorizontalAlignment horzAlign,
         VerticalAlignment vertAlign,
+        bool visible,
         std::function<void(const Widget&, UiManager&)> drawFunc )
 
-        : Widget(rect, horzAlign, vertAlign, false, nullptr, nullptr, drawFunc) {}
+        : Widget(rect, horzAlign, vertAlign, false, visible, nullptr, nullptr, drawFunc) {}
 
 Widget::Widget(
         SDL_Rect rect,
         HorizontalAlignment horzAlign,
         VerticalAlignment vertAlign,
+        bool visible,
         std::function<void()> funcOnClick,
         std::function<void(const Widget&, UiManager&)> drawFunc )
 
-        : Widget(rect, horzAlign, vertAlign, true, funcOnClick, nullptr, drawFunc) {}
+        : Widget(rect, horzAlign, vertAlign, true, visible, funcOnClick, nullptr, drawFunc) {}
 
 Widget::Widget(
         SDL_Rect rect,
         HorizontalAlignment horzAlign,
         VerticalAlignment vertAlign,
+        bool visible,
         std::function<void()> funcOnClick,
         std::function<void()> funcOnRelease,
         std::function<void(const Widget&, UiManager&)> drawFunc )
 
-        : Widget(rect, horzAlign, vertAlign, true, funcOnClick, funcOnRelease, drawFunc) {}
+        : Widget(rect, horzAlign, vertAlign, true, visible, funcOnClick, funcOnRelease, drawFunc) {}
 
 Widget::Widget(
 		SDL_Rect rect,
 		HorizontalAlignment horzAlign,
 		VerticalAlignment vertAlign,
 		bool clickable,
+        bool visible,
 		std::function<void()> funcOnClick,
 		std::function<void()> funcOnRelease,
 		std::function<void(const Widget&, UiManager&)> drawFunc )
@@ -41,6 +45,7 @@ Widget::Widget(
 		: GuiRegion(rect, horzAlign, vertAlign) {
 
     this->clickable = clickable;
+    this->visible = visible;
     this->funcOnClick = funcOnClick;
     this->funcOnRelease = funcOnRelease;
     this->drawFunc = drawFunc;
@@ -59,6 +64,9 @@ bool Widget::getActive() const {
 }
 bool Widget::getClickable() const {
     return clickable;
+}
+bool Widget::getVisible() const {
+    return visible;
 }
 void Widget::addChild(Widget* widget) {
     children.push_front(widget);
@@ -89,11 +97,19 @@ void Widget::click() {
 void Widget::releaseMouse() {
 	if (funcOnRelease) funcOnRelease();
 }
+void Widget::show() {
+    visible = true;
+}
+void Widget::hide() {
+    visible = false;
+}
 
 void Widget::update(const SDL_Rect &psRect) {
+    if (!visible) return;
+
     calcScreenRect(psRect);
 
-	// update all the children
+	// Update all the children
 	for (Widget* child : children) {
 		child->update(screenRect);
 	}
@@ -107,6 +123,8 @@ void Widget::renderText(UiManager &uiManager, const char *text) const {
 }
 
 void Widget::draw(UiManager &uiManager) const {
+    if (!visible) return;
+
 	if (getClickable()) {
         if (getActive()) uiManager.setColorMask({.4f, .4f, .0f});
         else             uiManager.setColorMask({.0f, .3f, .4f});
@@ -115,7 +133,7 @@ void Widget::draw(UiManager &uiManager) const {
 
 	if (drawFunc) drawFunc(*this, uiManager);
 
-	// call draw for all the children
+	// Call draw for all the children
 	for (Widget* child : children) {
 		child->draw(uiManager);
 	}

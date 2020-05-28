@@ -40,8 +40,12 @@ class Scene {
         void draw(UiManager &uiManager);
 
         /**  Model  **/
+        bool getPaused() const;
         uint32_t getModelTick() const;
         void doTick();
+
+        virtual void pause();
+        virtual void unpause();
 };
 
 #endif // SCENE_HPP

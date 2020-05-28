@@ -39,6 +39,7 @@ void GameScene::loadWidgets() {
 		{40, 20, 240, 20},
 		Widget::HORZALIGN_LEFT,
 		Widget::VERTALIGN_TOP,
+		true,
 		/*funcOnClick*/ []() {
 			MessageHandler::postMessage( new SceneTransitMessage( new MenuScene() ) );
 		},
@@ -53,6 +54,7 @@ void GameScene::loadWidgets() {
 		{0, 20, 160, 20},
 		Widget::HORZALIGN_CENTER,
 		Widget::VERTALIGN_TOP,
+		true,
 		/*drawFunc*/ [&](const Widget& widget, UiManager& uiManager) {
 			uiManager.setColorMask(textColor);
 			widget.renderText(uiManager, "GAME SCENE");
@@ -63,6 +65,7 @@ void GameScene::loadWidgets() {
 		{10,-40, 240, 180},
 		Widget::HORZALIGN_LEFT,
 		Widget::VERTALIGN_CENTER,
+		true,
 		/*funcOnClick*/ [model]() {
 			model->spawnParticleExplosion(100, 4, 1, .1f, .2f);
 		},
@@ -74,6 +77,7 @@ void GameScene::loadWidgets() {
 		{0,-40, 120, 60},
 		Widget::HORZALIGN_CENTER,
 		Widget::VERTALIGN_CENTER,
+		true,
 		/*funcOnClick*/ [](){},
 		/*funcOnRelease*/ [model]() {
 			model->spawnParticleExplosion(100, 4, -1, .1f, .2f);
@@ -88,6 +92,7 @@ void GameScene::loadWidgets() {
 		{0, 20, 360, 60},
 		Widget::HORZALIGN_CENTER,
 		Widget::VERTALIGN_BOTTOM,
+		true,
 		/*drawFunc*/ [model](const Widget& widget, UiManager& uiManager) {
 			Mob *pMob = model->getActiveMob();
 			if (!pMob) return;
@@ -99,21 +104,22 @@ void GameScene::loadWidgets() {
 		} );
 	widgetManager.loadWidget(newWidget);
 
-    newWidget = new Widget(
+    pauseDisplayWidget = new Widget(
 		{20, 80, 160, 20},
 		Widget::HORZALIGN_RIGHT,
 		Widget::VERTALIGN_BOTTOM,
+		paused,
 		/*drawFunc*/ [this](const Widget& widget, UiManager& uiManager) {
-			if (!paused) return;
 			uiManager.setColorMask(white);
 			widget.renderText(uiManager, "-- PAUSED --");
 		} );
-	widgetManager.loadWidget(newWidget);
+	widgetManager.loadWidget(pauseDisplayWidget);
 
     newWidget = new Widget(
 		{20, 60, 160, 20},
 		Widget::HORZALIGN_RIGHT,
 		Widget::VERTALIGN_BOTTOM,
+		true,
 		/*drawFunc*/ [](const Widget& widget, UiManager& uiManager) {
 			char msg[256];
 			sprintf(msg, "UiTick: %u", uiManager.getUiTick());
@@ -126,6 +132,7 @@ void GameScene::loadWidgets() {
 		{20, 40, 160, 20},
 		Widget::HORZALIGN_RIGHT,
 		Widget::VERTALIGN_BOTTOM,
+		true,
 		/*drawFunc*/ [model](const Widget& widget, UiManager& uiManager) {
 			char msg[256];
 			sprintf(msg, "ModelTick: %u", model->getModelTick());
@@ -138,6 +145,7 @@ void GameScene::loadWidgets() {
 		{20, 20, 160, 20},
 		Widget::HORZALIGN_RIGHT,
 		Widget::VERTALIGN_BOTTOM,
+		true,
 		/*drawFunc*/ [](const Widget& widget, UiManager& uiManager) {
 			char msg[256];
 			sprintf(msg, "FPS: %.2f", uiManager.fps);
@@ -145,4 +153,13 @@ void GameScene::loadWidgets() {
 			widget.renderText(uiManager, msg);
 		} );
 	widgetManager.loadWidget(newWidget);
+}
+
+void GameScene::pause() {
+    Scene::pause();
+    pauseDisplayWidget->show();
+}
+void GameScene::unpause() {
+    Scene::unpause();
+    pauseDisplayWidget->hide();
 }

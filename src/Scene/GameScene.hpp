@@ -11,6 +11,8 @@ class GameScene : public Scene {
         float cameraMoveRate; // in pixels per frame, positive
         int moveCameraScreenBorder; // The cursor should be within this number of pixels from the window border in order to move the camera
 
+        Widget *pauseDisplayWidget;
+
         void loadWidgets();
 
         GameModelManager* getModel();
@@ -29,6 +31,10 @@ class GameScene : public Scene {
         void handleKeyUpEvent(SDL_Keycode key);
         void handleMouseMDownEvent();
         void handleMouseWheelEvent(Sint32 delta);
+
+        /**  Model  **/
+        virtual void pause();
+        virtual void unpause();
 };
 
 #endif // GAME_SCENE_HPP

@@ -25,6 +25,7 @@ void MenuScene::loadWidgets() {
 		{40, 20, 240, 20},
 		Widget::HORZALIGN_LEFT,
 		Widget::VERTALIGN_TOP,
+		true,
 		/*funcOnClick*/ []() {
 			MessageHandler::postMessage( new SceneTransitMessage( new GameScene() ) );
 		},
@@ -38,6 +39,7 @@ void MenuScene::loadWidgets() {
 		{40, 60, 60, 40},
 		Widget::HORZALIGN_LEFT,
 		Widget::VERTALIGN_BOTTOM,
+		true,
 		/*funcOnClick*/ []() {
 			MessageHandler::postMessage( new QuitMessage() );
 		},
@@ -51,25 +53,28 @@ void MenuScene::loadWidgets() {
 		{0, 20, 160, 20},
 		Widget::HORZALIGN_CENTER,
 		Widget::VERTALIGN_TOP,
+		true,
 		/*drawFunc*/ [&](const Widget& widget, UiManager& uiManager) {
 			uiManager.setColorMask(textColor);
 			widget.renderText(uiManager, "MENU SCENE");
 		} ) );
 
-    widgetManager.loadWidget( new Widget(
+    pauseDisplayWidget = new Widget(
 		{20, 80, 160, 20},
 		Widget::HORZALIGN_RIGHT,
 		Widget::VERTALIGN_BOTTOM,
+		paused,
 		/*drawFunc*/ [&](const Widget& widget, UiManager& uiManager) {
-			if (!paused) return;
 			uiManager.setColorMask(white);
 			widget.renderText(uiManager, "-- PAUSED --");
-		} ) );
+		} );
+    widgetManager.loadWidget(pauseDisplayWidget);
 
     widgetManager.loadWidget( new Widget(
 		{20, 60, 160, 20},
 		Widget::HORZALIGN_RIGHT,
 		Widget::VERTALIGN_BOTTOM,
+		true,
 		/*drawFunc*/ [&](const Widget& widget, UiManager& uiManager) {
 			char msg[256];
 			sprintf(msg, "UiTick: %u", uiManager.getUiTick());
@@ -81,6 +86,7 @@ void MenuScene::loadWidgets() {
 		{20, 40, 160, 20},
 		Widget::HORZALIGN_RIGHT,
 		Widget::VERTALIGN_BOTTOM,
+		true,
 		/*drawFunc*/ [&](const Widget& widget, UiManager& uiManager) {
 			char msg[256];
 			sprintf(msg, "ModelTick: %u", modelManager->getModelTick());
@@ -92,10 +98,20 @@ void MenuScene::loadWidgets() {
 		{20, 20, 160, 20},
 		Widget::HORZALIGN_RIGHT,
 		Widget::VERTALIGN_BOTTOM,
+		true,
 		/*drawFunc*/ [&](const Widget& widget, UiManager& uiManager) {
 			char msg[256];
 			sprintf(msg, "FPS: %.2f", uiManager.fps);
 			uiManager.setColorMask(textColor);
 			widget.renderText(uiManager, msg);
 		} ) );
+}
+
+void MenuScene::pause() {
+    Scene::pause();
+    pauseDisplayWidget->show();
+}
+void MenuScene::unpause() {
+    Scene::unpause();
+    pauseDisplayWidget->hide();
 }

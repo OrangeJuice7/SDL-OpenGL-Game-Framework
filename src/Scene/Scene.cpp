@@ -14,8 +14,18 @@ Scene::~Scene() {
 	delete modelManager;
 }
 
+bool Scene::getPaused() const {
+    return paused;
+}
 uint32_t Scene::getModelTick() const {
     return modelManager->getModelTick();
+}
+
+void Scene::pause() {
+    paused = true;
+}
+void Scene::unpause() {
+    paused = false;
 }
 
 void Scene::doTick() {

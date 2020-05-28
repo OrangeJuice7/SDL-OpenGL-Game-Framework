@@ -86,7 +86,8 @@ void GameScene::handleKeyDownEvent(SDL_Keycode key) {
             break;
 
         case SDLK_SPACE:
-            paused = !paused;
+            if (paused) unpause();
+            else        pause();
             break;
 
         //
