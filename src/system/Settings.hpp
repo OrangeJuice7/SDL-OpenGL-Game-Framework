@@ -112,6 +112,7 @@ class Settings {
         // Place Setting members here
         // Remember to init them and add them to the map in the constructor too!
         // Call them in any other file by using Settings::[setting name].get()
+        static BoolSetting isFullscreen;
         static FloatSetting initialGameModelScale;
 
         // Load settings: guaranteed to maintain safe values for the settings

@@ -24,6 +24,7 @@ UiManager::UiManager(const char *windowTitle, int screenWidth, int screenHeight)
     mainWindow = nullptr;
     camera = &_dummy_camera;
     orthoMode = false;
+    isFullscreen = false;
 
     uiTick = 0;
     fps = 0;
@@ -32,6 +33,9 @@ UiManager::~UiManager() {}
 
 Uint32 UiManager::getUiTick() const {
     return uiTick;
+}
+bool UiManager::getIsFullscreen() const {
+    return isFullscreen;
 }
 
 Sprite* UiManager::getSprite(SpriteId id) const {
@@ -49,6 +53,25 @@ void UiManager::gameToScreenCoords(float& screenX, float& screenY, float gameX, 
 
 void UiManager::sleep(float duration) {
     SDL_Delay(duration*1000);
+}
+
+void UiManager::setFullscreen() {
+    if (SDL_SetWindowFullscreen(mainWindow, SDL_WINDOW_FULLSCREEN) < 0) {
+        printf("Could not set to fullscreen mode! SDL_Error: %s\n", SDL_GetError());
+        return;
+    }
+    isFullscreen = true;
+}
+void UiManager::setWindowed() {
+    if (SDL_SetWindowFullscreen(mainWindow, 0) < 0) {
+        printf("Could not set to windowed mode! SDL_Error: %s\n", SDL_GetError());
+        return;
+    }
+    isFullscreen = false;
+}
+void UiManager::toggleFullscreen() {
+    if (isFullscreen) setWindowed();
+    else setFullscreen();
 }
 
 void UiManager::draw(Scene* scene) {

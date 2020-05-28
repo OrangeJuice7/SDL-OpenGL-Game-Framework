@@ -22,6 +22,9 @@ void UiManager::getInputs(Scene* scene) {
                     keyboardState.keys[key] = true;
                     scene->handleKeyDownEvent(key);
 
+                    // Toggle fullscreen
+                    if (key == SDLK_F1) toggleFullscreen();
+
                     // Print screen
                     if (key == SDLK_F2) {
                         char filename[32];

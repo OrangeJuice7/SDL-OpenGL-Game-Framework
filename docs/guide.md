@@ -35,6 +35,7 @@ Windows:
 	- The mouse may also be moved to the edges of the screen to pan the camera.
 	- The camera can also be zoomed in and out by scrolling the mouse wheel.
 	- The camera can be reset by clicking the mouse wheel.
+- <kbd>F1</kbd> Toggles between fullscreen and windowed mode.
 - <kbd>F2</kbd> Takes a screenshot of the game and saves it as a BMP in the project's root directory.
 
 ![](teaser.png)

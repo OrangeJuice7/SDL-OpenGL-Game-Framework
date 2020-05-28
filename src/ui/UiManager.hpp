@@ -15,6 +15,7 @@ class UiManager {
     protected:
         // SDL
         SDL_Window* mainWindow;
+        bool isFullscreen;
 
         // OpenGL
         SDL_GLContext glContext; // Rendering context
@@ -29,7 +30,7 @@ class UiManager {
         // Utility
         const ModelCamera *camera; // Reference to a ModelCamera in a Scene
         ModelCamera _dummy_camera; // Exists only to make sure camera is not nullptr
-        bool orthoMode;
+        bool orthoMode; // ortho = drawing to screen coords instead of game coords
 
         Uint32 uiTick;
 
@@ -62,6 +63,7 @@ class UiManager {
         void deinit();
 
         Uint32 getUiTick() const;
+        bool getIsFullscreen() const;
         void sleep(float duration); // in seconds, capped at millisecond precision
 
         // Collect hardware inputs and pass them to scene for interpretation
@@ -72,6 +74,11 @@ class UiManager {
         void screenToGameCoords(float& gameX, float& gameY, float screenX, float screenY);
         // Converts game coords to screen coords. Primarily used to check if something is visible, and thus whether drawing can be skipped.
         void gameToScreenCoords(float& screenX, float& screenY, float gameX, float gameY);
+
+        // Window manipulation
+        void setFullscreen();
+        void setWindowed();
+        void toggleFullscreen();
 
         // Draws the scene to screen
         void draw(Scene* scene);

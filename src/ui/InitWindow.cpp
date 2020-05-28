@@ -1,15 +1,22 @@
 #include "UiManager.hpp"
 
 #include <cstdio>
+#include "../system/Settings.hpp"
 
 bool UiManager::initWindow() {
-    mainWindow = SDL_CreateWindow(
-            WINDOW_TITLE,
-            SDL_WINDOWPOS_UNDEFINED,
-            SDL_WINDOWPOS_UNDEFINED,
-            SCREEN_WIDTH,
-            SCREEN_HEIGHT,
-            SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+    isFullscreen = Settings::isFullscreen.get();
+
+    {   Uint32 flags = SDL_WINDOW_OPENGL;
+        if (isFullscreen) flags |= SDL_WINDOW_FULLSCREEN;
+
+        mainWindow = SDL_CreateWindow(
+                WINDOW_TITLE,
+                SDL_WINDOWPOS_UNDEFINED,
+                SDL_WINDOWPOS_UNDEFINED,
+                SCREEN_WIDTH,
+                SCREEN_HEIGHT,
+                flags);
+    }
 
     if (mainWindow == NULL) {
         return false;
@@ -27,4 +34,6 @@ bool UiManager::initWindow() {
 void UiManager::deinitWindow() {
     SDL_DestroyWindow(mainWindow);
     mainWindow = NULL;
+
+    Settings::isFullscreen.set(isFullscreen);
 }

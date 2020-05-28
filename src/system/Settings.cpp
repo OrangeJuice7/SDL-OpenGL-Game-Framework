@@ -73,6 +73,7 @@ StringSetting::~StringSetting() {}
 
 
 /**   Initialize Settings here!   **/
+BoolSetting Settings::isFullscreen("isFullscreen", false);
 FloatSetting Settings::initialGameModelScale("initialGameModelScale", 32, 8, 128);
 
 Settings* Settings::instance = new Settings(); // Note: Should come AFTER the settings have been constructed!
@@ -80,6 +81,7 @@ Settings::Settings()
         : settingsLookup() {
 
     /**   Build the lookup table of Settings here!   **/
+    addSettingToLookup(isFullscreen);
     addSettingToLookup(initialGameModelScale);
 }
 Settings::~Settings() {} // Do not force the app to save on exit, let the app ask for it manually.
