@@ -1,7 +1,10 @@
 #include "UiManager.hpp"
 
+// For screenshots
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include <stb_image_write.h>
+
 #include <cstdio>
-#include <SOIL.h> // For screenshots
 #include "../Scene/Scene.hpp"
 
 UiManager::UiManager(const char *windowTitle, int screenWidth, int screenHeight)
@@ -65,6 +68,14 @@ void UiManager::saveScreenshot(const char* filename) {
     char fullFilename[256];
     sprintf(fullFilename, "%s.bmp", filename);
 
-    // Sadly SOIL does not support PNG saving
-    SOIL_save_screenshot(fullFilename, SOIL_SAVE_TYPE_BMP, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    // Collect screen data
+    GLubyte *data = (GLubyte*)malloc(3 * SCREEN_WIDTH * SCREEN_HEIGHT);
+    glReadPixels(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, GL_RGB, GL_UNSIGNED_BYTE, data);
+
+    // Note: PNG file saving is not optimally compressed. Also has a "stride_in_bytes" param which idk how to use
+    stbi_flip_vertically_on_write(1);
+    stbi_write_bmp(fullFilename, SCREEN_WIDTH, SCREEN_HEIGHT, 3, data);
+
+    // Free data
+    free(data);
 }

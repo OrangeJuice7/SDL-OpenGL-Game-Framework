@@ -43,7 +43,7 @@ bool GlyphSprite::init(const FT_GlyphSlot &glyph) {
           top = glyph->bitmap_top,
           bottom = top - glyph->bitmap.rows;
     GLvertex2 vertices[] = { {left,bottom}, {right,bottom}, {left,top}, {right,top} };
-    GLtexcoord texcoords[] = { {0,1}, {1,1}, {0,0}, {1,0} };
+    GLtexcoord texcoords[] = { {0,1}, {1,1}, {0,0}, {1,0} }; // Note: loaded textures are y-inverted
 
     // Generate buffer objects
     glGenVertexArrays(1, &vao);

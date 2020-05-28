@@ -1,7 +1,9 @@
 #include "Texture.hpp"
 
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
+
 #include <cstdio>
-#include <SOIL.h>
 
 Texture Texture::blankTexture;
 Texture::Texture() {
@@ -33,7 +35,8 @@ bool Texture::initBlankTexture() {
 }
 bool Texture::init(const char* filename) {
     // Load data from file
-    GLubyte *data = SOIL_load_image(filename, &width, &height, &numOfChannels, SOIL_LOAD_AUTO);
+    stbi_set_flip_vertically_on_load(1); // +y is up
+    GLubyte *data = stbi_load(filename, &width, &height, &numOfChannels, 0);
 
     if (!data) {
         printf("Error: Failed to load texture \"%s\". Missing or corrupted file?\n", filename);
@@ -62,7 +65,7 @@ bool Texture::init(const char* filename) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // scale-up filter
 
     // Free pixel data
-    SOIL_free_image_data(data);
+    stbi_image_free(data);
 
     return true;
 }

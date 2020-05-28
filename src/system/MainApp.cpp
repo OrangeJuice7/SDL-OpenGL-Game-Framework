@@ -1,6 +1,7 @@
 #include "MainApp.hpp"
 
 #include <cstdio>
+#include "Settings.hpp"
 #include "Message.hpp"
 #include "../Scene/Scene.hpp"
 #include "../Scene/MenuScene.hpp"
@@ -25,6 +26,10 @@ bool MainApp::init() {
     printf("Initializing...\n");
     initializeTimer.start();
 
+    printf("Loading settings...\n");
+    Settings::load();
+
+    printf("Loading UI...\n");
     if(!uiManager.init()) {
         printf("Main UI Manager failed to initialize.\n");
         return false;
@@ -38,6 +43,9 @@ bool MainApp::init() {
 
 void MainApp::deinit() {
     uiManager.deinit();
+
+    printf("Saving settings...\n");
+    Settings::save();
 }
 
 void MainApp::executeMessages() {

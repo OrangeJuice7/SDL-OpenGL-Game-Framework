@@ -11,9 +11,9 @@
 void GameScene::updateFromMouse(const SDL_Rect &screenRect, const MouseState &mouseState) {
     // Pan camera
     {   float panAmount = cameraMoveRate / modelManager->camera.getScale(); // convert pixels per frame to game coords per frame
-             if (mouseState.x <=              moveCameraScreenBorder) modelManager->camera.move(-panAmount,0);
+        if      (mouseState.x <=              moveCameraScreenBorder) modelManager->camera.move(-panAmount,0);
         else if (mouseState.x >= screenRect.w-moveCameraScreenBorder) modelManager->camera.move( panAmount,0);
-             if (mouseState.y <=              moveCameraScreenBorder) modelManager->camera.move(0,-panAmount);
+        if      (mouseState.y <=              moveCameraScreenBorder) modelManager->camera.move(0,-panAmount);
         else if (mouseState.y >= screenRect.h-moveCameraScreenBorder) modelManager->camera.move(0, panAmount);
     }
 

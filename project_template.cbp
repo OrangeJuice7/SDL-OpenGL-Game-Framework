@@ -41,16 +41,8 @@
 			<Add option="-DGLEW_STATIC" />
 		</Compiler>
 		<Linker>
-			<Add option="-lmingw32 -lSDL2main -lSDL2 -lglew32s -lSOIL -lopengl32 -lfreetype" />
+			<Add option="-lmingw32 -lSDL2main -lSDL2 -lglew32s -lopengl32 -lfreetype" />
 		</Linker>
-		<Unit filename="src/MainApp/MainApp.cpp" />
-		<Unit filename="src/MainApp/MainApp.hpp" />
-		<Unit filename="src/MainApp/MessageHandler.cpp" />
-		<Unit filename="src/MainApp/MessageHandler.hpp" />
-		<Unit filename="src/Message/Message.cpp" />
-		<Unit filename="src/Message/Message.hpp" />
-		<Unit filename="src/Message/SceneTransitMessage.cpp" />
-		<Unit filename="src/Message/SceneTransitMessage.hpp" />
 		<Unit filename="src/Scene/GameScene.cpp" />
 		<Unit filename="src/Scene/GameScene.hpp" />
 		<Unit filename="src/Scene/GameSceneInput.cpp" />
@@ -80,7 +72,17 @@
 		<Unit filename="src/Scene/Widget/Widget.hpp" />
 		<Unit filename="src/Scene/Widget/WidgetManager.cpp" />
 		<Unit filename="src/Scene/Widget/WidgetManager.hpp" />
-		<Unit filename="src/main.cpp" />
+		<Unit filename="src/system/MainApp.cpp" />
+		<Unit filename="src/system/MainApp.hpp" />
+		<Unit filename="src/system/Message.cpp" />
+		<Unit filename="src/system/Message.hpp" />
+		<Unit filename="src/system/MessageHandler.cpp" />
+		<Unit filename="src/system/MessageHandler.hpp" />
+		<Unit filename="src/system/SceneTransitMessage.cpp" />
+		<Unit filename="src/system/SceneTransitMessage.hpp" />
+		<Unit filename="src/system/Settings.cpp" />
+		<Unit filename="src/system/Settings.hpp" />
+		<Unit filename="src/system/main.cpp" />
 		<Unit filename="src/ui/Draw.cpp" />
 		<Unit filename="src/ui/GLUtil.cpp" />
 		<Unit filename="src/ui/GLUtil.hpp" />
@@ -114,9 +116,6 @@
 		<Unit filename="src/util/math.cpp" />
 		<Unit filename="src/util/math.hpp" />
 		<Extensions>
-			<code_completion />
-			<envvars />
-			<debugger />
 			<lib_finder disable_auto="1" />
 		</Extensions>
 	</Project>

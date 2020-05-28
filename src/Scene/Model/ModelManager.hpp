@@ -2,7 +2,6 @@
 #define MODEL_MANAGER_HPP
 
 #include <cstdint>
-#include <functional>
 #include <SDL2/SDL.h>
 #include "../../ui/ModelCamera.hpp"
 class UiManager;
