@@ -69,7 +69,7 @@ void UiManager::setFullscreen() {
 }
 void UiManager::setWindowed() {
     if (SDL_SetWindowFullscreen(mainWindow, 0) < 0) {
-        printf("Could not set to windowed mode! SDL_Error: %s\n", SDL_GetError());
+        printf("Error: Could not set to windowed mode! SDL_Error: %s\n", SDL_GetError());
         return;
     }
     isFullscreen = false;
@@ -90,6 +90,20 @@ void UiManager::updateWindowSize(int width, int height) {
     setScreenRect(width, height);
 
     glViewport(0, 0, getScreenWidth(), getScreenHeight());
+}
+void UiManager::resizeWindow(int width, int height) {
+    if (width < 1 || height < 1) return;
+
+    if (isFullscreen) {
+        // SDL_SetWindowDisplayMode(mainWindow, &mode) doesn't seem to work, so...
+        setWindowed();
+        SDL_SetWindowSize(mainWindow, width, height);
+        setFullscreen();
+    } else {
+        SDL_SetWindowSize(mainWindow, width, height);
+    }
+
+    updateWindowSize(width, height);
 }
 
 void UiManager::draw(Scene* scene) {

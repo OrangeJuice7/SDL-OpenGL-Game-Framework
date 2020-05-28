@@ -23,6 +23,13 @@ bool UiManager::initWindow() {
         return false;
     }
 
+    {   SDL_DisplayMode mode;
+        for (int i = 0; i < SDL_GetNumVideoDisplays(); ++i) {
+            SDL_GetCurrentDisplayMode(i, &mode);
+            printf("Display #%d: %dx%dpx @ %dhz.", i, mode.w, mode.h, mode.refresh_rate);
+        }
+    }
+
     // Disable showing the standard cursor, since we're rendering our own custom one
     if (SDL_ShowCursor(SDL_DISABLE) < 0) {
         printf("Could not disable cursor! SDL_Error: %s\n", SDL_GetError());

@@ -44,6 +44,9 @@ void UiManager::getInputs(Scene* scene) {
                         sprintf(filename, "screen%d", uiTick);
                         saveScreenshot(filename);
                     }
+
+                    // Set window size to 1280x720
+                    if (key == SDLK_F3) resizeWindow(1280, 720);
                 }
                 break;
 

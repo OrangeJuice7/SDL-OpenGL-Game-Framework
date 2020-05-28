@@ -37,6 +37,7 @@ Windows:
 	- The camera can be reset by clicking the mouse wheel.
 - <kbd>F1</kbd> Toggles between fullscreen and windowed mode.
 - <kbd>F2</kbd> Takes a screenshot of the game and saves it as a BMP in the project's root directory.
+- Drag the window's edges to change its dimensions. <kbd>F3</kbd> Sets the dimensions to 1280x720.
 
 ![](teaser.png)
 

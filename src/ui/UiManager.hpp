@@ -48,6 +48,7 @@ class UiManager {
         Sprite* getSprite(SpriteId id) const;
 
         void setScreenRect(int width, int height);
+        void updateWindowSize(int width, int height);
 
     public:
         const char *WINDOW_TITLE;
@@ -80,8 +81,7 @@ class UiManager {
         void setFullscreen();
         void setWindowed();
         void toggleFullscreen();
-
-        void updateWindowSize(int width, int height);
+        void resizeWindow(int width, int height);
 
         // Draws the scene to screen
         void draw(Scene* scene);
