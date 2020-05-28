@@ -3,7 +3,7 @@
 
 #include <functional>
 #include <forward_list>
-#include <SDL2/SDL.h> // for SDL_Rect
+#include "GuiRegion.hpp"
 class UiManager;
 
 /**
@@ -11,31 +11,8 @@ class UiManager;
  *  Can also be used to align text and such.
  */
 
-class Widget {
-    public:
-		// Alignment: what does the (x,y) position actually refer to
-		// e.g. top-left alignment means (x,y) is the position of the top-left corner of the widget from the top-left corner of the screen
-		// (For Center alignment, +x/+y is right/down, to be consistent with SDL's coordinate system.)
-		enum HorizontalAlignment {
-			HORZALIGN_LEFT,
-			HORZALIGN_CENTER,
-			HORZALIGN_RIGHT
-		};
-
-		enum VerticalAlignment {
-			VERTALIGN_TOP,
-			VERTALIGN_CENTER,
-			VERTALIGN_BOTTOM
-		};
-
+class Widget : public GuiRegion {
 	protected:
-        // x, y, w, h
-		SDL_Rect rect; // Rect as using the alignment system
-		SDL_Rect screenRect; // (cached) Rect in actual screen coords (with topleft alignment)
-
-		HorizontalAlignment horzAlign;
-		VerticalAlignment vertAlign;
-
 		bool clickable;
 		// The function that this widget executes on click.
 		// Set to nullptr if this widget does nothing when clicked
@@ -58,9 +35,6 @@ class Widget {
 		// The function that this widget executes on draw
 		// If set to nullptr, doesn't draw anything
 		std::function<void(const Widget&, UiManager&)> drawFunc;
-
-		// psRect: Parent screen rect, (i.e. also actual screen coords with topleft alignment)
-		void calcScreenRect(const SDL_Rect &psRect);
 
     public:
         // Full constructor
@@ -99,7 +73,6 @@ class Widget {
 
 		virtual ~Widget();
 
-        const SDL_Rect& getScreenRect() const;
         bool getActive() const;
         bool getClickable() const;
 
@@ -109,8 +82,8 @@ class Widget {
 
 		// Returns the widget that (x,y) lies on
 		// = this if this widget, = one of the children if they are on top instead, = nullptr if (x,y) is outside of this widget
-		// (x,y) is position from the top-left corner
-        Widget* checkOn(int x, int y); // Can't be const unfortunately, because it returns this
+		// (x,y) is position from the bottom-left corner
+        Widget* checkOn(float x, float y); // Can't be const unfortunately, because it returns this
 
         void activate();
         void deactivate();
@@ -118,7 +91,7 @@ class Widget {
         void releaseMouse();
 
 		/**  Update  **/
-		// psRect: Parent screen rect, also taken from the top-left corner
+		// psRect: Parent screen rect, also taken from the bottom-left corner
 		void update(const SDL_Rect &psRect);
 
 		/**  Draw  **/

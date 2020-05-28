@@ -36,11 +36,10 @@ Widget::Widget(
 		bool clickable,
 		std::function<void()> funcOnClick,
 		std::function<void()> funcOnRelease,
-		std::function<void(const Widget&, UiManager&)> drawFunc ) {
+		std::function<void(const Widget&, UiManager&)> drawFunc )
 
-    this->rect = rect;
-    this->horzAlign = horzAlign;
-    this->vertAlign = vertAlign;
+		: GuiRegion(rect, horzAlign, vertAlign) {
+
     this->clickable = clickable;
     this->funcOnClick = funcOnClick;
     this->funcOnRelease = funcOnRelease;
@@ -55,9 +54,6 @@ Widget::~Widget() {
 	children.clear();
 }
 
-const SDL_Rect& Widget::getScreenRect() const {
-    return screenRect;
-}
 bool Widget::getActive() const {
 	return active;
 }
@@ -68,34 +64,8 @@ void Widget::addChild(Widget* widget) {
     children.push_front(widget);
 }
 
-void Widget::calcScreenRect(const SDL_Rect &psRect) {
-    screenRect = {
-		psRect.x,
-		psRect.y,
-		rect.w,
-		rect.h
-	};
-	switch (horzAlign) {
-		case HORZALIGN_LEFT  : screenRect.x += rect.x; break;
-		case HORZALIGN_CENTER: screenRect.x += psRect.w/2 + rect.x - rect.w/2; break;
-		case HORZALIGN_RIGHT : screenRect.x += psRect.w   - rect.x - rect.w  ; break;
-	}
-	switch (vertAlign) {
-		case VERTALIGN_BOTTOM: screenRect.y += rect.y; break;
-		case VERTALIGN_CENTER: screenRect.y += psRect.h/2 + rect.y - rect.h/2; break;
-		case VERTALIGN_TOP   : screenRect.y += psRect.h   - rect.y - rect.h  ; break;
-	}
-}
-
-bool withinRect(const SDL_Rect &rect, int x, int y) {
-	return (
-		x >= rect.x &&
-		y >= rect.y &&
-		x <= rect.x + rect.w &&
-		y <= rect.y + rect.h );
-}
-Widget* Widget::checkOn(int x, int y) {
-	if (!withinRect(screenRect, x, y)) return nullptr;
+Widget* Widget::checkOn(float x, float y) {
+	if (!withinScreenRect(x, y)) return nullptr;
 	// (Future: do further checks in the case where this widget is not rectangular)
 
 	// Check children
