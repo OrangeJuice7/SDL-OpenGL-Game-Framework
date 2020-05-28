@@ -15,7 +15,8 @@ class SettingBase {
         ~SettingBase();
 
         virtual bool read(const std::string& strValue)=0;
-        virtual void printToFile(FILE *file)=0;
+        virtual std::string getValueAsString()=0;
+        void printToFile(FILE *file);
 };
 
 template<typename T>
@@ -24,7 +25,7 @@ class Setting : public SettingBase {
         T value;
         std::function<bool(const T&)> isValid;
         std::function<T(const std::string&)> parseFromString;
-        std::function<const char*(const T&)> convertToString;
+        std::function<std::string(const T&)> convertToString;
 
     public:
         // Even if the specified default value that fails the validity predicate, it will still be used.
@@ -34,13 +35,14 @@ class Setting : public SettingBase {
                 T defaultValue,
                 std::function<bool(const T&)> validityPredicate,
                 std::function<T(const std::string&)> parseFromString,
-                std::function<const char*(const T&)> convertToString)
+                std::function<std::string(const T&)> convertToString)
 
                 : SettingBase(name) {
 
             value = defaultValue;
             isValid = validityPredicate;
             this->parseFromString = parseFromString;
+            this->convertToString = convertToString;
         }
         ~Setting() {}
 
@@ -59,8 +61,8 @@ class Setting : public SettingBase {
             return set( parseFromString(strValue) );
         }
 
-        void printToFile(FILE *file) {
-            fprintf(file, "%s=%s\n", name.c_str(), convertToString(value));
+        std::string getValueAsString() {
+            return convertToString(value);
         }
 };
 
@@ -80,30 +82,40 @@ class StringSetting : public Setting<std::string> {
         ~StringSetting();
 };
 
-class SettingManager { // Singleton?
-    protected:
+struct STRING_COMPARATOR {
+    bool operator()(const std::string& str1, const std::string& str2) const {
+        return str1.compare(str2) < 0;
+    }
+};
+class Settings {
+    private:
+        // Singleton
+        static Settings* instance;
+
         // List of settings for easy lookup when reading from file
         // (The explicit settings are still kept separate for easy access and compile-time checking within the program)
         // The second template param is supposed to be a pointer to a Setting, just that Settings need a type to be instantiated first
-        std::map<std::string, SettingBase*> settingsLookup;
+        std::map<std::string, SettingBase*, STRING_COMPARATOR> settingsLookup;
 
         template<typename T>
         void addSettingToLookup(Setting<T>& setting);
 
+        Settings();
+        ~Settings();
+
     public:
         // Place Setting members here
         // Remember to init them and add them to the map in the constructor too!
-        FloatSetting initialModelScale;
+        // Call them in any other file by using Settings::[setting name].get()
+        static FloatSetting initialGameModelScale;
 
-        SettingManager();
-        ~SettingManager();
-
-        void load(); // Loads settings from the default filepath (specified in Settings.cpp)
-        void loadFromFile(const char* filepath);
+        // Load settings: guaranteed to maintain safe values for the settings
+        static void load(); // Loads settings from the default filepath (specified in Settings.cpp)
+        static void loadFromFile(const char* filepath);
 
         // Returns true iff all settings could be saved successfully
-        bool save(); // Saves settings to the default filepath
-        bool saveToFile(const char* filepath);
+        static void save(); // Saves settings to the default filepath
+        static void saveToFile(const char* filepath);
 };
 
 #endif // SETTINGS_HPP

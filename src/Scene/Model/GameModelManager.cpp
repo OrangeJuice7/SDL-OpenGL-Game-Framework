@@ -1,10 +1,11 @@
 #include "GameModelManager.hpp"
 
+#include "../../system/Settings.hpp"
 #include "../../util/math.hpp"
 #include "../../ui/UiManager.hpp"
 
 GameModelManager::GameModelManager()
-        : ModelManager(32)
+        : ModelManager(Settings::initialGameModelScale.get())
         , mobs()
         , particles() {
 

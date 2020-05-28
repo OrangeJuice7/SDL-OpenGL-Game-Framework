@@ -8,6 +8,10 @@
 SettingBase::SettingBase(const std::string& name) : name(name) {}
 SettingBase::~SettingBase() {}
 
+void SettingBase::printToFile(FILE *file) {
+    fprintf(file, "%s=%s\n", name.c_str(), getValueAsString().c_str());
+}
+
 template<typename T>
 std::function<bool(const T&)> getPredicateAlwaysTrue() {
     return [](const T& v){ return true; };
@@ -32,14 +36,14 @@ float parseFloatFromString(const std::string& str) {
     return std::stof(str);
 }
 
-const char* convertIntToString(const int& i) {
-    return std::to_string(i).c_str();
+std::string convertIntToString(const int& i) {
+    return std::to_string(i);
 }
-const char* convertFloatToString(const float& f) {
-    return std::to_string(f).c_str();
+std::string convertFloatToString(const float& f) {
+    return std::to_string(f);
 }
-const char* convertStringToString(const std::string& str) {
-    return str.c_str();
+std::string convertStringToString(const std::string& str) {
+    return str;
 }
 
 IntSetting::IntSetting(std::string name, int defaultValue, int minBound, int maxBound)
@@ -56,15 +60,20 @@ StringSetting::~StringSetting() {}
 
 
 
-SettingManager::SettingManager()
-    : initialModelScale("initialModelScale", 32, 8, 64) {
+/**   Initialize Settings here!   **/
+FloatSetting Settings::initialGameModelScale("initialGameModelScale", 32, 8, 128);
 
-    addSettingToLookup(initialModelScale);
+Settings* Settings::instance = new Settings(); // Note: Should come AFTER the settings have been constructed!
+Settings::Settings()
+        : settingsLookup() {
+
+    /**   Build the lookup table of Settings here!   **/
+    addSettingToLookup(initialGameModelScale);
 }
-SettingManager::~SettingManager() {} // DO NOT SAVE! Do not force the app to save on exit, let the app ask for it manually.
+Settings::~Settings() {} // Do not force the app to save on exit, let the app ask for it manually.
 
 template<typename T>
-void SettingManager::addSettingToLookup(Setting<T>& setting) {
+void Settings::addSettingToLookup(Setting<T>& setting) {
     if (settingsLookup.count(setting.name) == 1) {
         printf("WARNING: Setting with the same name \"%s\" already exists! Skipping...\n", setting.name.c_str());
         return;
@@ -72,18 +81,16 @@ void SettingManager::addSettingToLookup(Setting<T>& setting) {
     settingsLookup[setting.name] = &setting;
 }
 
-void SettingManager::load() {
+void Settings::load() {
     loadFromFile(SETTINGS_FILEPATH);
 }
-void SettingManager::loadFromFile(const char* filepath) { // Adapted from https://www.walletfox.com/course/parseconfigfile.php
+void Settings::loadFromFile(const char* filepath) { // Adapted from https://www.walletfox.com/course/parseconfigfile.php
     // Open file
     std::ifstream settingsFile(filepath);
     if (!settingsFile.is_open()) {
-        printf("Could not open settings file \"%s\" for loading! Missing?", filepath);
+        printf("Could not open settings file \"%s\" for loading! Missing?\n", filepath);
         return;
     }
-
-    // Build hashmap of data names
 
     // Read data
     std::string line;
@@ -100,41 +107,41 @@ void SettingManager::loadFromFile(const char* filepath) { // Adapted from https:
 
         // Retrieve name and value
         std::string name = line.substr(0, delimiterPos);
-        std::string value = line.substr(delimiterPos + 1);
+        std::string value = line.substr(delimiterPos+1);
 
         // Check if name exists
-        if (settingsLookup.count(name) == 0) {
+        if (instance->settingsLookup.count(name) == 0) {
             printf("Unknown setting encountered in file: \"%s\"\n", name.c_str());
             continue; // Skip if name does not exist
         }
 
         // Assign value to Setting
-        if (settingsLookup.at(name)->read(value)) printf("Assigned value \"%s\" to setting \"%s\"\n", value.c_str(), name.c_str());
+        if (instance->settingsLookup.at(name)->read(value))
+            printf("Assigned value \"%s\" to setting \"%s\"\n", value.c_str(), name.c_str());
         else printf("Warning: value \"%s\" for setting \"%s\" is invalid!\n", value.c_str(), name.c_str());
     }
 
     // No need to close ifstream file
 }
 
-bool SettingManager::save() {
+void Settings::save() {
     return saveToFile(SETTINGS_FILEPATH);
 }
-bool SettingManager::saveToFile(const char* filepath) {
+void Settings::saveToFile(const char* filepath) {
     // Open file
     FILE *settingsFile = fopen(filepath, "w");
     if (!settingsFile) {
-        printf("Could not open settings file \"%s\" for saving!", filepath);
-        return false;
+        printf("Could not open settings file \"%s\" for saving!\n", filepath);
+        return;
     }
 
     // Save settings
     //initialModelScale.printToFile(settingsFile);
-    for (auto settingPair : settingsLookup) { // settingPair is of type std::pair<...>
+    for (auto settingPair : instance->settingsLookup) { // settingPair is of type std::pair<...>
         settingPair.second->printToFile(settingsFile);
     }
+    printf("Settings saved to \"%s\"!\n", filepath);
 
     // Close file
     fclose(settingsFile);
-
-    return true;
 }
