@@ -37,7 +37,7 @@ The following subsections list 3rd party resources used in this project. The lic
 - [Simple DirectMedia Layer (SDL2)](https://www.libsdl.org/download-2.0.php) (zlib): Hardware interfacing
 - OpenGL 3.3: Modern graphics rendering API (should come native with your compiler)
 	- [OpenGL Extension Wrangler (GLEW)](http://glew.sourceforge.net/) (Modified BSD/MIT): Support for OpenGL 3+
-	- [Simple OpenGL Image Library (SOIL)](http://www.lonesock.net/soil.html) (public): Texture loading
+- [stb_image](https://github.com/nothings/stb/blob/master/stb_image.h) and [stb_image_write](https://github.com/nothings/stb/blob/master/stb_image_write.h) (public): Texture loading and saving respectively
 - [FreeType](https://www.freetype.org/) ([FTL](https://git.savannah.gnu.org/cgit/freetype/freetype2.git/tree/docs/FTL.TXT) (BSD-like)): TrueType font support (get the Windows library [here](https://github.com/ubawurinna/freetype-windows-binaries))
 
 #### Textures

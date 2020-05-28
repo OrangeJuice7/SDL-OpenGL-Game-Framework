@@ -31,7 +31,7 @@ class Sprite {
 class TexturedSprite : public Sprite {
     protected:
         constexpr static GLvertex2 vertices[] = { {-1,-1}, {1,-1}, {-1,1}, {1,1} };
-        constexpr static GLtexcoord texcoords[] = { {0,1}, {1,1}, {0,0}, {1,0} }; // Note: loaded textures are y-inverted
+        constexpr static GLtexcoord texcoords[] = { {0,0}, {1,0}, {0,1}, {1,1} };
 
         static GLuint vao; // vertex array
         static GLuint vbo; // vertices

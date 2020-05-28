@@ -17,8 +17,8 @@ Windows:
 	- DLLs you will need: `freetype`, `SDL2`, `zlib1`
 	- If you are using Code::Blocks, you can leave the DLLs in the root directory.
 - Make sure your C++ compiler knows where to find the libraries and headers.
-- Compile the source code with these options: `-DGLEW_STATIC -lmingw32 -lSDL2main -lSDL2 -lglew32s -lSOIL -lopengl32 -lfreetype`
-	- This is already set up for you if you have Code::Blocks on your computer: Just open the .cbp project file.
+- Compile the source code with these options: `-DGLEW_STATIC -lmingw32 -lSDL2main -lSDL2 -lglew32s -lopengl32 -lfreetype`.
+	- This is already set up for you if you have Code::Blocks on your computer: Just open the .cbp project file. Also find and include `libwinmm.a` in the Code::Blocks libs.
 	- Note: The MinGW compiler will give a warning saying ".drectve \`/DEFAULTLIB:"LIBCMT" /DEFAULTLIB:"OLDNAMES" ' unrecognized". This warning is, from what I've read, due to an incompatibility with GLEW and MinGW, and is harmless. You just have to ignore it.
 - Run the program and interact with it using the mouse and keyboard. You should see the screen below. Try out the features in the next subsection.
 

@@ -41,7 +41,7 @@
 			<Add option="-DGLEW_STATIC" />
 		</Compiler>
 		<Linker>
-			<Add option="-lmingw32 -lSDL2main -lSDL2 -lglew32s -lSOIL -lopengl32 -lfreetype" />
+			<Add option="-lmingw32 -lSDL2main -lSDL2 -lglew32s -lopengl32 -lfreetype" />
 		</Linker>
 		<Unit filename="src/Scene/GameScene.cpp" />
 		<Unit filename="src/Scene/GameScene.hpp" />
@@ -116,9 +116,6 @@
 		<Unit filename="src/util/math.cpp" />
 		<Unit filename="src/util/math.hpp" />
 		<Extensions>
-			<code_completion />
-			<envvars />
-			<debugger />
 			<lib_finder disable_auto="1" />
 		</Extensions>
 	</Project>
