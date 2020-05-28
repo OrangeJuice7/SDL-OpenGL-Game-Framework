@@ -8,6 +8,8 @@ enum SpriteId {
     SPRITE_ID_TEX3,
     SPRITE_ID_TEX4,
 
+    SPRITE_ID_CURSOR,
+
     SPRITE_ID_WIDGET_BG_DEBUG,
     SPRITE_ID_CIRCLE,
 

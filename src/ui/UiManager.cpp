@@ -56,7 +56,13 @@ void UiManager::draw(Scene* scene) {
     glClear(GL_COLOR_BUFFER_BIT);
     //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    // Draw the scene
     scene->draw(*this);
+
+    // Draw the cursor
+    setDrawToScreenSpace();
+    setObjectScale(32);
+    drawSprite(mouseState.x, mouseState.y, SPRITE_ID_CURSOR);
 
     //Update screen
     SDL_GL_SwapWindow(mainWindow);

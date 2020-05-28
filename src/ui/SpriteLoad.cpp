@@ -18,6 +18,8 @@ bool SpriteManager::loadData() {
     if (!loadTexturedSprite(SPRITE_ID_TEX3, "data/textures/bit.tga")) return false;
     if (!loadTexturedSprite(SPRITE_ID_TEX4, "data/textures/awesomeface.png")) return false;
 
+    if (!loadTexturedSprite(SPRITE_ID_CURSOR, "data/textures/cursor.tga")) return false;
+
     {   GLcolorRGBA colors[] = { {1,1,1,.2f}, {1,1,1,.2f}, {1,1,1,.2f}, {1,1,1,.2f} };
         if (!loadGeometricSprite(SPRITE_ID_WIDGET_BG_DEBUG,
                                  quadDrawfunc,
