@@ -34,3 +34,4 @@
 # Project files
 *.depend
 *.layout
+data/settings.ini

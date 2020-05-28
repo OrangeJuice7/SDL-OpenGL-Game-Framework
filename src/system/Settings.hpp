@@ -66,6 +66,11 @@ class Setting : public SettingBase {
         }
 };
 
+class BoolSetting : public Setting<bool> {
+    public:
+        BoolSetting(std::string name, bool defaultValue);
+        ~BoolSetting();
+};
 class IntSetting : public Setting<int> {
     public:
         IntSetting(std::string name, int defaultValue, int minBound, int maxBound);

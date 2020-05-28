@@ -49,7 +49,9 @@ This section describes how the code base is organized.
 
 The `MainApp` hosts all the other components, and tracks application-wide data such as frames per second (FPS). It contains methods to initialize (`init()`), run (`run()`) and de-initialize (`deinit()`) the whole program. It also contains methods that allow `Message`s to affect its underlying data.
 
-Independent of `MainApp` and indeed the rest of the program is the `MessageHandler`. `MessageHandler` is a singleton class which collects `Message`s posted to it by any part of the main program, and lets a `MainApp` instance clear the `Message`s.
+Independent of `MainApp` and indeed the rest of the program are the `MessageHandler` and `Settings`. `MessageHandler` is a singleton class which collects `Message`s posted to it by any part of the main program, and lets a `MainApp` instance clear the `Message`s.
+
+`Settings` is another singleton class that is told by `MainApp` on initialization to load values from a settings file (default: `data/settings.ini`). Note that setting names and values are case-sensitive. `Settings` may then be accessed from anywhere else in the program to access these values. On program deinitialization, `MainApp` tells `Settings` to save those same values to the settings file.
 
 ![](ArchitectureLayerDiagram.png)
 

@@ -26,8 +26,10 @@ std::function<bool(const std::string&)> getPredicateStringMatchesRegex(std::stri
     return [regex](const std::string& str){ return std::regex_match(str, std::regex(regex)); };
 }
 
-std::string parseStringFromString(const std::string& str) {
-    return str;
+bool parseBoolFromString(const std::string& str) { // Accept the specified strings as true; anything else is false
+    return str.compare("true") == 0 ||
+           str.compare("TRUE") == 0 ||
+           str.compare("1") == 0;
 }
 int parseIntFromString(const std::string& str) {
     return std::stoi(str);
@@ -35,7 +37,13 @@ int parseIntFromString(const std::string& str) {
 float parseFloatFromString(const std::string& str) {
     return std::stof(str);
 }
+std::string parseStringFromString(const std::string& str) {
+    return str;
+}
 
+std::string convertBoolToString(const bool& b) {
+    return b ? "true" : "false";
+}
 std::string convertIntToString(const int& i) {
     return std::to_string(i);
 }
@@ -45,6 +53,10 @@ std::string convertFloatToString(const float& f) {
 std::string convertStringToString(const std::string& str) {
     return str;
 }
+
+BoolSetting::BoolSetting(std::string name, bool defaultValue)
+        : Setting<bool>(name, defaultValue, getPredicateAlwaysTrue<bool>(), parseBoolFromString, convertBoolToString) {}
+BoolSetting::~BoolSetting() {}
 
 IntSetting::IntSetting(std::string name, int defaultValue, int minBound, int maxBound)
         : Setting<int>(name, defaultValue, getPredicateNumberWithinBounds<int>(minBound, maxBound), parseIntFromString, convertIntToString) {}
