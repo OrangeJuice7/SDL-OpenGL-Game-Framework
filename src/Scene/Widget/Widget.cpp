@@ -3,52 +3,18 @@
 #include "../../ui/UiManager.hpp"
 
 Widget::Widget(
-        SDL_Rect rect,
-        HorizontalAlignment horzAlign,
-        VerticalAlignment vertAlign,
-        bool visible,
-        std::function<void(const Widget&, UiManager&)> drawFunc )
-
-        : Widget(rect, horzAlign, vertAlign, false, visible, nullptr, nullptr, drawFunc) {}
-
-Widget::Widget(
-        SDL_Rect rect,
-        HorizontalAlignment horzAlign,
-        VerticalAlignment vertAlign,
-        bool visible,
-        std::function<void()> funcOnClick,
-        std::function<void(const Widget&, UiManager&)> drawFunc )
-
-        : Widget(rect, horzAlign, vertAlign, true, visible, funcOnClick, nullptr, drawFunc) {}
-
-Widget::Widget(
-        SDL_Rect rect,
-        HorizontalAlignment horzAlign,
-        VerticalAlignment vertAlign,
-        bool visible,
-        std::function<void()> funcOnClick,
-        std::function<void()> funcOnRelease,
-        std::function<void(const Widget&, UiManager&)> drawFunc )
-
-        : Widget(rect, horzAlign, vertAlign, true, visible, funcOnClick, funcOnRelease, drawFunc) {}
-
-Widget::Widget(
 		SDL_Rect rect,
 		HorizontalAlignment horzAlign,
-		VerticalAlignment vertAlign,
-		bool clickable,
-        bool visible,
-		std::function<void()> funcOnClick,
-		std::function<void()> funcOnRelease,
-		std::function<void(const Widget&, UiManager&)> drawFunc )
+		VerticalAlignment vertAlign)
 
 		: GuiRegion(rect, horzAlign, vertAlign) {
 
-    this->clickable = clickable;
-    this->visible = visible;
-    this->funcOnClick = funcOnClick;
-    this->funcOnRelease = funcOnRelease;
-    this->drawFunc = drawFunc;
+    this->visible = true;
+
+    this->clickable = false;
+    this->funcOnClick = [](){};
+    this->funcOnRelease = [](){};
+    this->drawFunc = [](const Widget&, UiManager&){};
 
     this->active = false;
 }
@@ -68,8 +34,33 @@ bool Widget::getClickable() const {
 bool Widget::getVisible() const {
     return visible;
 }
+
+void Widget::setClickFunction(std::function<void()> funcOnClick) {
+    setClickFunction(funcOnClick, [](){});
+}
+void Widget::setClickFunction(std::function<void()> funcOnClick, std::function<void()> funcOnRelease) {
+    this->funcOnClick = funcOnClick;
+    this->funcOnRelease = funcOnRelease;
+    enableClick();
+}
+void Widget::setDrawFunction(std::function<void(const Widget&, UiManager&)> drawFunc) {
+    this->drawFunc = drawFunc;
+}
 void Widget::addChild(Widget* widget) {
     children.push_front(widget);
+}
+
+void Widget::enableClick() {
+    clickable = true;
+}
+void Widget::disableClick() {
+    clickable = false;
+}
+void Widget::show() {
+    visible = true;
+}
+void Widget::hide() {
+    visible = false;
 }
 
 Widget* Widget::checkOn(float x, float y) {
@@ -96,12 +87,6 @@ void Widget::click() {
 }
 void Widget::releaseMouse() {
 	if (funcOnRelease) funcOnRelease();
-}
-void Widget::show() {
-    visible = true;
-}
-void Widget::hide() {
-    visible = false;
 }
 
 void Widget::update(const SDL_Rect &psRect) {

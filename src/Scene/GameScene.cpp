@@ -32,202 +32,165 @@ GameModelManager* GameScene::getModel() {
 void GameScene::loadWidgets() {
 	GameModelManager* model = getModel();
 
-	Widget* newWidget;
 	const static GLcolorRGB     white = {1.f, 1.f, 1.f};
 	const static GLcolorRGB textColor = {.8f, 1.f, .8f};
 
-    newWidget = new Widget(
-		{40, 20, 240, 20},
-		Widget::HORZALIGN_LEFT,
-		Widget::VERTALIGN_TOP,
-		true,
-		/*drawFunc*/ [this](const Widget& widget, UiManager& uiManager) {
-			uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
-			uiManager.setColorMask(textColor);
-			if (paused) widget.renderText(uiManager, "Press ESC to resume");
-			else        widget.renderText(uiManager, "Press ESC to pause");
-		} );
+	Widget *newWidget, *newWidget2;
+
+    // ESC to pause notice
+    newWidget = new Widget({40, 20, 240, 20}, Widget::HORZALIGN_LEFT, Widget::VERTALIGN_TOP);
+	newWidget->setDrawFunction( [this](const Widget& widget, UiManager& uiManager) {
+        uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
+        uiManager.setColorMask(textColor);
+        if (paused) widget.renderText(uiManager, "Press ESC to resume");
+        else        widget.renderText(uiManager, "Press ESC to pause");
+    } );
 	widgetManager.loadWidget(newWidget);
 
-    newWidget = new Widget(
-		{0, 20, 160, 20},
-		Widget::HORZALIGN_CENTER,
-		Widget::VERTALIGN_TOP,
-		true,
-		/*drawFunc*/ [&](const Widget& widget, UiManager& uiManager) {
-			uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_SUBHEADING);
-			uiManager.setColorMask(textColor);
-			widget.renderText(uiManager, "GAME SCENE");
-		} );
+    // Game Scene title
+    newWidget = new Widget({0, 20, 160, 20}, Widget::HORZALIGN_CENTER, Widget::VERTALIGN_TOP);
+	newWidget->setDrawFunction( [&](const Widget& widget, UiManager& uiManager) {
+        uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_SUBHEADING);
+        uiManager.setColorMask(textColor);
+        widget.renderText(uiManager, "GAME SCENE");
+    } );
 	widgetManager.loadWidget(newWidget);
 
-    newWidget = new Widget(
-		{10,-40, 240, 180},
-		Widget::HORZALIGN_LEFT,
-		Widget::VERTALIGN_CENTER,
-		true,
-		/*funcOnClick*/ [model]() {
-			model->spawnParticleExplosion(100, 4, 1, .1f, .2f);
-		},
-		/*drawFunc*/ [](const Widget& widget, UiManager& uiManager) {
-			uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
-			uiManager.setColorMask(textColor);
-			widget.renderText(uiManager, "test");
-		} );
-    newWidget->addChild( new Widget(
-		{0,-40, 120, 60},
-		Widget::HORZALIGN_CENTER,
-		Widget::VERTALIGN_CENTER,
-		true,
-		/*funcOnClick*/ [](){},
-		/*funcOnRelease*/ [model]() {
-			model->spawnParticleExplosion(100, 4, -1, .1f, .2f);
-		},
-		/*drawFunc*/ [](const Widget& widget, UiManager& uiManager) {
-			uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
-			uiManager.setColorMask(textColor);
-			widget.renderText(uiManager, "test2");
-		} ) );
+    // Clickable widgets test
+    newWidget = new Widget({10,-40, 240, 180}, Widget::HORZALIGN_LEFT, Widget::VERTALIGN_CENTER);
+	newWidget->setClickFunction( [model]() {
+        model->spawnParticleExplosion(100, 4, 1, .1f, .2f);
+    } );
+	newWidget->setDrawFunction( [](const Widget& widget, UiManager& uiManager) {
+        uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
+        uiManager.setColorMask(textColor);
+        widget.renderText(uiManager, "test");
+    } );
+
+    newWidget2 = new Widget({0,-40, 120, 60}, Widget::HORZALIGN_CENTER, Widget::VERTALIGN_CENTER);
+    newWidget->setClickFunction( [](){}, [model]() {
+        model->spawnParticleExplosion(100, 4, -1, .1f, .2f);
+    } );
+	newWidget2->setDrawFunction( [](const Widget& widget, UiManager& uiManager) {
+        uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
+        uiManager.setColorMask(textColor);
+        widget.renderText(uiManager, "test2");
+    } );
+	newWidget->addChild(newWidget2);
 	widgetManager.loadWidget(newWidget);
 
-    newWidget = new Widget(
-		{0, 20, 360, 60},
-		Widget::HORZALIGN_CENTER,
-		Widget::VERTALIGN_BOTTOM,
-		true,
-		/*drawFunc*/ [model](const Widget& widget, UiManager& uiManager) {
-			Mob *pMob = model->getActiveMob();
-			if (!pMob) return;
+    // Entity info
+    newWidget = new Widget({0, 20, 360, 60}, Widget::HORZALIGN_CENTER, Widget::VERTALIGN_BOTTOM);
+	newWidget->setDrawFunction( [model](const Widget& widget, UiManager& uiManager) {
+        Mob *pMob = model->getActiveMob();
+        if (!pMob) return;
 
-			char msg[256];
-			sprintf(msg, "Position: (%.3f, %.3f), Life: %.3f", pMob->x, pMob->y, pMob->life);
-			uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
-			uiManager.setColorMask(textColor);
-			widget.renderText(uiManager, msg);
-		} );
+        char msg[256];
+        sprintf(msg, "Position: (%.3f, %.3f), Life: %.3f", pMob->x, pMob->y, pMob->life);
+        uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
+        uiManager.setColorMask(textColor);
+        widget.renderText(uiManager, msg);
+    } );
 	widgetManager.loadWidget(newWidget);
 
-    pauseDisplayWidget = new Widget(
-		{0, 0, 200, 400},
-		Widget::HORZALIGN_CENTER,
-		Widget::VERTALIGN_CENTER,
-		paused,
-		/*drawFunc*/ [](const Widget& widget, UiManager& uiManager){
-            uiManager.setColorMask(white);
-            widget.drawBgSprite(uiManager, SPRITE_ID_WIDGET_BG);
-        } );
+    // Pause menu
+    pauseDisplayWidget = new Widget({0, 0, 200, 400}, Widget::HORZALIGN_CENTER, Widget::VERTALIGN_CENTER);
+    if (!paused) pauseDisplayWidget->hide();
+	pauseDisplayWidget->setDrawFunction( [](const Widget& widget, UiManager& uiManager){
+        uiManager.setColorMask(white);
+        widget.drawBgSprite(uiManager, SPRITE_ID_WIDGET_BG);
+    } );
 	widgetManager.loadWidget(pauseDisplayWidget);
 
-    {   newWidget = new Widget( // "Paused" title
-            {0, 20, 160, 40},
-            Widget::HORZALIGN_CENTER,
-            Widget::VERTALIGN_TOP,
-            true,
-            /*drawFunc*/ [](const Widget& widget, UiManager& uiManager) {
-                uiManager.setFont(FONT_ID_MONOSPACE, FONTSIZE_ID_SUBHEADING);
-                uiManager.setColorMask(white);
-                widget.renderText(uiManager, "--PAUSED--");
-            } );
+    {   // "Paused" title
+        newWidget = new Widget({0, 20, 160, 40}, Widget::HORZALIGN_CENTER, Widget::VERTALIGN_TOP);
+        newWidget->setDrawFunction( [](const Widget& widget, UiManager& uiManager) {
+            uiManager.setFont(FONT_ID_MONOSPACE, FONTSIZE_ID_SUBHEADING);
+            uiManager.setColorMask(white);
+            widget.renderText(uiManager, "--PAUSED--");
+        } );
         pauseDisplayWidget->addChild(newWidget);
 
-        newWidget = new Widget( // "Resume game" button
-            {0, 20, 160, 30},
-            Widget::HORZALIGN_CENTER,
-            Widget::VERTALIGN_BOTTOM,
-            true,
-            /*funcOnClick*/ [this]() {
-                unpause();
-            },
-            /*drawFunc*/ [](const Widget& widget, UiManager& uiManager) {
-                uiManager.setColorMask(white);
-                widget.drawBgSprite(uiManager, SPRITE_ID_WIDGET_BG);
+        // "Resume game" button
+        newWidget = new Widget({0, 20, 160, 30}, Widget::HORZALIGN_CENTER, Widget::VERTALIGN_BOTTOM);
+        newWidget->setClickFunction( [this]() {
+            unpause();
+        } );
+        newWidget->setDrawFunction( [](const Widget& widget, UiManager& uiManager) {
+            uiManager.setColorMask(white);
+            widget.drawBgSprite(uiManager, SPRITE_ID_WIDGET_BG);
 
-                uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
-                if (widget.getActive()) uiManager.setColorMask(white);
-                else                    uiManager.setColorMask(textColor);
-                widget.renderText(uiManager, "Resume game");
-            } );
+            uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
+            if (widget.getActive()) uiManager.setColorMask(white);
+            else                    uiManager.setColorMask(textColor);
+            widget.renderText(uiManager, "Resume game");
+        } );
         pauseDisplayWidget->addChild(newWidget);
 
-        newWidget = new Widget( // "Quit to Desktop" button
-            {0, 60, 160, 30},
-            Widget::HORZALIGN_CENTER,
-            Widget::VERTALIGN_BOTTOM,
-            true,
-            /*funcOnClick*/ []() {
-                MessageHandler::postMessage( new QuitMessage() );
-            },
-            /*drawFunc*/ [](const Widget& widget, UiManager& uiManager) {
-                uiManager.setColorMask(white);
-                widget.drawBgSprite(uiManager, SPRITE_ID_WIDGET_BG);
+        // "Quit to Desktop" button
+        newWidget = new Widget({0, 60, 160, 30}, Widget::HORZALIGN_CENTER, Widget::VERTALIGN_BOTTOM);
+        newWidget->setClickFunction( []() {
+            MessageHandler::postMessage( new QuitMessage() );
+        } );
+        newWidget->setDrawFunction( [](const Widget& widget, UiManager& uiManager) {
+            uiManager.setColorMask(white);
+            widget.drawBgSprite(uiManager, SPRITE_ID_WIDGET_BG);
 
-                uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
-                if (widget.getActive()) uiManager.setColorMask(white);
-                else                    uiManager.setColorMask(textColor);
-                widget.renderText(uiManager, "Quit to Desktop");
-            } );
+            uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
+            if (widget.getActive()) uiManager.setColorMask(white);
+            else                    uiManager.setColorMask(textColor);
+            widget.renderText(uiManager, "Quit to Desktop");
+        } );
         pauseDisplayWidget->addChild(newWidget);
 
-        newWidget = new Widget( // "Quit to Menu" button
-            {0, 100, 160, 30},
-            Widget::HORZALIGN_CENTER,
-            Widget::VERTALIGN_BOTTOM,
-            true,
-            /*funcOnClick*/ []() {
-                MessageHandler::postMessage( new SceneTransitMessage( new MenuScene() ) );
-            },
-            /*drawFunc*/ [](const Widget& widget, UiManager& uiManager) {
-                uiManager.setColorMask(white);
-                widget.drawBgSprite(uiManager, SPRITE_ID_WIDGET_BG);
+        // "Quit to Menu" button
+        newWidget = new Widget({0, 100, 160, 30}, Widget::HORZALIGN_CENTER, Widget::VERTALIGN_BOTTOM);
+        newWidget->setClickFunction( []() {
+            MessageHandler::postMessage( new SceneTransitMessage( new MenuScene() ) );
+        } );
+        newWidget->setDrawFunction( [](const Widget& widget, UiManager& uiManager) {
+            uiManager.setColorMask(white);
+            widget.drawBgSprite(uiManager, SPRITE_ID_WIDGET_BG);
 
-                uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
-                if (widget.getActive()) uiManager.setColorMask(white);
-                else                    uiManager.setColorMask(textColor);
-                widget.renderText(uiManager, "Quit to Menu");
-            } );
+            uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
+            if (widget.getActive()) uiManager.setColorMask(white);
+            else                    uiManager.setColorMask(textColor);
+            widget.renderText(uiManager, "Quit to Menu");
+        } );
         pauseDisplayWidget->addChild(newWidget);
     }
 
-    newWidget = new Widget(
-		{20, 60, 160, 20},
-		Widget::HORZALIGN_RIGHT,
-		Widget::VERTALIGN_BOTTOM,
-		true,
-		/*drawFunc*/ [](const Widget& widget, UiManager& uiManager) {
-			char msg[256];
-			sprintf(msg, "UiTick: %u", uiManager.getUiTick());
-			uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
-			uiManager.setColorMask(textColor);
-			widget.renderText(uiManager, msg);
-		} );
+    // UiTick display
+    newWidget = new Widget({20, 60, 160, 20}, Widget::HORZALIGN_RIGHT, Widget::VERTALIGN_BOTTOM);
+	newWidget->setDrawFunction( [](const Widget& widget, UiManager& uiManager) {
+        char msg[256];
+        sprintf(msg, "UiTick: %u", uiManager.getUiTick());
+        uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
+        uiManager.setColorMask(textColor);
+        widget.renderText(uiManager, msg);
+    } );
 	widgetManager.loadWidget(newWidget);
 
-    newWidget = new Widget(
-		{20, 40, 160, 20},
-		Widget::HORZALIGN_RIGHT,
-		Widget::VERTALIGN_BOTTOM,
-		true,
-		/*drawFunc*/ [model](const Widget& widget, UiManager& uiManager) {
-			char msg[256];
-			sprintf(msg, "ModelTick: %u", model->getModelTick());
-			uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
-			uiManager.setColorMask(textColor);
-			widget.renderText(uiManager, msg);
-		} );
+    // ModelTick display
+    newWidget = new Widget({20, 40, 160, 20}, Widget::HORZALIGN_RIGHT, Widget::VERTALIGN_BOTTOM);
+	newWidget->setDrawFunction( [model](const Widget& widget, UiManager& uiManager) {
+        char msg[256];
+        sprintf(msg, "ModelTick: %u", model->getModelTick());
+        uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
+        uiManager.setColorMask(textColor);
+        widget.renderText(uiManager, msg);
+    } );
 	widgetManager.loadWidget(newWidget);
 
-    newWidget = new Widget(
-		{20, 20, 160, 20},
-		Widget::HORZALIGN_RIGHT,
-		Widget::VERTALIGN_BOTTOM,
-		true,
-		/*drawFunc*/ [](const Widget& widget, UiManager& uiManager) {
-			char msg[256];
-			sprintf(msg, "FPS: %.2f", uiManager.fps);
-			uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
-			uiManager.setColorMask(textColor);
-			widget.renderText(uiManager, msg);
-		} );
+    // FPS display
+    newWidget = new Widget({20, 20, 160, 20}, Widget::HORZALIGN_RIGHT, Widget::VERTALIGN_BOTTOM);
+	newWidget->setDrawFunction( [](const Widget& widget, UiManager& uiManager) {
+        char msg[256];
+        sprintf(msg, "FPS: %.2f", uiManager.fps);
+        uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
+        uiManager.setColorMask(textColor);
+        widget.renderText(uiManager, msg);
+    } );
 	widgetManager.loadWidget(newWidget);
 }
 

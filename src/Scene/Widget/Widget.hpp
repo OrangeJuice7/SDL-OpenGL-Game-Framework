@@ -40,51 +40,27 @@ class Widget : public GuiRegion {
 		std::function<void(const Widget&, UiManager&)> drawFunc;
 
     public:
-        // Full constructor
         Widget(
 			SDL_Rect rect,
 			HorizontalAlignment horzAlign,
-			VerticalAlignment vertAlign,
-			bool clickable,
-			bool visible,
-			std::function<void()> funcOnClick,
-            std::function<void()> funcOnRelease,
-			std::function<void(const Widget&, UiManager&)> drawFunc );
-
-        // Unclickable Widget constructor
-        Widget(
-			SDL_Rect rect,
-			HorizontalAlignment horzAlign,
-			VerticalAlignment vertAlign,
-			bool visible,
-			std::function<void(const Widget&, UiManager&)> drawFunc );
-
-        // Click but no release constructor
-        Widget(
-			SDL_Rect rect,
-			HorizontalAlignment horzAlign,
-			VerticalAlignment vertAlign,
-			bool visible,
-			std::function<void()> funcOnClick,
-			std::function<void(const Widget&, UiManager&)> drawFunc );
-
-        // Click and release constructor
-        Widget(
-			SDL_Rect rect,
-			HorizontalAlignment horzAlign,
-			VerticalAlignment vertAlign,
-			bool visible,
-			std::function<void()> funcOnClick,
-            std::function<void()> funcOnRelease,
-			std::function<void(const Widget&, UiManager&)> drawFunc );
-
+			VerticalAlignment vertAlign);
 		virtual ~Widget();
 
         bool getActive() const;
         bool getClickable() const;
         bool getVisible() const;
 
+		void setClickFunction(std::function<void()> funcOnClick); // Setting the click function also enables clicking
+		void setClickFunction(std::function<void()> funcOnClick, std::function<void()> funcOnRelease);
+		void setDrawFunction(std::function<void(const Widget&, UiManager&)> drawFunc);
 		void addChild(Widget* widget);
+
+		void enableClick();
+		void disableClick();
+		//void enableDraw();
+		//void disableDraw();
+        void show();
+        void hide();
 
 		/**  Mouse input  **/
 
@@ -97,8 +73,6 @@ class Widget : public GuiRegion {
         void deactivate();
         void click();
         void releaseMouse();
-        void show();
-        void hide();
 
 		/**  Update  **/
 		// psRect: Parent screen rect, also taken from the bottom-left corner
