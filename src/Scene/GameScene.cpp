@@ -95,7 +95,7 @@ void GameScene::loadWidgets() {
 
     // Pause menu
     pauseDisplayWidget = new Widget({0, 0, 200, 400}, GuiRegion::HORZALIGN_CENTER, GuiRegion::VERTALIGN_CENTER);
-    if (!paused) pauseDisplayWidget->hide();
+    if (!paused) pauseDisplayWidget->deactivate();
 	pauseDisplayWidget->setDrawFunction( [](const Widget& widget, UiManager& uiManager){
         uiManager.setColorMask(white);
         widget.drawBgSprite(uiManager, SPRITE_ID_WIDGET_BG);
@@ -196,9 +196,9 @@ void GameScene::loadWidgets() {
 
 void GameScene::pause() {
     Scene::pause();
-    pauseDisplayWidget->show();
+    pauseDisplayWidget->activate();
 }
 void GameScene::unpause() {
     Scene::unpause();
-    pauseDisplayWidget->hide();
+    pauseDisplayWidget->deactivate();
 }

@@ -4,7 +4,7 @@
 #include "Widget.hpp"
 
 WidgetManager::WidgetManager() {
-    activeWidget = nullptr;
+    selectedWidget = nullptr;
 }
 WidgetManager::~WidgetManager() {
     unloadWidgets();
@@ -19,31 +19,31 @@ void WidgetManager::unloadWidgets() {
 		delete widget;
 	}
 	widgets.clear();
-    activeWidget = nullptr;
+    selectedWidget = nullptr;
 }
 
-bool WidgetManager::pickActiveWidget(int x, int y) {
-    if (activeWidget) {
-        Widget* pWidget = activeWidget->checkOn(x, y);
-        if (pWidget == activeWidget) // Active Widget remains active
+bool WidgetManager::pickSelectedWidget(int x, int y) {
+    if (selectedWidget) {
+        Widget* pWidget = selectedWidget->checkOn(x, y);
+        if (pWidget == selectedWidget) // selectedWidget remains selected
             return true;
-        else if (pWidget) { // It's now a child widget that is active
-            activeWidget->deactivate();
-            pWidget->activate();
-            activeWidget = pWidget;
+        else if (pWidget) { // It's now a child widget that is selected
+            selectedWidget->deselect();
+            pWidget->select();
+            selectedWidget = pWidget;
             return true;
-        } else { // Active Widget is no longer active
-            activeWidget->deactivate();
-            activeWidget = nullptr;
+        } else { // selectedWidget is no longer selected
+            selectedWidget->deselect();
+            selectedWidget = nullptr;
         }
     }
 
-    // No activeWidget (or activeWidget got deactivated): Check if any other Widget is activated
+    // No selectedWidget (or selectedWidget got deselected): Check if any other Widget is selected
     for (Widget* widget : widgets) {
 		Widget* pWidget = widget->checkOn(x, y);
-		if (pWidget) { // A Widget can indeed be activated
-            pWidget->activate(); // Activate it
-            activeWidget = pWidget; // Track the widget as the new activeWidget
+		if (pWidget) { // A Widget can indeed be selected
+            pWidget->select(); // Select it
+            selectedWidget = pWidget; // Track the widget as the new selectedWidget
             return true; // Nothing more to do
 		}
 	}
@@ -51,15 +51,15 @@ bool WidgetManager::pickActiveWidget(int x, int y) {
 	return false;
 }
 bool WidgetManager::click() {
-    if (activeWidget) {
-        activeWidget->click();
+    if (selectedWidget) {
+        selectedWidget->click();
         return true;
     }
     return false;
 }
 bool WidgetManager::releaseMouse() {
-    if (activeWidget) {
-        activeWidget->releaseMouse();
+    if (selectedWidget) {
+        selectedWidget->releaseMouse();
         return true;
     }
     return false;

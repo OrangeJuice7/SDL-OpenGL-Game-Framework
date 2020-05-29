@@ -44,21 +44,21 @@ void Scene::updateFromMouse(const SDL_Rect &screenRect, const MouseState &mouseS
 	if (mouseState.isLDown) return;
 
 	// Check for Widget intercepts
-    if ( widgetManager.pickActiveWidget(mouseState.x, mouseState.y) ) return;
+    if ( widgetManager.pickSelectedWidget(mouseState.x, mouseState.y) ) return;
 
 	// Check for Model intercepts
 	modelManager->pickActiveEntity(mouseState.gameX, mouseState.gameY);
 }
 void Scene::updateFromKeys(const KeyboardState &keyboardState) {}
 void Scene::handleMouseLDownEvent() {
-    // If we have an activeWidget, just activate it and we are done
+    // If we have a selectedWidget, just click it and we are done
     if ( widgetManager.click() ) return;
 
 	// Check for Model intercepts
 	modelManager->click();
 }
 void Scene::handleMouseLUpEvent() {
-    // If we have an activeWidget, just release it and we are done
+    // If we have a selectedWidget, just release it and we are done
     if ( widgetManager.releaseMouse() ) return;
 
 	// Check for Model intercepts

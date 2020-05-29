@@ -8,7 +8,7 @@ class Widget;
 class WidgetManager {
     protected:
         std::vector<Widget*> widgets;
-        Widget* activeWidget;
+        Widget* selectedWidget;
 
     public:
         WidgetManager();
@@ -18,8 +18,8 @@ class WidgetManager {
         void unloadWidgets();
 
         // returns true if there is a widget under (x,y)
-        bool pickActiveWidget(int x, int y);
-        // returns true if there is an activeWidget
+        bool pickSelectedWidget(int x, int y);
+        // returns true if there is a selectedWidget
         bool click();
         bool releaseMouse();
 

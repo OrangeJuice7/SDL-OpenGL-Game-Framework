@@ -9,14 +9,15 @@ Widget::Widget(
 
 		: GuiRegion(rect, horzAlign, vertAlign) {
 
-    this->visible = true;
+    this->active = true;
 
     this->clickable = false;
     this->funcOnClick = [](){};
     this->funcOnRelease = [](){};
-    this->drawFunc = [](const Widget&, UiManager&){};
+    this->selected = false;
 
-    this->active = false;
+    this->visible = false;
+    this->drawFunc = [](const Widget&, UiManager&){};
 }
 Widget::~Widget() {
     for (Widget* child : children) {
@@ -34,6 +35,9 @@ bool Widget::getClickable() const {
 bool Widget::getVisible() const {
     return visible;
 }
+bool Widget::getSelected() const {
+    return selected;
+}
 
 void Widget::setClickFunction(std::function<void()> funcOnClick) {
     setClickFunction(funcOnClick, [](){});
@@ -45,22 +49,35 @@ void Widget::setClickFunction(std::function<void()> funcOnClick, std::function<v
 }
 void Widget::setDrawFunction(std::function<void(const Widget&, UiManager&)> drawFunc) {
     this->drawFunc = drawFunc;
+    enableDraw();
 }
 void Widget::addChild(Widget* widget) {
     children.push_front(widget);
 }
 
+void Widget::activate() {
+	active = true;
+}
+void Widget::deactivate() {
+	active = false;
+}
 void Widget::enableClick() {
     clickable = true;
 }
 void Widget::disableClick() {
     clickable = false;
 }
-void Widget::show() {
+void Widget::enableDraw() {
     visible = true;
 }
-void Widget::hide() {
+void Widget::disableDraw() {
     visible = false;
+}
+void Widget::select() {
+    selected = true;
+}
+void Widget::deselect() {
+    selected = false;
 }
 
 Widget* Widget::checkOn(float x, float y) {
@@ -73,24 +90,18 @@ Widget* Widget::checkOn(float x, float y) {
 		if (childCheck != nullptr) return childCheck;
 	}
 
-	return getClickable() ? this : nullptr; // ignore non-clickable widgets
+	return clickable ? this : nullptr; // ignore non-clickable widgets
 }
 
-void Widget::activate() {
-	active = true;
-}
-void Widget::deactivate() {
-	active = false;
-}
 void Widget::click() {
-	if (funcOnClick) funcOnClick();
+	funcOnClick();
 }
 void Widget::releaseMouse() {
-	if (funcOnRelease) funcOnRelease();
+	funcOnRelease();
 }
 
 void Widget::update(const SDL_Rect &psRect) {
-    if (!visible) return;
+    if (!active) return;
 
     calcScreenRect(psRect);
 
@@ -110,15 +121,16 @@ void Widget::renderText(UiManager &uiManager, const char *text) const {
 }
 
 void Widget::draw(UiManager &uiManager) const {
-    if (!visible) return;
+    if (!active) return;
 
-	if (getClickable()) {
-        if (getActive()) uiManager.setColorMask({.4f, .4f, .0f});
-        else             uiManager.setColorMask({.0f, .3f, .4f});
+    // Debug display
+	if (clickable) {
+        if (selected) uiManager.setColorMask({.4f, .4f, .0f});
+        else          uiManager.setColorMask({.0f, .3f, .4f});
         drawBgSprite(uiManager, SPRITE_ID_WIDGET_BG_DEBUG);
     }
 
-	if (drawFunc) drawFunc(*this, uiManager);
+	drawFunc(*this, uiManager);
 
 	// Call draw for all the children
 	for (Widget* child : children) {

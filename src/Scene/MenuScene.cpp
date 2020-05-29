@@ -60,7 +60,7 @@ void MenuScene::loadWidgets() {
 
     // Pause display
     pauseDisplayWidget = new Widget({20, 80, 160, 20}, GuiRegion::HORZALIGN_RIGHT, GuiRegion::VERTALIGN_BOTTOM);
-    if (!paused) pauseDisplayWidget->hide();
+    if (!paused) pauseDisplayWidget->deactivate();
     pauseDisplayWidget->setDrawFunction( [&](const Widget& widget, UiManager& uiManager) {
         uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
         uiManager.setColorMask(white);
@@ -104,9 +104,9 @@ void MenuScene::loadWidgets() {
 
 void MenuScene::pause() {
     Scene::pause();
-    pauseDisplayWidget->show();
+    pauseDisplayWidget->activate();
 }
 void MenuScene::unpause() {
     Scene::unpause();
-    pauseDisplayWidget->hide();
+    pauseDisplayWidget->deactivate();
 }

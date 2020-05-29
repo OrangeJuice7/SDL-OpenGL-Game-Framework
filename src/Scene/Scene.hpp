@@ -21,7 +21,7 @@ class Scene {
         virtual ~Scene();
 
         /**  UI  **/
-        // Basically updates the active elements e.g. activeWidget
+        // Basically updates the active elements e.g. selectedWidget
         virtual void updateFromMouse(const SDL_Rect &screenRect, const MouseState &mouseState);
         virtual void updateFromKeys(const KeyboardState &keyboardState);
 
