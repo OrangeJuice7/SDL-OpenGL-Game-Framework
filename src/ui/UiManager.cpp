@@ -142,4 +142,6 @@ void UiManager::saveScreenshot(const char* filename) {
 
     // Free data
     free(data);
+
+    printf("Screenshot saved to \"%s\"\n", fullFilename);
 }

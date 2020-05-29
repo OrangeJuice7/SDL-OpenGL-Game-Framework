@@ -115,10 +115,12 @@ void Widget::update(const SDL_Rect &psRect) {
 	}
 }
 
+void Widget::drawBgSprite(UiManager &uiManager, SpriteId spriteId) const {
+    uiManager.drawSpriteStretched(screenRect.x, screenRect.y, screenRect.w, screenRect.h, spriteId);
+}
 void Widget::renderText(UiManager &uiManager, const char *text) const {
-    // Implement text wrap later
+    // Implement text alignment and wrap later
 
-    uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
     uiManager.drawText(screenRect.x, screenRect.y, text);
 }
 
@@ -128,7 +130,7 @@ void Widget::draw(UiManager &uiManager) const {
 	if (getClickable()) {
         if (getActive()) uiManager.setColorMask({.4f, .4f, .0f});
         else             uiManager.setColorMask({.0f, .3f, .4f});
-        uiManager.drawSpriteStretched(screenRect.x, screenRect.y, screenRect.w, screenRect.h, SPRITE_ID_WIDGET_BG_DEBUG);
+        drawBgSprite(uiManager, SPRITE_ID_WIDGET_BG_DEBUG);
     }
 
 	if (drawFunc) drawFunc(*this, uiManager);

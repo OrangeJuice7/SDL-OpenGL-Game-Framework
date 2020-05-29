@@ -3,6 +3,7 @@
 
 #include <functional>
 #include <forward_list>
+#include "../../ui/SpriteId.hpp"
 #include "GuiRegion.hpp"
 class UiManager;
 
@@ -104,6 +105,7 @@ class Widget : public GuiRegion {
 		void update(const SDL_Rect &psRect);
 
 		/**  Draw  **/
+		void drawBgSprite(UiManager &uiManager, SpriteId spriteId) const; // Maybe augment this with a border thickness parameter (for sprites slightly larger than the Widget) in the future
 		void renderText(UiManager &uiManager, const char *text) const;
 
         void draw(UiManager &uiManager) const;

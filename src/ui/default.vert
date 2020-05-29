@@ -37,5 +37,5 @@ void main() {
 
 	textureCoord = vertexTex2D;
 
-	vertexColor = vec4(vertexColor4D.rbg * colorMask, vertexColor4D.a);
+	vertexColor = vec4(vertexColor4D.rgb * colorMask, vertexColor4D.a);
 }

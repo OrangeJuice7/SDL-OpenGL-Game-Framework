@@ -9,6 +9,15 @@
 
 // You may re-order and add new enum values,
 // but do NOT assign artificial values to any of these enums!
+
+enum FontId {
+    FONT_ID_MONOSPACE,
+    FONT_ID_STANDARD,
+    //FONT_ID_FANCY,
+
+    FONT_ID_COUNT
+};
+
 enum FontsizeId { // size = height
     FONTSIZE_ID_HEADING,
     FONTSIZE_ID_SUBHEADING,
@@ -57,13 +66,6 @@ struct Font { // Rasterized, i.e. already has a fixed size
     // Note: for a greater alphabet in the future, this can be changed to std::map, the access will still have the same syntax
     Glyph glyphs[TEXT_NUM_OF_SUPPORTED_CHARS];
     GLfloat height; // Distance between one baseline and the next
-};
-enum FontId {
-    FONT_ID_MONOSPACE,
-    FONT_ID_STANDARD,
-    //FONT_ID_FANCY,
-
-    FONT_ID_COUNT
 };
 
 

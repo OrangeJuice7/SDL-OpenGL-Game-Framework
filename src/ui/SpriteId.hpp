@@ -1,5 +1,5 @@
-#ifndef SPRITE_DATA_HPP
-#define SPRITE_DATA_HPP
+#ifndef SPRITE_ID_HPP
+#define SPRITE_ID_HPP
 
 enum SpriteId {
     SPRITE_ID_GEOM,
@@ -11,9 +11,10 @@ enum SpriteId {
     SPRITE_ID_CURSOR,
 
     SPRITE_ID_WIDGET_BG_DEBUG,
+    SPRITE_ID_WIDGET_BG,
     SPRITE_ID_CIRCLE,
 
     SPRITE_ID_COUNT
 };
 
-#endif // SPRITE_DATA_HPP
+#endif // SPRITE_ID_HPP

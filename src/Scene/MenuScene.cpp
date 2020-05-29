@@ -30,6 +30,7 @@ void MenuScene::loadWidgets() {
 			MessageHandler::postMessage( new SceneTransitMessage( new GameScene() ) );
 		},
 		/*drawFunc*/ [](const Widget& widget, UiManager& uiManager) {
+			uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
 			if (widget.getActive()) uiManager.setColorMask(white);
 			else                    uiManager.setColorMask(textColor);
 			widget.renderText(uiManager, "Click here to go to game");
@@ -44,6 +45,7 @@ void MenuScene::loadWidgets() {
 			MessageHandler::postMessage( new QuitMessage() );
 		},
 		/*drawFunc*/ [](const Widget& widget, UiManager& uiManager) {
+			uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
 			if (widget.getActive()) uiManager.setColorMask(white);
 			else                    uiManager.setColorMask(textColor);
 			widget.renderText(uiManager, "Quit");
@@ -55,6 +57,7 @@ void MenuScene::loadWidgets() {
 		Widget::VERTALIGN_TOP,
 		true,
 		/*drawFunc*/ [&](const Widget& widget, UiManager& uiManager) {
+			uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_SUBHEADING);
 			uiManager.setColorMask(textColor);
 			widget.renderText(uiManager, "MENU SCENE");
 		} ) );
@@ -65,6 +68,7 @@ void MenuScene::loadWidgets() {
 		Widget::VERTALIGN_BOTTOM,
 		paused,
 		/*drawFunc*/ [&](const Widget& widget, UiManager& uiManager) {
+			uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
 			uiManager.setColorMask(white);
 			widget.renderText(uiManager, "-- PAUSED --");
 		} );
@@ -78,6 +82,7 @@ void MenuScene::loadWidgets() {
 		/*drawFunc*/ [&](const Widget& widget, UiManager& uiManager) {
 			char msg[256];
 			sprintf(msg, "UiTick: %u", uiManager.getUiTick());
+			uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
 			uiManager.setColorMask(textColor);
 			widget.renderText(uiManager, msg);
 		} ) );
@@ -90,6 +95,7 @@ void MenuScene::loadWidgets() {
 		/*drawFunc*/ [&](const Widget& widget, UiManager& uiManager) {
 			char msg[256];
 			sprintf(msg, "ModelTick: %u", modelManager->getModelTick());
+			uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
 			uiManager.setColorMask(textColor);
 			widget.renderText(uiManager, msg);
 		} ) );
@@ -102,6 +108,7 @@ void MenuScene::loadWidgets() {
 		/*drawFunc*/ [&](const Widget& widget, UiManager& uiManager) {
 			char msg[256];
 			sprintf(msg, "FPS: %.2f", uiManager.fps);
+			uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
 			uiManager.setColorMask(textColor);
 			widget.renderText(uiManager, msg);
 		} ) );
