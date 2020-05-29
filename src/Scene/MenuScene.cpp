@@ -24,7 +24,7 @@ void MenuScene::loadWidgets() {
 	Widget *newWidget;
 
     // "Go to game" button
-    newWidget = new Widget({40, 20, 240, 20}, Widget::HORZALIGN_LEFT, Widget::VERTALIGN_TOP);
+    newWidget = new Widget({40, 20, 240, 20}, GuiRegion::HORZALIGN_LEFT, GuiRegion::VERTALIGN_TOP);
 	newWidget->setClickFunction( []() {
         MessageHandler::postMessage( new SceneTransitMessage( new GameScene() ) );
     } );
@@ -37,7 +37,7 @@ void MenuScene::loadWidgets() {
     widgetManager.loadWidget(newWidget);
 
     // "Quit" button
-	newWidget = new Widget({40, 60, 60, 40}, Widget::HORZALIGN_LEFT, Widget::VERTALIGN_BOTTOM);
+	newWidget = new Widget({40, 60, 60, 40}, GuiRegion::HORZALIGN_LEFT, GuiRegion::VERTALIGN_BOTTOM);
     newWidget->setClickFunction( []() {
         MessageHandler::postMessage( new QuitMessage() );
     } );
@@ -50,7 +50,7 @@ void MenuScene::loadWidgets() {
     widgetManager.loadWidget(newWidget);
 
     // Menu Scene title
-    newWidget = new Widget({0, 20, 160, 20}, Widget::HORZALIGN_CENTER, Widget::VERTALIGN_TOP);
+    newWidget = new Widget({0, 20, 160, 20}, GuiRegion::HORZALIGN_CENTER, GuiRegion::VERTALIGN_TOP);
     newWidget->setDrawFunction( [&](const Widget& widget, UiManager& uiManager) {
         uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_SUBHEADING);
         uiManager.setColorMask(textColor);
@@ -59,7 +59,7 @@ void MenuScene::loadWidgets() {
     widgetManager.loadWidget(newWidget);
 
     // Pause display
-    pauseDisplayWidget = new Widget({20, 80, 160, 20}, Widget::HORZALIGN_RIGHT, Widget::VERTALIGN_BOTTOM);
+    pauseDisplayWidget = new Widget({20, 80, 160, 20}, GuiRegion::HORZALIGN_RIGHT, GuiRegion::VERTALIGN_BOTTOM);
     if (!paused) pauseDisplayWidget->hide();
     pauseDisplayWidget->setDrawFunction( [&](const Widget& widget, UiManager& uiManager) {
         uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
@@ -69,7 +69,7 @@ void MenuScene::loadWidgets() {
     widgetManager.loadWidget(pauseDisplayWidget);
 
     // UiTick display
-    newWidget = new Widget({20, 60, 160, 20}, Widget::HORZALIGN_RIGHT, Widget::VERTALIGN_BOTTOM);
+    newWidget = new Widget({20, 60, 160, 20}, GuiRegion::HORZALIGN_RIGHT, GuiRegion::VERTALIGN_BOTTOM);
     newWidget->setDrawFunction( [&](const Widget& widget, UiManager& uiManager) {
         char msg[256];
         sprintf(msg, "UiTick: %u", uiManager.getUiTick());
@@ -80,7 +80,7 @@ void MenuScene::loadWidgets() {
     widgetManager.loadWidget(newWidget);
 
     // ModelTick display
-    newWidget = new Widget({20, 40, 160, 20}, Widget::HORZALIGN_RIGHT, Widget::VERTALIGN_BOTTOM);
+    newWidget = new Widget({20, 40, 160, 20}, GuiRegion::HORZALIGN_RIGHT, GuiRegion::VERTALIGN_BOTTOM);
     newWidget->setDrawFunction( [&](const Widget& widget, UiManager& uiManager) {
         char msg[256];
         sprintf(msg, "ModelTick: %u", modelManager->getModelTick());
@@ -91,7 +91,7 @@ void MenuScene::loadWidgets() {
     widgetManager.loadWidget(newWidget);
 
     // FPS display
-    newWidget = new Widget({20, 20, 160, 20}, Widget::HORZALIGN_RIGHT, Widget::VERTALIGN_BOTTOM);
+    newWidget = new Widget({20, 20, 160, 20}, GuiRegion::HORZALIGN_RIGHT, GuiRegion::VERTALIGN_BOTTOM);
     newWidget->setDrawFunction( [&](const Widget& widget, UiManager& uiManager) {
         char msg[256];
         sprintf(msg, "FPS: %.2f", uiManager.fps);
