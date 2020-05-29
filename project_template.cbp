@@ -68,6 +68,8 @@
 		<Unit filename="src/Scene/Model/Projectile.hpp" />
 		<Unit filename="src/Scene/Scene.cpp" />
 		<Unit filename="src/Scene/Scene.hpp" />
+		<Unit filename="src/Scene/Widget/GuiRegion.cpp" />
+		<Unit filename="src/Scene/Widget/GuiRegion.hpp" />
 		<Unit filename="src/Scene/Widget/Widget.cpp" />
 		<Unit filename="src/Scene/Widget/Widget.hpp" />
 		<Unit filename="src/Scene/Widget/WidgetManager.cpp" />
