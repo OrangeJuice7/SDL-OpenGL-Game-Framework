@@ -23,23 +23,15 @@ void WidgetManager::unloadWidgets() {
 }
 
 bool WidgetManager::pickSelectedWidget(int x, int y) {
+    // Deselect the selectedWidget if it exists
     if (selectedWidget) {
-        Widget* pWidget = selectedWidget->checkOn(x, y);
-        if (pWidget == selectedWidget) // selectedWidget remains selected
-            return true;
-        else if (pWidget) { // It's now a child widget that is selected
-            selectedWidget->deselect();
-            pWidget->select();
-            selectedWidget = pWidget;
-            return true;
-        } else { // selectedWidget is no longer selected
-            selectedWidget->deselect();
-            selectedWidget = nullptr;
-        }
+        selectedWidget->deselect();
+        selectedWidget = nullptr;
     }
 
-    // No selectedWidget (or selectedWidget got deselected): Check if any other Widget is selected
-    for (Widget* widget : widgets) {
+    // Scan for widgets in reverse order
+    for (auto rit = widgets.rbegin(); rit != widgets.rend(); ++rit) {
+		Widget* widget = *rit;
 		Widget* pWidget = widget->checkOn(x, y);
 		if (pWidget) { // A Widget can indeed be selected
             pWidget->select(); // Select it

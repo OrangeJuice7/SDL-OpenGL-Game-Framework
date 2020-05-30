@@ -39,17 +39,21 @@ void Scene::doTick() {
 void Scene::handleKeyDownEvent(SDL_Keycode key) {}
 void Scene::handleKeyUpEvent(SDL_Keycode key) {}
 
+bool Scene::updateWidgetsFromMouse(const SDL_Rect &screenRect, const MouseState &mouseState) {
+    return widgetManager.pickSelectedWidget(mouseState.x, mouseState.y);
+}
+void Scene::updateModelFromMouse(const SDL_Rect &screenRect, const MouseState &mouseState) {
+    modelManager->pickSelectedEntity(mouseState.gameX, mouseState.gameY);
+}
 void Scene::updateFromMouse(const SDL_Rect &screenRect, const MouseState &mouseState) {
-	// Do not update the active element if the mouse is currently being held down, to preserve the existing active element (if any)
-	if (mouseState.isLDown) return;
-
 	// Check for Widget intercepts
-    if ( widgetManager.pickSelectedWidget(mouseState.x, mouseState.y) ) return;
+    if ( updateWidgetsFromMouse(screenRect, mouseState) ) return;
 
 	// Check for Model intercepts
-	modelManager->pickActiveEntity(mouseState.gameX, mouseState.gameY);
+	updateModelFromMouse(screenRect, mouseState);
 }
 void Scene::updateFromKeys(const KeyboardState &keyboardState) {}
+
 void Scene::handleMouseLDownEvent() {
     // If we have a selectedWidget, just click it and we are done
     if ( widgetManager.click() ) return;

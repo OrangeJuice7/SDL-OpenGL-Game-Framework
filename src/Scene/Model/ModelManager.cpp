@@ -19,7 +19,7 @@ void ModelManager::doTick() {
     ++modelTick;
 }
 
-void ModelManager::pickActiveEntity(float x, float y) {}
+void ModelManager::pickSelectedEntity(float x, float y) {}
 void ModelManager::click() {}
 void ModelManager::releaseMouse() {}
 

@@ -17,13 +17,13 @@ class GameScene : public Scene {
 
         GameModelManager* getModel();
 
+        void updateModelFromMouse(const SDL_Rect &screenRect, const MouseState &mouseState);
+
     public:
         GameScene();
         ~GameScene();
 
         /**  UI  **/
-        // Checks for camera panning, then checks for active elements like normal
-        void updateFromMouse(const SDL_Rect &screenRect, const MouseState &mouseState);
         void updateFromKeys(const KeyboardState &keyboardState);
 
         // Sends Messages to MainApp

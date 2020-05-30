@@ -49,7 +49,7 @@ void GameScene::loadWidgets() {
 
     // Game Scene title
     newWidget = new Widget({0, 20, 160, 20}, GuiRegion::HORZALIGN_CENTER, GuiRegion::VERTALIGN_TOP);
-	newWidget->setDrawFunction( [&](const Widget& widget, UiManager& uiManager) {
+	newWidget->setDrawFunction( [](const Widget& widget, UiManager& uiManager) {
         uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_SUBHEADING);
         uiManager.setColorMask(textColor);
         widget.renderText(uiManager, "GAME SCENE");
@@ -68,7 +68,7 @@ void GameScene::loadWidgets() {
     } );
 
     newWidget2 = new Widget({0,-40, 120, 60}, GuiRegion::HORZALIGN_CENTER, GuiRegion::VERTALIGN_CENTER);
-    newWidget->setClickFunction( [](){}, [model]() {
+    newWidget2->setClickFunction( [](){}, [model]() {
         model->spawnParticleExplosion(100, 4, -1, .1f, .2f);
     } );
 	newWidget2->setDrawFunction( [](const Widget& widget, UiManager& uiManager) {

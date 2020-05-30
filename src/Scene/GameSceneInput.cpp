@@ -8,7 +8,7 @@
 #include "../system/SceneTransitMessage.hpp"
 #include "MenuScene.hpp"
 
-void GameScene::updateFromMouse(const SDL_Rect &screenRect, const MouseState &mouseState) {
+void GameScene::updateModelFromMouse(const SDL_Rect &screenRect, const MouseState &mouseState) {
     // Pan camera
     {   float panAmount = cameraMoveRate / modelManager->camera.getScale(); // convert pixels per frame to game coords per frame
         if      (mouseState.x <=              moveCameraScreenBorder) modelManager->camera.move(-panAmount,0);
@@ -18,8 +18,12 @@ void GameScene::updateFromMouse(const SDL_Rect &screenRect, const MouseState &mo
     }
 
     // Fire bullets
-    Mob* playerMob = getModel()->getPlayerMob();
-    if (playerMob) {
+    while (true) {
+        if (paused) break;
+
+        Mob* playerMob = getModel()->getPlayerMob();
+        if (!playerMob) break;
+
         // Grab player position and radius
         float px = playerMob->x,
               py = playerMob->y;
@@ -37,10 +41,12 @@ void GameScene::updateFromMouse(const SDL_Rect &screenRect, const MouseState &mo
         float vel = 1;
         if (mouseState.isLDown && getModelTick()%10 == 0) getModel()->spawnProjectile(  genericProjectileData, px + dirX*pr, py + dirY*pr, dirX*vel, dirY*vel);
         if (mouseState.isRDown && getModelTick()%20 == 5) getModel()->spawnProjectile(explosiveProjectileData, px + dirX*pr, py + dirY*pr, dirX*vel, dirY*vel);
+
+        break;
     }
 
     // Update like normal
-    Scene::updateFromMouse(screenRect, mouseState);
+    Scene::updateModelFromMouse(screenRect, mouseState);
 }
 void GameScene::updateFromKeys(const KeyboardState &keyboardState) {
     // Move player character

@@ -51,7 +51,7 @@ void MenuScene::loadWidgets() {
 
     // Menu Scene title
     newWidget = new Widget({0, 20, 160, 20}, GuiRegion::HORZALIGN_CENTER, GuiRegion::VERTALIGN_TOP);
-    newWidget->setDrawFunction( [&](const Widget& widget, UiManager& uiManager) {
+    newWidget->setDrawFunction( [](const Widget& widget, UiManager& uiManager) {
         uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_SUBHEADING);
         uiManager.setColorMask(textColor);
         widget.renderText(uiManager, "MENU SCENE");
@@ -61,7 +61,7 @@ void MenuScene::loadWidgets() {
     // Pause display
     pauseDisplayWidget = new Widget({20, 80, 160, 20}, GuiRegion::HORZALIGN_RIGHT, GuiRegion::VERTALIGN_BOTTOM);
     if (!paused) pauseDisplayWidget->deactivate();
-    pauseDisplayWidget->setDrawFunction( [&](const Widget& widget, UiManager& uiManager) {
+    pauseDisplayWidget->setDrawFunction( [](const Widget& widget, UiManager& uiManager) {
         uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
         uiManager.setColorMask(white);
         widget.renderText(uiManager, "-- PAUSED --");
@@ -70,7 +70,7 @@ void MenuScene::loadWidgets() {
 
     // UiTick display
     newWidget = new Widget({20, 60, 160, 20}, GuiRegion::HORZALIGN_RIGHT, GuiRegion::VERTALIGN_BOTTOM);
-    newWidget->setDrawFunction( [&](const Widget& widget, UiManager& uiManager) {
+    newWidget->setDrawFunction( [](const Widget& widget, UiManager& uiManager) {
         char msg[256];
         sprintf(msg, "UiTick: %u", uiManager.getUiTick());
         uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
@@ -92,7 +92,7 @@ void MenuScene::loadWidgets() {
 
     // FPS display
     newWidget = new Widget({20, 20, 160, 20}, GuiRegion::HORZALIGN_RIGHT, GuiRegion::VERTALIGN_BOTTOM);
-    newWidget->setDrawFunction( [&](const Widget& widget, UiManager& uiManager) {
+    newWidget->setDrawFunction( [](const Widget& widget, UiManager& uiManager) {
         char msg[256];
         sprintf(msg, "FPS: %.2f", uiManager.fps);
         uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);

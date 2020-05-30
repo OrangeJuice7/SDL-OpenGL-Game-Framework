@@ -14,7 +14,7 @@ class WidgetManager {
         WidgetManager();
         ~WidgetManager();
 
-        void loadWidget(Widget* widget);
+        void loadWidget(Widget* widget); // Note: load the widgets in the order that they are drawn, i.e. widgets drawn on top are loaded last
         void unloadWidgets();
 
         // returns true if there is a widget under (x,y)

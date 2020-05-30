@@ -81,6 +81,8 @@ void Widget::deselect() {
 }
 
 Widget* Widget::checkOn(float x, float y) {
+    if (!active) return nullptr;
+
 	if (!withinScreenRect(x, y)) return nullptr;
 	// (Future: do further checks in the case where this widget is not rectangular)
 
