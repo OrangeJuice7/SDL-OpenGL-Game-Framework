@@ -4,6 +4,7 @@
 #include <SDL2/SDL.h>
 #include "Model/GameModelManager.hpp"
 #include "Widget/Widget.hpp"
+#include "Widget/LabelWidget.hpp"
 #include "../system/MessageHandler.hpp"
 #include "../system/Message.hpp"
 #include "../system/SceneTransitMessage.hpp"
@@ -35,49 +36,47 @@ void GameScene::loadWidgets() {
 	const static GLcolorRGB     white = {1.f, 1.f, 1.f};
 	const static GLcolorRGB textColor = {.8f, 1.f, .8f};
 
-	Widget *newWidget, *newWidget2;
+	Widget *newWidget;
+	LabelWidget *newLabelWidget, *newLabelWidget2;
 
     // ESC to pause notice
     newWidget = new Widget({40, 20, 240, 20}, GuiRegion::HORZALIGN_LEFT, GuiRegion::VERTALIGN_TOP);
 	newWidget->setDrawFunction( [this](const Widget& widget, UiManager& uiManager) {
         uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
         uiManager.setColorMask(textColor);
-        if (paused) widget.renderText(uiManager, "Press ESC to resume");
-        else        widget.renderText(uiManager, "Press ESC to pause");
+        if (paused) widget.renderText(uiManager, 0, 0, "Press ESC to resume");
+        else        widget.renderText(uiManager, 0, 0, "Press ESC to pause");
     } );
 	widgetManager.loadWidget(newWidget);
 
     // Game Scene title
-    newWidget = new Widget({0, 20, 160, 20}, GuiRegion::HORZALIGN_CENTER, GuiRegion::VERTALIGN_TOP);
-	newWidget->setDrawFunction( [](const Widget& widget, UiManager& uiManager) {
-        uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_SUBHEADING);
-        uiManager.setColorMask(textColor);
-        widget.renderText(uiManager, "GAME SCENE");
-    } );
-	widgetManager.loadWidget(newWidget);
+    newLabelWidget = new LabelWidget({0, 20, 240, 20}, GuiRegion::HORZALIGN_CENTER, GuiRegion::VERTALIGN_TOP);
+	newLabelWidget->setFont(FONT_ID_STANDARD, FONTSIZE_ID_SUBHEADING);
+    newLabelWidget->setTextAlignment(GuiRegion::HORZALIGN_CENTER, GuiRegion::VERTALIGN_CENTER);
+    newLabelWidget->setTextColor(textColor);
+    newLabelWidget->setText("GAME SCENE");
+	widgetManager.loadWidget(newLabelWidget);
 
     // Clickable widgets test
-    newWidget = new Widget({10,-40, 240, 180}, GuiRegion::HORZALIGN_LEFT, GuiRegion::VERTALIGN_CENTER);
-	newWidget->setClickFunction( [model]() {
+    newLabelWidget = new LabelWidget({10,-40, 240, 180}, GuiRegion::HORZALIGN_LEFT, GuiRegion::VERTALIGN_CENTER);
+	newLabelWidget->setClickFunction( [model]() {
         model->spawnParticleExplosion(100, 4, 1, .1f, .2f);
     } );
-	newWidget->setDrawFunction( [](const Widget& widget, UiManager& uiManager) {
-        uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
-        uiManager.setColorMask(textColor);
-        widget.renderText(uiManager, "test");
-    } );
+    newLabelWidget->setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
+    newLabelWidget->setTextAlignment(GuiRegion::HORZALIGN_CENTER, GuiRegion::VERTALIGN_CENTER);
+    newLabelWidget->setTextColor(textColor);
+    newLabelWidget->setText("test");
 
-    newWidget2 = new Widget({0,-40, 120, 60}, GuiRegion::HORZALIGN_CENTER, GuiRegion::VERTALIGN_CENTER);
-    newWidget2->setClickFunction( [](){}, [model]() {
+    newLabelWidget2 = new LabelWidget({0,-40, 120, 60}, GuiRegion::HORZALIGN_CENTER, GuiRegion::VERTALIGN_CENTER);
+    newLabelWidget2->setClickFunction( [](){}, [model]() {
         model->spawnParticleExplosion(100, 4, -1, .1f, .2f);
     } );
-	newWidget2->setDrawFunction( [](const Widget& widget, UiManager& uiManager) {
-        uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
-        uiManager.setColorMask(textColor);
-        widget.renderText(uiManager, "test2");
-    } );
-	newWidget->addChild(newWidget2);
-	widgetManager.loadWidget(newWidget);
+    newLabelWidget2->setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
+    newLabelWidget2->setTextAlignment(GuiRegion::HORZALIGN_CENTER, GuiRegion::VERTALIGN_CENTER);
+    newLabelWidget2->setTextColor(textColor);
+    newLabelWidget2->setText("test2");
+	newLabelWidget->addChild(newLabelWidget2);
+	widgetManager.loadWidget(newLabelWidget);
 
     // Entity info
     newWidget = new Widget({0, 20, 360, 60}, GuiRegion::HORZALIGN_CENTER, GuiRegion::VERTALIGN_BOTTOM);
@@ -89,7 +88,7 @@ void GameScene::loadWidgets() {
         sprintf(msg, "Position: (%.3f, %.3f), Life: %.3f", pMob->x, pMob->y, pMob->life);
         uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
         uiManager.setColorMask(textColor);
-        widget.renderText(uiManager, msg);
+        widget.renderText(uiManager, 0, 0, msg);
     } );
 	widgetManager.loadWidget(newWidget);
 
@@ -103,29 +102,29 @@ void GameScene::loadWidgets() {
 	widgetManager.loadWidget(pauseDisplayWidget);
 
     {   // "Paused" title
-        newWidget = new Widget({0, 20, 160, 40}, GuiRegion::HORZALIGN_CENTER, GuiRegion::VERTALIGN_TOP);
-        newWidget->setDrawFunction( [](const Widget& widget, UiManager& uiManager) {
-            uiManager.setFont(FONT_ID_MONOSPACE, FONTSIZE_ID_SUBHEADING);
-            uiManager.setColorMask(white);
-            widget.renderText(uiManager, "--PAUSED--");
-        } );
-        pauseDisplayWidget->addChild(newWidget);
+        newLabelWidget = new LabelWidget({0, 20, 160, 40}, GuiRegion::HORZALIGN_CENTER, GuiRegion::VERTALIGN_TOP);
+        newLabelWidget->setFont(FONT_ID_MONOSPACE, FONTSIZE_ID_SUBHEADING);
+        newLabelWidget->setTextAlignment(GuiRegion::HORZALIGN_CENTER, GuiRegion::VERTALIGN_CENTER);
+        newLabelWidget->setTextColor(white);
+        newLabelWidget->setText("-PAUSED-");
+        pauseDisplayWidget->addChild(newLabelWidget);
 
         // "Resume game" button
-        newWidget = new Widget({0, 20, 160, 30}, GuiRegion::HORZALIGN_CENTER, GuiRegion::VERTALIGN_BOTTOM);
-        newWidget->setClickFunction( [this]() {
+        newLabelWidget = new LabelWidget({0, 20, 160, 30}, GuiRegion::HORZALIGN_CENTER, GuiRegion::VERTALIGN_BOTTOM);
+        newLabelWidget->setClickFunction( [this]() {
             unpause();
         } );
-        newWidget->setDrawFunction( [](const Widget& widget, UiManager& uiManager) {
+        newLabelWidget->setDrawFunction( [](const Widget& widget, UiManager& uiManager) {
             uiManager.setColorMask(white);
             widget.drawBgSprite(uiManager, SPRITE_ID_WIDGET_BG);
 
-            uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
-            if (widget.getActive()) uiManager.setColorMask(white);
-            else                    uiManager.setColorMask(textColor);
-            widget.renderText(uiManager, "Resume game");
+            /*if (widget.getSelected()) uiManager.setColorMask(white);
+            else                      uiManager.setColorMask(textColor);*/
         } );
-        pauseDisplayWidget->addChild(newWidget);
+        newLabelWidget->setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
+        newLabelWidget->setTextAlignment(GuiRegion::HORZALIGN_CENTER, GuiRegion::VERTALIGN_CENTER);
+        newLabelWidget->setText("Resume Game");
+        pauseDisplayWidget->addChild(newLabelWidget);
 
         // "Quit to Desktop" button
         newWidget = new Widget({0, 60, 160, 30}, GuiRegion::HORZALIGN_CENTER, GuiRegion::VERTALIGN_BOTTOM);
@@ -137,9 +136,9 @@ void GameScene::loadWidgets() {
             widget.drawBgSprite(uiManager, SPRITE_ID_WIDGET_BG);
 
             uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
-            if (widget.getActive()) uiManager.setColorMask(white);
-            else                    uiManager.setColorMask(textColor);
-            widget.renderText(uiManager, "Quit to Desktop");
+            if (widget.getSelected()) uiManager.setColorMask(white);
+            else                      uiManager.setColorMask(textColor);
+            widget.renderText(uiManager, 0, 0, "Quit to Desktop");
         } );
         pauseDisplayWidget->addChild(newWidget);
 
@@ -153,9 +152,9 @@ void GameScene::loadWidgets() {
             widget.drawBgSprite(uiManager, SPRITE_ID_WIDGET_BG);
 
             uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
-            if (widget.getActive()) uiManager.setColorMask(white);
-            else                    uiManager.setColorMask(textColor);
-            widget.renderText(uiManager, "Quit to Menu");
+            if (widget.getSelected()) uiManager.setColorMask(white);
+            else                      uiManager.setColorMask(textColor);
+            widget.renderText(uiManager, 0, 0, "Quit to Menu");
         } );
         pauseDisplayWidget->addChild(newWidget);
     }
@@ -167,7 +166,7 @@ void GameScene::loadWidgets() {
         sprintf(msg, "UiTick: %u", uiManager.getUiTick());
         uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
         uiManager.setColorMask(textColor);
-        widget.renderText(uiManager, msg);
+        widget.renderText(uiManager, 0, 0, msg);
     } );
 	widgetManager.loadWidget(newWidget);
 
@@ -178,7 +177,7 @@ void GameScene::loadWidgets() {
         sprintf(msg, "ModelTick: %u", model->getModelTick());
         uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
         uiManager.setColorMask(textColor);
-        widget.renderText(uiManager, msg);
+        widget.renderText(uiManager, 0, 0, msg);
     } );
 	widgetManager.loadWidget(newWidget);
 
@@ -189,7 +188,7 @@ void GameScene::loadWidgets() {
         sprintf(msg, "FPS: %.2f", uiManager.fps);
         uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
         uiManager.setColorMask(textColor);
-        widget.renderText(uiManager, msg);
+        widget.renderText(uiManager, 0, 0, msg);
     } );
 	widgetManager.loadWidget(newWidget);
 }

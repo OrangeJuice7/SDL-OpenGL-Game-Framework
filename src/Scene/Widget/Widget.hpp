@@ -41,7 +41,7 @@ class Widget : public GuiRegion {
 
     public:
         Widget(
-			SDL_Rect rect,
+			const SDL_Rect& rect,
 			HorizontalAlignment horzAlign,
 			VerticalAlignment vertAlign);
 		virtual ~Widget();
@@ -80,10 +80,14 @@ class Widget : public GuiRegion {
 		void update(const SDL_Rect &psRect);
 
 		/**  Draw  **/
-		void drawBgSprite(UiManager &uiManager, SpriteId spriteId) const; // Maybe augment this with a border thickness parameter (for sprites slightly larger than the Widget) in the future
-		void renderText(UiManager &uiManager, const char *text) const;
+		// Maybe augment this with a border thickness parameter (for sprites slightly larger than the Widget) in the future
+		void drawBgSprite(UiManager &uiManager, SpriteId spriteId) const;
 
-        void draw(UiManager &uiManager) const;
+		// Renders a single unbroken/unwrapped line of text
+		// (x,y) denotes the offset from the lower left corner of the widget
+		void renderText(UiManager &uiManager, float x, float y, const char *text) const;
+
+        virtual void draw(UiManager &uiManager);
 };
 
 #endif // WIDGET_HPP

@@ -25,14 +25,16 @@ void GuiRegion::calcScreenRect(const SDL_Rect &parentScreenRect) {
 		rect.h
 	};
 	switch (horzAlign) {
+	    default:
 		case HORZALIGN_LEFT  : screenRect.x += rect.x; break;
 		case HORZALIGN_CENTER: screenRect.x += psRect.w/2 + rect.x - rect.w/2; break;
 		case HORZALIGN_RIGHT : screenRect.x += psRect.w   - rect.x - rect.w  ; break;
 	}
 	switch (vertAlign) {
-		case VERTALIGN_BOTTOM: screenRect.y += rect.y; break;
-		case VERTALIGN_CENTER: screenRect.y += psRect.h/2 + rect.y - rect.h/2; break;
+	    default:
 		case VERTALIGN_TOP   : screenRect.y += psRect.h   - rect.y - rect.h  ; break;
+		case VERTALIGN_CENTER: screenRect.y += psRect.h/2 + rect.y - rect.h/2; break;
+		case VERTALIGN_BOTTOM: screenRect.y += rect.y; break;
 	}
 }
 

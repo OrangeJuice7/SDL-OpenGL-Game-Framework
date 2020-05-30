@@ -3,7 +3,7 @@
 #include "../../ui/UiManager.hpp"
 
 Widget::Widget(
-		SDL_Rect rect,
+		const SDL_Rect& rect,
 		HorizontalAlignment horzAlign,
 		VerticalAlignment vertAlign)
 
@@ -116,23 +116,21 @@ void Widget::update(const SDL_Rect &psRect) {
 void Widget::drawBgSprite(UiManager &uiManager, SpriteId spriteId) const {
     uiManager.drawSpriteStretched(screenRect.x, screenRect.y, screenRect.w, screenRect.h, spriteId);
 }
-void Widget::renderText(UiManager &uiManager, const char *text) const {
-    // Implement text alignment and wrap later
-
-    uiManager.drawText(screenRect.x, screenRect.y, text);
+void Widget::renderText(UiManager &uiManager, float x, float y, const char *text) const {
+    uiManager.drawText(screenRect.x + x, screenRect.y + y, text);
 }
 
-void Widget::draw(UiManager &uiManager) const {
+void Widget::draw(UiManager &uiManager) {
     if (!active) return;
 
-    // Debug display
+    // Debug display (still shows if Widget is invisible)
 	if (clickable) {
         if (selected) uiManager.setColorMask({.4f, .4f, .0f});
         else          uiManager.setColorMask({.0f, .3f, .4f});
         drawBgSprite(uiManager, SPRITE_ID_WIDGET_BG_DEBUG);
     }
 
-	drawFunc(*this, uiManager);
+	if (visible) drawFunc(*this, uiManager);
 
 	// Call draw for all the children
 	for (Widget* child : children) {

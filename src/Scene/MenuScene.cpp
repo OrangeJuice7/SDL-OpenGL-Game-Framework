@@ -4,6 +4,7 @@
 #include <SDL2/SDL.h>
 #include "Model/MenuModelManager.hpp"
 #include "Widget/Widget.hpp"
+#include "Widget/LabelWidget.hpp"
 #include "../system/MessageHandler.hpp"
 #include "../system/Message.hpp"
 #include "../system/SceneTransitMessage.hpp"
@@ -22,6 +23,7 @@ void MenuScene::loadWidgets() {
 	const static GLcolorRGB textColor = {.8f, 1.f, .8f};
 
 	Widget *newWidget;
+	LabelWidget *newLabelWidget;
 
     // "Go to game" button
     newWidget = new Widget({40, 20, 240, 20}, GuiRegion::HORZALIGN_LEFT, GuiRegion::VERTALIGN_TOP);
@@ -30,9 +32,9 @@ void MenuScene::loadWidgets() {
     } );
 	newWidget->setDrawFunction( [](const Widget& widget, UiManager& uiManager) {
         uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
-        if (widget.getActive()) uiManager.setColorMask(white);
-        else                    uiManager.setColorMask(textColor);
-        widget.renderText(uiManager, "Click here to go to game");
+        if (widget.getSelected()) uiManager.setColorMask(white);
+        else                      uiManager.setColorMask(textColor);
+        widget.renderText(uiManager, 0, 0, "Click here to go to game");
     } );
     widgetManager.loadWidget(newWidget);
 
@@ -43,30 +45,51 @@ void MenuScene::loadWidgets() {
     } );
     newWidget->setDrawFunction( [](const Widget& widget, UiManager& uiManager) {
         uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
-        if (widget.getActive()) uiManager.setColorMask(white);
-        else                    uiManager.setColorMask(textColor);
-        widget.renderText(uiManager, "Quit");
+        if (widget.getSelected()) uiManager.setColorMask(white);
+        else                      uiManager.setColorMask(textColor);
+        widget.renderText(uiManager, 0, 0, "Quit");
     } );
     widgetManager.loadWidget(newWidget);
 
     // Menu Scene title
-    newWidget = new Widget({0, 20, 160, 20}, GuiRegion::HORZALIGN_CENTER, GuiRegion::VERTALIGN_TOP);
-    newWidget->setDrawFunction( [](const Widget& widget, UiManager& uiManager) {
-        uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_SUBHEADING);
-        uiManager.setColorMask(textColor);
-        widget.renderText(uiManager, "MENU SCENE");
-    } );
-    widgetManager.loadWidget(newWidget);
+    newLabelWidget = new LabelWidget({0, 20, 240, 20}, GuiRegion::HORZALIGN_CENTER, GuiRegion::VERTALIGN_TOP);
+    newLabelWidget->setFont(FONT_ID_STANDARD, FONTSIZE_ID_SUBHEADING);
+    newLabelWidget->setTextAlignment(GuiRegion::HORZALIGN_CENTER, GuiRegion::VERTALIGN_CENTER);
+    newLabelWidget->setTextColor(textColor);
+    newLabelWidget->setText("MENU SCENE");
+	widgetManager.loadWidget(newLabelWidget);
+
+    // Lorem ipsum text tests
+    newLabelWidget = new LabelWidget({-60, 60, 280, 240}, GuiRegion::HORZALIGN_CENTER, GuiRegion::VERTALIGN_CENTER);
+    newLabelWidget->setClickFunction([](){});
+    newLabelWidget->setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
+    newLabelWidget->setTextAlignment(GuiRegion::HORZALIGN_CENTER, GuiRegion::VERTALIGN_CENTER);
+    newLabelWidget->setTextColor(textColor);
+    newLabelWidget->setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, \
+sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \
+Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi \
+ut aliquip ex ea commodo consequat.");
+    widgetManager.loadWidget(newLabelWidget);
+
+    newLabelWidget = new LabelWidget({240, 60, 120, 240}, GuiRegion::HORZALIGN_CENTER, GuiRegion::VERTALIGN_CENTER);
+    newLabelWidget->setClickFunction([](){});
+    newLabelWidget->setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
+    newLabelWidget->setTextAlignment(GuiRegion::HORZALIGN_CENTER, GuiRegion::VERTALIGN_CENTER);
+    newLabelWidget->setTextColor(textColor);
+    newLabelWidget->setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, \
+sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \
+Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi \
+ut aliquip ex ea commodo consequat.");
+    widgetManager.loadWidget(newLabelWidget);
 
     // Pause display
-    pauseDisplayWidget = new Widget({20, 80, 160, 20}, GuiRegion::HORZALIGN_RIGHT, GuiRegion::VERTALIGN_BOTTOM);
+    newLabelWidget = new LabelWidget({20, 80, 160, 20}, GuiRegion::HORZALIGN_RIGHT, GuiRegion::VERTALIGN_BOTTOM);
+    newLabelWidget->setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
+    newLabelWidget->setTextAlignment(GuiRegion::HORZALIGN_CENTER, GuiRegion::VERTALIGN_CENTER);
+    newLabelWidget->setTextColor(white);
+    newLabelWidget->setText("-- PAUSED --");
+	widgetManager.loadWidget(pauseDisplayWidget = newLabelWidget);
     if (!paused) pauseDisplayWidget->deactivate();
-    pauseDisplayWidget->setDrawFunction( [](const Widget& widget, UiManager& uiManager) {
-        uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
-        uiManager.setColorMask(white);
-        widget.renderText(uiManager, "-- PAUSED --");
-    } );
-    widgetManager.loadWidget(pauseDisplayWidget);
 
     // UiTick display
     newWidget = new Widget({20, 60, 160, 20}, GuiRegion::HORZALIGN_RIGHT, GuiRegion::VERTALIGN_BOTTOM);
@@ -75,7 +98,7 @@ void MenuScene::loadWidgets() {
         sprintf(msg, "UiTick: %u", uiManager.getUiTick());
         uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
         uiManager.setColorMask(textColor);
-        widget.renderText(uiManager, msg);
+        widget.renderText(uiManager, 0, 0, msg);
     } );
     widgetManager.loadWidget(newWidget);
 
@@ -86,7 +109,7 @@ void MenuScene::loadWidgets() {
         sprintf(msg, "ModelTick: %u", modelManager->getModelTick());
         uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
         uiManager.setColorMask(textColor);
-        widget.renderText(uiManager, msg);
+        widget.renderText(uiManager, 0, 0, msg);
     } );
     widgetManager.loadWidget(newWidget);
 
@@ -97,7 +120,7 @@ void MenuScene::loadWidgets() {
         sprintf(msg, "FPS: %.2f", uiManager.fps);
         uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
         uiManager.setColorMask(textColor);
-        widget.renderText(uiManager, msg);
+        widget.renderText(uiManager, 0, 0, msg);
     } );
     widgetManager.loadWidget(newWidget);
 }

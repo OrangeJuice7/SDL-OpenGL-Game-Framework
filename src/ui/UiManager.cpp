@@ -47,6 +47,25 @@ Sprite* UiManager::getSprite(SpriteId id) const {
     return spriteManager.getSprite(id);
 }
 
+GLfloat UiManager::getCharLength(FontId fontId, FontsizeId fontsizeId, char c) const {
+    return textManager.getCharLength(fontId, fontsizeId, c);
+}
+GLfloat UiManager::getCharLength(char c) const {
+    return textManager.getCharLength(c);
+}
+GLfloat UiManager::getTextLength(FontId fontId, FontsizeId fontsizeId, const char* text) const {
+    return textManager.getTextLength(fontId, fontsizeId, text);
+}
+GLfloat UiManager::getTextLength(const char* text) const {
+    return textManager.getTextLength(text);
+}
+GLfloat UiManager::getFontHeight(FontId fontId, FontsizeId fontsizeId) const {
+    return textManager.getFontHeight(fontId, fontsizeId);
+}
+GLfloat UiManager::getFontHeight() const {
+    return textManager.getFontHeight();
+}
+
 void UiManager::screenToGameCoords(float& gameX, float& gameY, float screenX, float screenY) {
     gameX = (screenX - screenHalfWidth )/camera->getScale() + camera->getX();
     gameY = (screenY - screenHalfHeight)/camera->getScale() + camera->getY();
