@@ -41,6 +41,6 @@ void Particle::draw(UiManager &uiManager) {
     float a = getLifeFraction();
     uiManager.setColorMask({1, a, 0});
     uiManager.setObjectScale(getRadius());
-    uiManager.drawSprite(x, y, SPRITE_ID_CIRCLE);
+    uiManager.drawSprite(x, y, SPRITE_ID_PARTICLE);
 }
 

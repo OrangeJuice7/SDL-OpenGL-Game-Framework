@@ -18,8 +18,6 @@ bool SpriteManager::loadData() {
     if (!loadTexturedSprite(SPRITE_ID_TEX3, "data/textures/bit.tga")) return false;
     if (!loadTexturedSprite(SPRITE_ID_TEX4, "data/textures/awesomeface.png")) return false;
 
-    if (!loadTexturedSprite(SPRITE_ID_CURSOR, "data/textures/cursor.tga")) return false;
-
     {   GLcolorRGBA colors[] = { {1,1,1,.2f}, {1,1,1,.2f}, {1,1,1,.2f}, {1,1,1,.2f} };
         if (!loadGeometricSprite(SPRITE_ID_WIDGET_BG_DEBUG,
                                  quadDrawfunc,
@@ -39,6 +37,27 @@ bool SpriteManager::loadData() {
                 glDrawArrays(GL_LINE_LOOP     , 4, 4);
             },
             8, vertices, colors)) return false;
+    }
+
+    if (!loadTexturedSprite(SPRITE_ID_CURSOR, "data/textures/cursor.tga")) return false;
+
+    {   const int NUM_OF_VERTICES = 8;
+        GLvertex2 vertices[NUM_OF_VERTICES+2]; // +1 vertex for the center, +1 vertex to repeat a vertex to close the circle
+        GLcolorRGBA colors[NUM_OF_VERTICES+2];
+
+        vertices[0] = {0,0};
+        colors[0] = {1,1,1,1};
+
+        for (int i = 1; i <= NUM_OF_VERTICES+1; ++i) {
+            float angle = ((float) i / NUM_OF_VERTICES) * TWO_PI;
+            vertices[i].x = cos(angle);
+            vertices[i].y = sin(angle);
+            colors[i] = {1,1,1,0};
+        }
+
+        if (!loadGeometricSprite(SPRITE_ID_PARTICLE,
+                                 [](){ glDrawArrays(GL_TRIANGLE_FAN, 0, NUM_OF_VERTICES+2); },
+                                 NUM_OF_VERTICES+2, vertices, colors)) return false;
     }
 
     {   const int NUM_OF_VERTICES = 60;
