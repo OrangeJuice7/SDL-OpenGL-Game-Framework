@@ -7,7 +7,7 @@ NOTICE: Due to the project still being in rapid development and many APIs and fu
 ## Setting up
 ### Prerequisites
 - Highly recommended: Latest version of [Code::Blocks](http://www.codeblocks.org)
-- A C++ compiler (MinGW G++ already included with Code::Blocks)
+- A C++ compiler with C++11 support (MinGW G++ already included with Code::Blocks)
 
 ### Setting up the project on your computer
 Windows:
@@ -120,3 +120,28 @@ The Model contains the actual state of the game, as well as methods to interact 
 While the `GameScene` makes the heaviest use of the Model, other `Scene`s may also use the Model to display backdrops and animations.
 
 The `ModelManager` is a base class that tracks timing information about the game state, exposes a `ModelCamera` that helps the `UiManager` define the conversion between game and screen coordinates, and defines methods on updating its own state based on input or a game tick. Its derivatives such as `GameModelManager` would track actual game entities using `EntityManager`s, and define further methods to manipulate the game entities, such as spawning new entities.
+
+
+
+## Coding Style
+- Casing:
+	- Variables: lowerCamelCase
+	- Constants (including enum values): ALLCAPS_SNAKE_CASE
+	- Functions: lowerCamelCase
+	- Types (e.g. classes, typedefs, enums): UpperCamelCase
+	- Abbreviations (such as "UI") should be treated as a regular word (e.g. "Ui"). "SDL" and "GL"/"OpenGL" are exceptions.
+- Classes and files:
+	- Classes should have their declaration in header (.hpp) files and implementation in source (.cpp) files.
+		- A header file should have only one main class, but can also have auxiliary classes, typedefs, structs, enums etc.
+		- Large classes (such as `UiManager`) may have multiple source files, each addressing a separate concern of the class.
+		- Separate classes should be separated by 3 blank lines.
+	- The header file and .cpp file should have the same name as the main class.
+	- All header files must have a preprocessor guard `#define` in ALLCAPS_SNAKE_CASE, spelling out the name of the file including the ".hpp" e.g. `MainApp.hpp` -> `MAIN_APP_HPP`.
+	- The main source file should `#include` the corresponding header file on its very first line, followed by a blank line.
+	- All `#include`s must go at the beginning of the file. In header files, they come right after the header guard. In .cpp files, they come right after the main class `#include`.
+	- `#include`s are arranged in order: STL; 3rd party dependencies; internal dependencies.
+	- Classes should define `protected` members first, then `public` members. ((!)Might change)
+	- All classes should have an explicit constructor and destructor.
+	- The constructor and destructor should be public, unless the class follows a singleton pattern.
+- All `switch` statements should have a `default` case.
+- Enum values should be preceded by the enum's name. e.g. The "FontId" enum has values whose names start with "FONT_ID_".
