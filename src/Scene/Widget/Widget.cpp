@@ -3,50 +3,22 @@
 #include "../../ui/UiManager.hpp"
 
 Widget::Widget(
-        SDL_Rect rect,
-        HorizontalAlignment horzAlign,
-        VerticalAlignment vertAlign,
-        std::function<void(const Widget&, UiManager&)> drawFunc )
-
-        : Widget(rect, horzAlign, vertAlign, false, nullptr, nullptr, drawFunc) {}
-
-Widget::Widget(
-        SDL_Rect rect,
-        HorizontalAlignment horzAlign,
-        VerticalAlignment vertAlign,
-        std::function<void()> funcOnClick,
-        std::function<void(const Widget&, UiManager&)> drawFunc )
-
-        : Widget(rect, horzAlign, vertAlign, true, funcOnClick, nullptr, drawFunc) {}
-
-Widget::Widget(
-        SDL_Rect rect,
-        HorizontalAlignment horzAlign,
-        VerticalAlignment vertAlign,
-        std::function<void()> funcOnClick,
-        std::function<void()> funcOnRelease,
-        std::function<void(const Widget&, UiManager&)> drawFunc )
-
-        : Widget(rect, horzAlign, vertAlign, true, funcOnClick, funcOnRelease, drawFunc) {}
-
-Widget::Widget(
-		SDL_Rect rect,
+		const SDL_Rect& rect,
 		HorizontalAlignment horzAlign,
-		VerticalAlignment vertAlign,
-		bool clickable,
-		std::function<void()> funcOnClick,
-		std::function<void()> funcOnRelease,
-		std::function<void(const Widget&, UiManager&)> drawFunc ) {
+		VerticalAlignment vertAlign)
 
-    this->rect = rect;
-    this->horzAlign = horzAlign;
-    this->vertAlign = vertAlign;
-    this->clickable = clickable;
-    this->funcOnClick = funcOnClick;
-    this->funcOnRelease = funcOnRelease;
-    this->drawFunc = drawFunc;
+		: GuiRegion(rect, horzAlign, vertAlign) {
 
-    this->active = false;
+    active = true;
+
+    clickable = false;
+    funcOnClick = funcOnRelease = EMPTY_WIDGET_CLICK_FUNC;
+    selected = false;
+
+    updateFunc = EMPTY_WIDGET_UPDATE_FUNC;
+
+    visible = false;
+    drawFunc = EMPTY_WIDGET_DRAW_FUNC;
 }
 Widget::~Widget() {
     for (Widget* child : children) {
@@ -55,56 +27,36 @@ Widget::~Widget() {
 	children.clear();
 }
 
-const SDL_Rect& Widget::getScreenRect() const {
-    return screenRect;
-}
 bool Widget::getActive() const {
 	return active;
 }
 bool Widget::getClickable() const {
     return clickable;
 }
+bool Widget::getVisible() const {
+    return visible;
+}
+bool Widget::getSelected() const {
+    return selected;
+}
+
+void Widget::setClickFunction(WidgetClickFunc funcOnClick) {
+    setClickFunction(funcOnClick, [](){});
+}
+void Widget::setClickFunction(WidgetClickFunc funcOnClick, WidgetClickFunc funcOnRelease) {
+    this->funcOnClick = funcOnClick;
+    this->funcOnRelease = funcOnRelease;
+    enableClick();
+}
+void Widget::setDrawFunction(WidgetDrawFunc drawFunc) {
+    this->drawFunc = drawFunc;
+    enableDraw();
+}
+void Widget::setUpdateFunction(WidgetUpdateFunc updateFunc) {
+    this->updateFunc = updateFunc;
+}
 void Widget::addChild(Widget* widget) {
     children.push_front(widget);
-}
-
-void Widget::calcScreenRect(const SDL_Rect &psRect) {
-    screenRect = {
-		psRect.x,
-		psRect.y,
-		rect.w,
-		rect.h
-	};
-	switch (horzAlign) {
-		case HORZALIGN_LEFT  : screenRect.x += rect.x; break;
-		case HORZALIGN_CENTER: screenRect.x += psRect.w/2 + rect.x - rect.w/2; break;
-		case HORZALIGN_RIGHT : screenRect.x += psRect.w   - rect.x - rect.w  ; break;
-	}
-	switch (vertAlign) {
-		case VERTALIGN_BOTTOM: screenRect.y += rect.y; break;
-		case VERTALIGN_CENTER: screenRect.y += psRect.h/2 + rect.y - rect.h/2; break;
-		case VERTALIGN_TOP   : screenRect.y += psRect.h   - rect.y - rect.h  ; break;
-	}
-}
-
-bool withinRect(const SDL_Rect &rect, int x, int y) {
-	return (
-		x >= rect.x &&
-		y >= rect.y &&
-		x <= rect.x + rect.w &&
-		y <= rect.y + rect.h );
-}
-Widget* Widget::checkOn(int x, int y) {
-	if (!withinRect(screenRect, x, y)) return nullptr;
-	// (Future: do further checks in the case where this widget is not rectangular)
-
-	// Check children
-	for (Widget* child : children) {
-		Widget* childCheck = child->checkOn(x, y);
-		if (childCheck != nullptr) return childCheck;
-	}
-
-	return getClickable() ? this : nullptr; // ignore non-clickable widgets
 }
 
 void Widget::activate() {
@@ -113,39 +65,80 @@ void Widget::activate() {
 void Widget::deactivate() {
 	active = false;
 }
+void Widget::enableClick() {
+    clickable = true;
+}
+void Widget::disableClick() {
+    clickable = false;
+}
+void Widget::enableDraw() {
+    visible = true;
+}
+void Widget::disableDraw() {
+    visible = false;
+}
+void Widget::select() {
+    selected = true;
+}
+void Widget::deselect() {
+    selected = false;
+}
+
+Widget* Widget::checkOn(float x, float y) {
+    if (!active) return nullptr;
+
+	if (!withinScreenRect(x, y)) return nullptr;
+	// (Future: do further checks in the case where this widget is not rectangular)
+
+	// Check children
+	for (Widget* child : children) {
+		Widget* childCheck = child->checkOn(x, y);
+		if (childCheck != nullptr) return childCheck;
+	}
+
+	return clickable ? this : nullptr; // ignore non-clickable widgets
+}
+
 void Widget::click() {
-	if (funcOnClick) funcOnClick();
+	funcOnClick();
 }
 void Widget::releaseMouse() {
-	if (funcOnRelease) funcOnRelease();
+	funcOnRelease();
 }
 
-void Widget::update(const SDL_Rect &psRect) {
+void Widget::update(const SDL_Rect &psRect, const UiManager &uiManager) {
+    if (!active) return;
+
+    updateFunc(this, uiManager);
+
     calcScreenRect(psRect);
 
-	// update all the children
+	// Update all the children
 	for (Widget* child : children) {
-		child->update(screenRect);
+		child->update(screenRect, uiManager);
 	}
 }
 
-void Widget::renderText(UiManager &uiManager, const char *text) const {
-    // Implement text wrap later
-
-    uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
-    uiManager.drawText(screenRect.x, screenRect.y, text);
+void Widget::drawBgSprite(UiManager &uiManager, SpriteId spriteId) const {
+    uiManager.drawSpriteStretched(screenRect.x, screenRect.y, screenRect.w, screenRect.h, spriteId);
+}
+void Widget::renderText(UiManager &uiManager, float x, float y, const char *text) const {
+    uiManager.drawText(screenRect.x + x, screenRect.y + y, text);
 }
 
 void Widget::draw(UiManager &uiManager) const {
-	if (getClickable()) {
-        if (getActive()) uiManager.setColorMask({.4f, .4f, .0f});
-        else             uiManager.setColorMask({.0f, .3f, .4f});
-        uiManager.drawSpriteStretched(screenRect.x, screenRect.y, screenRect.w, screenRect.h, SPRITE_ID_WIDGET_BG_DEBUG);
+    if (!active) return;
+
+    // Debug display (still shows if Widget is invisible)
+	if (clickable) {
+        if (selected) uiManager.setColorMask({.4f, .4f, .0f});
+        else          uiManager.setColorMask({.0f, .3f, .4f});
+        drawBgSprite(uiManager, SPRITE_ID_WIDGET_BG_DEBUG);
     }
 
-	if (drawFunc) drawFunc(*this, uiManager);
+	if (visible) drawFunc(*this, uiManager);
 
-	// call draw for all the children
+	// Call draw for all the children
 	for (Widget* child : children) {
 		child->draw(uiManager);
 	}

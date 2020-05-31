@@ -39,7 +39,7 @@ class GameModelManager : public ModelManager {
         void spawnParticleExplosion(int numOfParticles, float x, float y, float maxVel, float maxRadius);
 
         /**  UI  **/
-        void pickActiveEntity(float x, float y);
+        void pickSelectedEntity(float x, float y);
         void click();
 
         void draw(UiManager &uiManager);

@@ -6,17 +6,7 @@
 
 #include "Texture.hpp"
 #include "Sprite.hpp"
-
-// You may re-order and add new enum values,
-// but do NOT assign artificial values to any of these enums!
-enum FontsizeId { // size = height
-    FONTSIZE_ID_HEADING,
-    FONTSIZE_ID_SUBHEADING,
-    FONTSIZE_ID_NORMAL,
-    FONTSIZE_ID_SMALL,
-
-    FONTSIZE_ID_COUNT
-};
+#include "FontId.hpp"
 
 class GlyphTexture : public Texture {
     public:
@@ -58,13 +48,6 @@ struct Font { // Rasterized, i.e. already has a fixed size
     Glyph glyphs[TEXT_NUM_OF_SUPPORTED_CHARS];
     GLfloat height; // Distance between one baseline and the next
 };
-enum FontId {
-    FONT_ID_MONOSPACE,
-    FONT_ID_STANDARD,
-    //FONT_ID_FANCY,
-
-    FONT_ID_COUNT
-};
 
 
 
@@ -87,6 +70,8 @@ class TextManager {
 
         // Getters of useful params
         // Versions with missing ID params means the function will return the value for the current active font
+        GLfloat getCharLength(FontId fontId, FontsizeId fontsizeId, char c) const;
+        GLfloat getCharLength(char c) const;
         GLfloat getTextLength(FontId fontId, FontsizeId fontsizeId, const char* text) const;
         GLfloat getTextLength(const char* text) const;
         GLfloat getFontHeight(FontId fontId, FontsizeId fontsizeId) const;

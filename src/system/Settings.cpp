@@ -135,7 +135,7 @@ void Settings::loadFromFile(const char* filepath) { // Adapted from https://www.
 
         // Assign value to Setting
         if (instance->settingsLookup.at(name)->read(value))
-            printf("Assigned value \"%s\" to setting \"%s\"\n", value.c_str(), name.c_str());
+            printf("Assigned \"%s\" <- \"%s\"\n", name.c_str(), value.c_str());
         else printf("Warning: value \"%s\" for setting \"%s\" is invalid!\n", value.c_str(), name.c_str());
     }
 

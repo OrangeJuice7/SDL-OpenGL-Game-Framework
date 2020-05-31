@@ -3,128 +3,103 @@
 
 #include <functional>
 #include <forward_list>
-#include <SDL2/SDL.h> // for SDL_Rect
+#include "../../ui/SpriteId.hpp"
+#include "GuiRegion.hpp"
 class UiManager;
+
+class Widget;
+typedef std::function<void()> WidgetClickFunc;
+typedef std::function<void(Widget*, const UiManager&)> WidgetUpdateFunc; // Pointer to let this function typecast to Widget dervatives and thus access their methods
+typedef std::function<void(const Widget&, UiManager&)> WidgetDrawFunc;
+
+const WidgetClickFunc EMPTY_WIDGET_CLICK_FUNC = [](){};
+const WidgetUpdateFunc EMPTY_WIDGET_UPDATE_FUNC = [](Widget*, const UiManager&){};
+const WidgetDrawFunc EMPTY_WIDGET_DRAW_FUNC = [](const Widget&, UiManager&){};
 
 /**
  *  A Widget is fundamentally a specified section of the screen that (optionally) detects mouse clicks.
  *  Can also be used to align text and such.
  */
-
-class Widget {
-    public:
-		// Alignment: what does the (x,y) position actually refer to
-		// e.g. top-left alignment means (x,y) is the position of the top-left corner of the widget from the top-left corner of the screen
-		// (For Center alignment, +x/+y is right/down, to be consistent with SDL's coordinate system.)
-		enum HorizontalAlignment {
-			HORZALIGN_LEFT,
-			HORZALIGN_CENTER,
-			HORZALIGN_RIGHT
-		};
-
-		enum VerticalAlignment {
-			VERTALIGN_TOP,
-			VERTALIGN_CENTER,
-			VERTALIGN_BOTTOM
-		};
-
+class Widget : public GuiRegion {
 	protected:
-        // x, y, w, h
-		SDL_Rect rect; // Rect as using the alignment system
-		SDL_Rect screenRect; // (cached) Rect in actual screen coords (with topleft alignment)
-
-		HorizontalAlignment horzAlign;
-		VerticalAlignment vertAlign;
+		// If a Widget is inactive, then it's neither drawn nor clickable, nor are any of its children active
+		bool active;
 
 		bool clickable;
 		// The function that this widget executes on click.
-		// Set to nullptr if this widget does nothing when clicked
-		std::function<void()> funcOnClick;
+		WidgetClickFunc funcOnClick;
 		// The function that this widget executes on mouse button release.
-		// Set to nullptr if this widget does nothing when clicked
-		std::function<void()> funcOnRelease;
+		WidgetClickFunc funcOnRelease;
 
 		// Whether this widget can be dragged around on mouse hold
 		// bool draggable;
 
-		// Whether this Widget is selected (e.g. if the mouse is over it)
-		bool active;
+		// Whether this Widget is drawn
+		bool visible;
+		// The function that this widget executes on draw
+		WidgetDrawFunc drawFunc;
+
+		WidgetUpdateFunc updateFunc;
+
+		// Whether this Widget is selected (e.g. if the mouse is over it) (just to help cosmetic purposes)
+		bool selected;
 
 		// Child widgets
 		// Note: Child widgets should lie fully within the bounds of their parents. Otherwise, they should be separate widgets.
 		// Note: Children are only destroyed when the parents are; no way to delete them individually yet
 		std::forward_list<Widget*> children;
 
-		// The function that this widget executes on draw
-		// If set to nullptr, doesn't draw anything
-		std::function<void(const Widget&, UiManager&)> drawFunc;
-
-		// psRect: Parent screen rect, (i.e. also actual screen coords with topleft alignment)
-		void calcScreenRect(const SDL_Rect &psRect);
-
     public:
-        // Full constructor
         Widget(
-			SDL_Rect rect,
+			const SDL_Rect& rect,
 			HorizontalAlignment horzAlign,
-			VerticalAlignment vertAlign,
-			bool clickable,
-			std::function<void()> funcOnClick,
-            std::function<void()> funcOnRelease,
-			std::function<void(const Widget&, UiManager&)> drawFunc );
-
-        // Unclickable Widget constructor
-        Widget(
-			SDL_Rect rect,
-			HorizontalAlignment horzAlign,
-			VerticalAlignment vertAlign,
-			std::function<void(const Widget&, UiManager&)> drawFunc );
-
-        // Click but no release constructor
-        Widget(
-			SDL_Rect rect,
-			HorizontalAlignment horzAlign,
-			VerticalAlignment vertAlign,
-			std::function<void()> funcOnClick,
-			std::function<void(const Widget&, UiManager&)> drawFunc );
-
-        // Click and release constructor
-        Widget(
-			SDL_Rect rect,
-			HorizontalAlignment horzAlign,
-			VerticalAlignment vertAlign,
-			std::function<void()> funcOnClick,
-            std::function<void()> funcOnRelease,
-			std::function<void(const Widget&, UiManager&)> drawFunc );
-
+			VerticalAlignment vertAlign);
 		virtual ~Widget();
 
-        const SDL_Rect& getScreenRect() const;
         bool getActive() const;
         bool getClickable() const;
+        bool getVisible() const;
+        bool getSelected() const;
 
+		void setClickFunction(WidgetClickFunc funcOnClick); // Setting the click function also enables clicking
+		void setClickFunction(WidgetClickFunc funcOnClick, WidgetClickFunc funcOnRelease);
+		void setDrawFunction(WidgetDrawFunc drawFunc); // Also enables drawing
+		void setUpdateFunction(WidgetUpdateFunc updateFunc);
 		void addChild(Widget* widget);
+
+        void activate();
+        void deactivate();
+		void enableClick();
+		void disableClick();
+		void enableDraw();
+		void disableDraw();
+        void select();
+        void deselect();
 
 		/**  Mouse input  **/
 
 		// Returns the widget that (x,y) lies on
 		// = this if this widget, = one of the children if they are on top instead, = nullptr if (x,y) is outside of this widget
-		// (x,y) is position from the top-left corner
-        Widget* checkOn(int x, int y); // Can't be const unfortunately, because it returns this
+		// (x,y) is position from the bottom-left corner
+        Widget* checkOn(float x, float y); // Can't be const unfortunately, because it returns this
 
-        void activate();
-        void deactivate();
         void click();
         void releaseMouse();
 
 		/**  Update  **/
-		// psRect: Parent screen rect, also taken from the top-left corner
-		void update(const SDL_Rect &psRect);
+		// Mainly updating cached data
+		// psRect: Parent screen rect, also taken from the bottom-left corner
+		virtual void update(const SDL_Rect &psRect, const UiManager &uiManager);
 
 		/**  Draw  **/
-		void renderText(UiManager &uiManager, const char *text) const;
+		// Maybe augment this with a border thickness parameter (for sprites slightly larger than the Widget) in the future
+		void drawBgSprite(UiManager &uiManager, SpriteId spriteId) const;
 
-        void draw(UiManager &uiManager) const;
+		// Renders a single unbroken/unwrapped line of text
+		// (x,y) denotes the offset from the lower left corner of the widget
+		void renderText(UiManager &uiManager, float x, float y, const char *text) const;
+
+        virtual void draw(UiManager &uiManager) const;
 };
 
 #endif // WIDGET_HPP

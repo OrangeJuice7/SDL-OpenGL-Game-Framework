@@ -26,7 +26,7 @@ bool UiManager::initWindow() {
     {   SDL_DisplayMode mode;
         for (int i = 0; i < SDL_GetNumVideoDisplays(); ++i) {
             SDL_GetCurrentDisplayMode(i, &mode);
-            printf("Display #%d: %dx%dpx @ %dhz.", i, mode.w, mode.h, mode.refresh_rate);
+            printf("Display #%d: %dx%dpx @ %dhz.\n", i, mode.w, mode.h, mode.refresh_rate);
         }
     }
 

@@ -26,6 +26,21 @@ bool SpriteManager::loadData() {
                                  4, quadVertices, colors)) return false;
     }
 
+    {   GLvertex2 vertices[] = {
+            {-1,-1}, {1,-1}, {-1,1}, {1,1} , // bg quad
+            {-1,-1}, {1,-1}, {1,1}, {-1,1} }; // outline
+        GLcolorRGBA colors[] = {
+            {.1f,.1f,.1f,.6f}, {.1f,.1f,.1f,.6f}, {.1f,.2f,.4f,.6f}, {.1f,.2f,.4f,.6f} ,
+            {.8f,1.f,.8f,.8f}, {.8f,1.f,1.f,.8f}, {.8f,1.f,.8f,.8f}, {.8f,1.f,1.f,.8f} };
+        if (!loadGeometricSprite(
+            SPRITE_ID_WIDGET_BG,
+            []() {
+                glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+                glDrawArrays(GL_LINE_LOOP     , 4, 4);
+            },
+            8, vertices, colors)) return false;
+    }
+
     {   const int NUM_OF_VERTICES = 60;
         GLvertex2 vertices[NUM_OF_VERTICES];
         GLcolorRGBA colors[NUM_OF_VERTICES];

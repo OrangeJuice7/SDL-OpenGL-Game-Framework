@@ -15,14 +15,17 @@ class Scene {
 
         bool paused;
 
+        // Returns true if the Widgets intercept the mouse (and thus control should not be passed to the model stage)
+        virtual bool updateWidgetsFromMouse(const SDL_Rect &screenRect, const MouseState &mouseState);
+        virtual void updateModelFromMouse(const SDL_Rect &screenRect, const MouseState &mouseState);
+
     public:
         // modelManager should be a new ModelManager, created when constructing Scene's derived class
         Scene(ModelManager* modelManager);
         virtual ~Scene();
 
         /**  UI  **/
-        // Basically updates the active elements e.g. activeWidget
-        virtual void updateFromMouse(const SDL_Rect &screenRect, const MouseState &mouseState);
+        void updateFromMouse(const SDL_Rect &screenRect, const MouseState &mouseState);
         virtual void updateFromKeys(const KeyboardState &keyboardState);
 
         // Handle input. May send Messages to MainApp
@@ -40,8 +43,12 @@ class Scene {
         void draw(UiManager &uiManager);
 
         /**  Model  **/
+        bool getPaused() const;
         uint32_t getModelTick() const;
         void doTick();
+
+        virtual void pause();
+        virtual void unpause();
 };
 
 #endif // SCENE_HPP

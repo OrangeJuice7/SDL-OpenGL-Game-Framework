@@ -176,6 +176,12 @@ bool TextManager::init() {
 }
 void TextManager::deinit() {}
 
+GLfloat TextManager::getCharLength(FontId fontId, FontsizeId fontsizeId, char c) const {
+    return fonts[fontId][fontsizeId].glyphs[(short)c].advance;
+}
+GLfloat TextManager::getCharLength(char c) const {
+    return getCharLength(activeFontId, activeFontsizeId, c);
+}
 GLfloat TextManager::getTextLength(FontId fontId, FontsizeId fontsizeId, const char* text) const {
     const Font *font = &(fonts[fontId][fontsizeId]);
     float length = 0;
@@ -190,7 +196,8 @@ GLfloat TextManager::getTextLength(const char* text) const {
     return getTextLength(activeFontId, activeFontsizeId, text);
 }
 GLfloat TextManager::getFontHeight(FontId fontId, FontsizeId fontsizeId) const {
-    return fonts[fontId][fontsizeId].height;
+    //return fonts[fontId][fontsizeId].height; // Doesn't seem to be the right measurement (it's independent of the specified fontsize)
+    return fontsizes[fontsizeId];
 }
 GLfloat TextManager::getFontHeight() const {
     return getFontHeight(activeFontId, activeFontsizeId);

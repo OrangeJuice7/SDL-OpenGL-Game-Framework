@@ -4,7 +4,7 @@
 #include "Widget.hpp"
 
 WidgetManager::WidgetManager() {
-    activeWidget = nullptr;
+    selectedWidget = nullptr;
 }
 WidgetManager::~WidgetManager() {
     unloadWidgets();
@@ -19,31 +19,23 @@ void WidgetManager::unloadWidgets() {
 		delete widget;
 	}
 	widgets.clear();
-    activeWidget = nullptr;
+    selectedWidget = nullptr;
 }
 
-bool WidgetManager::pickActiveWidget(int x, int y) {
-    if (activeWidget) {
-        Widget* pWidget = activeWidget->checkOn(x, y);
-        if (pWidget == activeWidget) // Active Widget remains active
-            return true;
-        else if (pWidget) { // It's now a child widget that is active
-            activeWidget->deactivate();
-            pWidget->activate();
-            activeWidget = pWidget;
-            return true;
-        } else { // Active Widget is no longer active
-            activeWidget->deactivate();
-            activeWidget = nullptr;
-        }
+bool WidgetManager::pickSelectedWidget(int x, int y) {
+    // Deselect the selectedWidget if it exists
+    if (selectedWidget) {
+        selectedWidget->deselect();
+        selectedWidget = nullptr;
     }
 
-    // No activeWidget (or activeWidget got deactivated): Check if any other Widget is activated
-    for (Widget* widget : widgets) {
+    // Scan for widgets in reverse order
+    for (auto rit = widgets.rbegin(); rit != widgets.rend(); ++rit) {
+		Widget* widget = *rit;
 		Widget* pWidget = widget->checkOn(x, y);
-		if (pWidget) { // A Widget can indeed be activated
-            pWidget->activate(); // Activate it
-            activeWidget = pWidget; // Track the widget as the new activeWidget
+		if (pWidget) { // A Widget can indeed be selected
+            pWidget->select(); // Select it
+            selectedWidget = pWidget; // Track the widget as the new selectedWidget
             return true; // Nothing more to do
 		}
 	}
@@ -51,15 +43,15 @@ bool WidgetManager::pickActiveWidget(int x, int y) {
 	return false;
 }
 bool WidgetManager::click() {
-    if (activeWidget) {
-        activeWidget->click();
+    if (selectedWidget) {
+        selectedWidget->click();
         return true;
     }
     return false;
 }
 bool WidgetManager::releaseMouse() {
-    if (activeWidget) {
-        activeWidget->releaseMouse();
+    if (selectedWidget) {
+        selectedWidget->releaseMouse();
         return true;
     }
     return false;
@@ -67,7 +59,7 @@ bool WidgetManager::releaseMouse() {
 
 void WidgetManager::draw(UiManager &uiManager) {
     for (Widget* widget : widgets) {
-		widget->update(uiManager.getScreenRect());
+		widget->update(uiManager.getScreenRect(), uiManager);
 	}
     for (Widget* widget : widgets) {
 		widget->draw(uiManager);

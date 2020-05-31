@@ -6,6 +6,8 @@
 class MenuScene : public Scene {
     protected:
         /**  UI  **/
+        Widget *pauseDisplayWidget;
+
         void loadWidgets();
 
     public:
@@ -17,6 +19,10 @@ class MenuScene : public Scene {
         // Sends Messages to MainApp
         void handleKeyDownEvent(SDL_Keycode key);
         void handleKeyUpEvent(SDL_Keycode key);
+
+        /**  Model  **/
+        virtual void pause();
+        virtual void unpause();
 };
 
 #endif // MENU_SCENE_HPP

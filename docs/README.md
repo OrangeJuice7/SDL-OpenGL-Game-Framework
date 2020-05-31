@@ -18,6 +18,8 @@ For an explanation of how this template works and how to use it, read this proje
 
 
 ## Roadmap
+The [issue tracker](https://github.com/OrangeJuice7/SDL-OpenGL-Game-Framework/issues) serves as a general todo list.
+
 Desirable milestones:
 - [ ] Alpha 1.0: Able to build a functional and reasonably featured shoot 'em up: Player, enemies, weapons, projectiles, levels, shop etc. (by end of 2020)
 - [ ] Alpha 2.0: Able to build an RPG/dungeon crawler: Items, map/dungeon generation, friendly NPCs, dialog, questlines etc.

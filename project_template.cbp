@@ -68,6 +68,10 @@
 		<Unit filename="src/Scene/Model/Projectile.hpp" />
 		<Unit filename="src/Scene/Scene.cpp" />
 		<Unit filename="src/Scene/Scene.hpp" />
+		<Unit filename="src/Scene/Widget/GuiRegion.cpp" />
+		<Unit filename="src/Scene/Widget/GuiRegion.hpp" />
+		<Unit filename="src/Scene/Widget/LabelWidget.cpp" />
+		<Unit filename="src/Scene/Widget/LabelWidget.hpp" />
 		<Unit filename="src/Scene/Widget/Widget.cpp" />
 		<Unit filename="src/Scene/Widget/Widget.hpp" />
 		<Unit filename="src/Scene/Widget/WidgetManager.cpp" />
@@ -84,6 +88,7 @@
 		<Unit filename="src/system/Settings.hpp" />
 		<Unit filename="src/system/main.cpp" />
 		<Unit filename="src/ui/Draw.cpp" />
+		<Unit filename="src/ui/FontId.hpp" />
 		<Unit filename="src/ui/GLUtil.cpp" />
 		<Unit filename="src/ui/GLUtil.hpp" />
 		<Unit filename="src/ui/Init.cpp" />

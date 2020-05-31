@@ -156,7 +156,7 @@ void GameModelManager::spawnParticleExplosion(int numOfParticles, float x, float
     }
 }
 
-void GameModelManager::pickActiveEntity(float x, float y) {
+void GameModelManager::pickSelectedEntity(float x, float y) {
     activeMob = mobs.pickEntity(x,y);
 }
 void GameModelManager::click() {

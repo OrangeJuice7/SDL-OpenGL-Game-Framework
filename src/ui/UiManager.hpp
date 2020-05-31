@@ -66,6 +66,16 @@ class UiManager {
         int getScreenHeight() const;
         const SDL_Rect& getScreenRect() const;
 
+        // Get properties of a specified text string, given a font
+        // Just a wrapper for textManager's corresponding functions
+        // Versions with missing ID params means the function will return the value for the current active font
+        GLfloat getCharLength(FontId fontId, FontsizeId fontsizeId, char c) const;
+        GLfloat getCharLength(char c) const;
+        GLfloat getTextLength(FontId fontId, FontsizeId fontsizeId, const char* text) const;
+        GLfloat getTextLength(const char* text) const;
+        GLfloat getFontHeight(FontId fontId, FontsizeId fontsizeId) const;
+        GLfloat getFontHeight() const;
+
         void sleep(float duration); // in seconds, capped at millisecond precision
 
         // Collect hardware inputs and pass them to scene for interpretation
@@ -107,7 +117,8 @@ class UiManager {
         // Draw functions, defined in Render.cpp
         void drawSprite(float x, float y, SpriteId id);
         void drawSpriteStretched(float x, float y, float width, float height, SpriteId id);
-        void drawText(float x, float y, const char* text); // Draws a single unwrapped line, implement wrap later
+
+        void drawText(float x, float y, const char* text); // Draws a single unwrapped line
 };
 
 #endif // UI_MANAGER_HPP

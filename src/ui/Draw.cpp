@@ -67,7 +67,7 @@ void UiManager::drawSpriteStretched(float x, float y, float width, float height,
 void UiManager::drawText(float x, float y, const char* text) {
     shaderProgram.addFlags(SHADER_FLAG_RENDER_TEXT);
     for (int i = 0; text[i] != '\0'; ++i) {
-        setObjectTranslate(x, y);
+        setObjectTranslate((int)x, (int)y); // Align text to pixels so the glyphs are crisp
         x += textManager.drawChar(text[i]);
     }
     shaderProgram.removeFlags(SHADER_FLAG_RENDER_TEXT);
