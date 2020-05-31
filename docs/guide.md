@@ -2,14 +2,27 @@
 
 NOTICE: Due to the project still being in rapid development and many APIs and functionalities subject to change, the detailed architecture is not documented, but should be evident from the code and comments. This guide instead focusses on big-picture descriptions and visions that would help to understand how the various parts cohere. Do contact the authors of this project if anything is unclear.
 
+### Table of Contents
+1. [Setting Up](#setup)
+    1. [Prerequisites](#setup-prereqs)
+    1. [Setting Up the Project on Your Computer](#setup-com)
+    1. [Demo Features / Verifying the Setup](#demo-features)
+1. [Design](#design)
+    1. [Architecture](#architecture)
+    1. [UiManager](#uimanager)
+    1. [Scene](#scene)
+	1. [Widgets](#widgets)
+	1. [Model](#model)
+1. [Coding Style](#coding-style)
 
 
-## Setting up
-### Prerequisites
+
+## Setting Up <a name="setup"></a>
+### Prerequisites <a name="setup-prereqs"></a>
 - Highly recommended: Latest version of [Code::Blocks](http://www.codeblocks.org)
 - A C++ compiler with C++11 support (MinGW G++ already included with Code::Blocks)
 
-### Setting up the project on your computer
+### Setting Up the Project on Your Computer <a name="setup-com"></a>
 Windows:
 
 - Clone this repo to your computer.
@@ -24,7 +37,7 @@ Windows:
 
 ![](menu.png)
 
-### Demo Features / Verifying the setup
+### Demo Features / Verifying the Setup <a name="demo-features"></a>
 - Currently, <kbd>Q</kbd> switches between the `MenuScene` and `GameScene`, as does clicking the Widget at the topleft of the screen.
 - In the `GameScene`, there are three entities. The center entity is player-controlled.
 	- <kbd>SPACE</kbd> pauses/unpauses the game.
@@ -43,10 +56,10 @@ Windows:
 
 
 
-## Design
+## Design <a name="design"></a>
 This section describes how the code base is organized.
 
-### Architecture
+### Architecture <a name="architecture"></a>
 ![](ArchitectureDiagram.png)
 
 The `MainApp` hosts all the other components, and tracks application-wide data such as frames per second (FPS). It contains methods to initialize (`init()`), run (`run()`) and de-initialize (`deinit()`) the whole program. It also contains methods that allow `Message`s to affect its underlying data.
@@ -76,7 +89,7 @@ When the whole program starts, an instance of `MainApp` is created. `init()` is 
 
 When `run()` is exited, `deinit()` is called to clean up the rest of the system, then the program ends.
 
-### UiManager
+### UiManager <a name="uimanager"></a>
 ![](UiManagerClassDiagram.png)
 
 The `UiManager` handles all low-level I/O, including setting up I/O functionality, maintaining I/O info, and providing an interface for the rest of the program to make I/O calls with. Specific duties include:
@@ -97,7 +110,7 @@ The `UiManager` contains several subclasses to handle specialized areas:
 	- The `GlyphSprite`s are managed by `TextManager`, separately from the `SpriteManager`.
 	- `TextManager`'s API only allows to print individual characters; an actual string of text is handled by `UiManager` since that requires UI position transformations from one character to the next, which is out of the scope of `TextManager`.
 
-### Scene
+### Scene <a name="scene"></a>
 ![](SceneClassDiagram.png)
 
 The `Scene` is the core of the game. It is conceptually split into two sections: The UI - handled by the `WidgetManager` - and the Model - handled by the `ModelManager`.
@@ -109,10 +122,10 @@ The `Scene` has three external functionalities:
 - Update its internal state (by one game tick).
 - Tell a `UiManager` how to draw its state.
 
-#### Widgets
+### Widgets <a name="widgets"></a>
 The `WidgetManager` handles the GUI of the `Scene`. The GUI is defined in terms of `Widget`s. `Widget`s essentially define a region in screen space. They may have a defined action upon being clicked, and also have a defined draw function to visually indicate where they are when the app runs. They can be used to display information such as text, or provide a region for the player to click in order to activate a certain function. `Widget`s are overlaid onto the screen, and are always drawn on top of any other object from the Model.
 
-#### Model
+### Model <a name="model"></a>
 ![](ModelClassDiagram.png)
 
 The Model contains the actual state of the game, as well as methods to interact with them, update them, and draw them to a given `UiManager`. The parent `Scene` may pass commands to the Model directly, or it may also pass user input to the `WidgetManager` which would then translate them into Model commands.
@@ -123,7 +136,7 @@ The `ModelManager` is a base class that tracks timing information about the game
 
 
 
-## Coding Style
+## Coding Style <a name="coding-style"></a>
 - Casing:
 	- Variables: lowerCamelCase
 	- Constants (including enum values): ALLCAPS_SNAKE_CASE
