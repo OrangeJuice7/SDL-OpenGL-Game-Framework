@@ -95,42 +95,16 @@ ut aliquip ex ea commodo consequat.");
 	widgetManager.loadWidget(pauseDisplayWidget = newLabelWidget);
     if (!paused) pauseDisplayWidget->deactivate();
 
-    // UiTick display
-    newLabelWidget = new LabelWidget({20, 60, 160, 20}, GuiRegion::HORZALIGN_RIGHT, GuiRegion::VERTALIGN_BOTTOM);
-    newLabelWidget->setFont(FONT_ID_MONOSPACE, FONTSIZE_ID_NORMAL);
-    newLabelWidget->setTextAlignment(GuiRegion::HORZALIGN_RIGHT, GuiRegion::VERTALIGN_BOTTOM);
-    newLabelWidget->setTextColor(textColor);
-	newLabelWidget->setUpdateFunction( [](Widget* widget, const UiManager& uiManager) {
-        LabelWidget *lwidget = dynamic_cast<LabelWidget*>(widget);
-        char msg[256];
-        sprintf(msg, "UiTick: %u", uiManager.getUiTick());
-        lwidget->setText(msg);
-    } );
-    widgetManager.loadWidget(newLabelWidget);
-
-    // ModelTick display
-    newLabelWidget = new LabelWidget({20, 40, 160, 20}, GuiRegion::HORZALIGN_RIGHT, GuiRegion::VERTALIGN_BOTTOM);
+    // UiTick, ModelTick, FPS displays
+    newLabelWidget = new LabelWidget({20, 20, 240, 60}, GuiRegion::HORZALIGN_RIGHT, GuiRegion::VERTALIGN_BOTTOM);
     newLabelWidget->setFont(FONT_ID_MONOSPACE, FONTSIZE_ID_NORMAL);
     newLabelWidget->setTextAlignment(GuiRegion::HORZALIGN_RIGHT, GuiRegion::VERTALIGN_BOTTOM);
     newLabelWidget->setTextColor(textColor);
 	newLabelWidget->setUpdateFunction( [&](Widget* widget, const UiManager& uiManager) {
         LabelWidget *lwidget = dynamic_cast<LabelWidget*>(widget);
         char msg[256];
-        sprintf(msg, "ModelTick: %u", modelManager->getModelTick());
-        lwidget->setText(msg);
-    } );
-    widgetManager.loadWidget(newLabelWidget);
-
-    // FPS display
-    newLabelWidget = new LabelWidget({20, 20, 160, 20}, GuiRegion::HORZALIGN_RIGHT, GuiRegion::VERTALIGN_BOTTOM);
-    newLabelWidget->setFont(FONT_ID_MONOSPACE, FONTSIZE_ID_NORMAL);
-    newLabelWidget->setTextAlignment(GuiRegion::HORZALIGN_RIGHT, GuiRegion::VERTALIGN_BOTTOM);
-    newLabelWidget->setTextColor(textColor);
-	newLabelWidget->setUpdateFunction( [](Widget* widget, const UiManager& uiManager) {
-        LabelWidget *lwidget = dynamic_cast<LabelWidget*>(widget);
-        char msg[256];
-        sprintf(msg, "FPS: %.2f", uiManager.fps);
-        lwidget->setText(msg);
+        sprintf(msg, "UiTick: %5u\nModelTick: %5u\nFPS: %.2f", uiManager.getUiTick(), modelManager->getModelTick(), uiManager.fps);
+        lwidget->setText(msg); // Removes the extra whitespaces produced by %5u though
     } );
     widgetManager.loadWidget(newLabelWidget);
 }
