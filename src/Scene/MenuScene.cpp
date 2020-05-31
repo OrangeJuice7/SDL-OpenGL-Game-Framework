@@ -22,34 +22,38 @@ void MenuScene::loadWidgets() {
 	const static GLcolorRGB     white = {1.f, 1.f, 1.f};
 	const static GLcolorRGB textColor = {.8f, 1.f, .8f};
 
-	Widget *newWidget;
+	//Widget *newWidget;
 	LabelWidget *newLabelWidget;
 
     // "Go to game" button
-    newWidget = new Widget({40, 20, 240, 20}, GuiRegion::HORZALIGN_LEFT, GuiRegion::VERTALIGN_TOP);
-	newWidget->setClickFunction( []() {
+    newLabelWidget = new LabelWidget({40, 20, 240, 20}, GuiRegion::HORZALIGN_LEFT, GuiRegion::VERTALIGN_TOP);
+	newLabelWidget->setClickFunction( []() {
         MessageHandler::postMessage( new SceneTransitMessage( new GameScene() ) );
     } );
-	newWidget->setDrawFunction( [](const Widget& widget, UiManager& uiManager) {
-        uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
-        if (widget.getSelected()) uiManager.setColorMask(white);
-        else                      uiManager.setColorMask(textColor);
-        widget.renderText(uiManager, 0, 0, "Click here to go to game");
+	newLabelWidget->setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
+    newLabelWidget->setTextAlignment(GuiRegion::HORZALIGN_CENTER, GuiRegion::VERTALIGN_CENTER);
+    newLabelWidget->setText("Click here to go to game");
+	newLabelWidget->setUpdateFunction( [](Widget* widget, const UiManager& uiManager) {
+        LabelWidget *lwidget = dynamic_cast<LabelWidget*>(widget);
+        if (lwidget->getSelected()) lwidget->setTextColor(white);
+        else                        lwidget->setTextColor(textColor);
     } );
-    widgetManager.loadWidget(newWidget);
+    widgetManager.loadWidget(newLabelWidget);
 
     // "Quit" button
-	newWidget = new Widget({40, 60, 60, 40}, GuiRegion::HORZALIGN_LEFT, GuiRegion::VERTALIGN_BOTTOM);
-    newWidget->setClickFunction( []() {
+	newLabelWidget = new LabelWidget({40, 60, 60, 40}, GuiRegion::HORZALIGN_LEFT, GuiRegion::VERTALIGN_BOTTOM);
+    newLabelWidget->setClickFunction( []() {
         MessageHandler::postMessage( new QuitMessage() );
     } );
-    newWidget->setDrawFunction( [](const Widget& widget, UiManager& uiManager) {
-        uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
-        if (widget.getSelected()) uiManager.setColorMask(white);
-        else                      uiManager.setColorMask(textColor);
-        widget.renderText(uiManager, 0, 0, "Quit");
+	newLabelWidget->setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
+    newLabelWidget->setTextAlignment(GuiRegion::HORZALIGN_CENTER, GuiRegion::VERTALIGN_CENTER);
+    newLabelWidget->setText("Quit");
+	newLabelWidget->setUpdateFunction( [](Widget* widget, const UiManager& uiManager) {
+        LabelWidget *lwidget = dynamic_cast<LabelWidget*>(widget);
+        if (lwidget->getSelected()) lwidget->setTextColor(white);
+        else                        lwidget->setTextColor(textColor);
     } );
-    widgetManager.loadWidget(newWidget);
+    widgetManager.loadWidget(newLabelWidget);
 
     // Menu Scene title
     newLabelWidget = new LabelWidget({0, 20, 240, 20}, GuiRegion::HORZALIGN_CENTER, GuiRegion::VERTALIGN_TOP);
@@ -84,7 +88,7 @@ ut aliquip ex ea commodo consequat.");
 
     // Pause display
     newLabelWidget = new LabelWidget({20, 80, 160, 20}, GuiRegion::HORZALIGN_RIGHT, GuiRegion::VERTALIGN_BOTTOM);
-    newLabelWidget->setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
+    newLabelWidget->setFont(FONT_ID_MONOSPACE, FONTSIZE_ID_NORMAL);
     newLabelWidget->setTextAlignment(GuiRegion::HORZALIGN_CENTER, GuiRegion::VERTALIGN_CENTER);
     newLabelWidget->setTextColor(white);
     newLabelWidget->setText("-- PAUSED --");
@@ -92,37 +96,43 @@ ut aliquip ex ea commodo consequat.");
     if (!paused) pauseDisplayWidget->deactivate();
 
     // UiTick display
-    newWidget = new Widget({20, 60, 160, 20}, GuiRegion::HORZALIGN_RIGHT, GuiRegion::VERTALIGN_BOTTOM);
-    newWidget->setDrawFunction( [](const Widget& widget, UiManager& uiManager) {
+    newLabelWidget = new LabelWidget({20, 60, 160, 20}, GuiRegion::HORZALIGN_RIGHT, GuiRegion::VERTALIGN_BOTTOM);
+    newLabelWidget->setFont(FONT_ID_MONOSPACE, FONTSIZE_ID_NORMAL);
+    newLabelWidget->setTextAlignment(GuiRegion::HORZALIGN_RIGHT, GuiRegion::VERTALIGN_BOTTOM);
+    newLabelWidget->setTextColor(textColor);
+	newLabelWidget->setUpdateFunction( [](Widget* widget, const UiManager& uiManager) {
+        LabelWidget *lwidget = dynamic_cast<LabelWidget*>(widget);
         char msg[256];
         sprintf(msg, "UiTick: %u", uiManager.getUiTick());
-        uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
-        uiManager.setColorMask(textColor);
-        widget.renderText(uiManager, 0, 0, msg);
+        lwidget->setText(msg);
     } );
-    widgetManager.loadWidget(newWidget);
+    widgetManager.loadWidget(newLabelWidget);
 
     // ModelTick display
-    newWidget = new Widget({20, 40, 160, 20}, GuiRegion::HORZALIGN_RIGHT, GuiRegion::VERTALIGN_BOTTOM);
-    newWidget->setDrawFunction( [&](const Widget& widget, UiManager& uiManager) {
+    newLabelWidget = new LabelWidget({20, 40, 160, 20}, GuiRegion::HORZALIGN_RIGHT, GuiRegion::VERTALIGN_BOTTOM);
+    newLabelWidget->setFont(FONT_ID_MONOSPACE, FONTSIZE_ID_NORMAL);
+    newLabelWidget->setTextAlignment(GuiRegion::HORZALIGN_RIGHT, GuiRegion::VERTALIGN_BOTTOM);
+    newLabelWidget->setTextColor(textColor);
+	newLabelWidget->setUpdateFunction( [&](Widget* widget, const UiManager& uiManager) {
+        LabelWidget *lwidget = dynamic_cast<LabelWidget*>(widget);
         char msg[256];
         sprintf(msg, "ModelTick: %u", modelManager->getModelTick());
-        uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
-        uiManager.setColorMask(textColor);
-        widget.renderText(uiManager, 0, 0, msg);
+        lwidget->setText(msg);
     } );
-    widgetManager.loadWidget(newWidget);
+    widgetManager.loadWidget(newLabelWidget);
 
     // FPS display
-    newWidget = new Widget({20, 20, 160, 20}, GuiRegion::HORZALIGN_RIGHT, GuiRegion::VERTALIGN_BOTTOM);
-    newWidget->setDrawFunction( [](const Widget& widget, UiManager& uiManager) {
+    newLabelWidget = new LabelWidget({20, 20, 160, 20}, GuiRegion::HORZALIGN_RIGHT, GuiRegion::VERTALIGN_BOTTOM);
+    newLabelWidget->setFont(FONT_ID_MONOSPACE, FONTSIZE_ID_NORMAL);
+    newLabelWidget->setTextAlignment(GuiRegion::HORZALIGN_RIGHT, GuiRegion::VERTALIGN_BOTTOM);
+    newLabelWidget->setTextColor(textColor);
+	newLabelWidget->setUpdateFunction( [](Widget* widget, const UiManager& uiManager) {
+        LabelWidget *lwidget = dynamic_cast<LabelWidget*>(widget);
         char msg[256];
         sprintf(msg, "FPS: %.2f", uiManager.fps);
-        uiManager.setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
-        uiManager.setColorMask(textColor);
-        widget.renderText(uiManager, 0, 0, msg);
+        lwidget->setText(msg);
     } );
-    widgetManager.loadWidget(newWidget);
+    widgetManager.loadWidget(newLabelWidget);
 }
 
 void MenuScene::pause() {

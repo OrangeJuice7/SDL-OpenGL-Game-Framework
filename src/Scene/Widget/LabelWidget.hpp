@@ -22,7 +22,7 @@ class LabelWidget : public Widget {
         VerticalAlignment textVertAlign;
         GLcolorRGB textColor; // Some time in the future: rich text will let this colour change dynamically...?
 
-        void splitRawTextIntoTextLines(UiManager &uiManager);
+        void splitRawTextIntoTextLines(const UiManager &uiManager);
         void renderTextLines(UiManager &uiManager) const;
 
     public:
@@ -37,7 +37,9 @@ class LabelWidget : public Widget {
         void setTextAlignment(HorizontalAlignment textHorzAlign, VerticalAlignment textVertAlign);
         void setTextColor(const GLcolorRGB& color);
 
-        void draw(UiManager &uiManager); // Not const since it may update textStrings if it hasn't been processed yet
+        void update(const SDL_Rect &psRect, const UiManager &uiManager);
+
+        void draw(UiManager &uiManager) const;
 };
 
 #endif // LABEL_WIDGET_HPP

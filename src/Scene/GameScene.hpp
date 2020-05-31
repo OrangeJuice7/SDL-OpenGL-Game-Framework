@@ -2,6 +2,7 @@
 #define GAME_SCENE_HPP
 
 #include "Scene.hpp"
+#include "Widget/LabelWidget.hpp"
 class GameModelManager;
 
 class GameScene : public Scene {
@@ -11,6 +12,7 @@ class GameScene : public Scene {
         float cameraMoveRate; // in pixels per frame, positive
         int moveCameraScreenBorder; // The cursor should be within this number of pixels from the window border in order to move the camera
 
+        LabelWidget *pauseInstructionWidget;
         Widget *pauseDisplayWidget;
 
         void loadWidgets();

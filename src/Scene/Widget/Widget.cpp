@@ -9,15 +9,16 @@ Widget::Widget(
 
 		: GuiRegion(rect, horzAlign, vertAlign) {
 
-    this->active = true;
+    active = true;
 
-    this->clickable = false;
-    this->funcOnClick = [](){};
-    this->funcOnRelease = [](){};
-    this->selected = false;
+    clickable = false;
+    funcOnClick = funcOnRelease = EMPTY_WIDGET_CLICK_FUNC;
+    selected = false;
 
-    this->visible = false;
-    this->drawFunc = [](const Widget&, UiManager&){};
+    updateFunc = EMPTY_WIDGET_UPDATE_FUNC;
+
+    visible = false;
+    drawFunc = EMPTY_WIDGET_DRAW_FUNC;
 }
 Widget::~Widget() {
     for (Widget* child : children) {
@@ -39,17 +40,20 @@ bool Widget::getSelected() const {
     return selected;
 }
 
-void Widget::setClickFunction(std::function<void()> funcOnClick) {
+void Widget::setClickFunction(WidgetClickFunc funcOnClick) {
     setClickFunction(funcOnClick, [](){});
 }
-void Widget::setClickFunction(std::function<void()> funcOnClick, std::function<void()> funcOnRelease) {
+void Widget::setClickFunction(WidgetClickFunc funcOnClick, WidgetClickFunc funcOnRelease) {
     this->funcOnClick = funcOnClick;
     this->funcOnRelease = funcOnRelease;
     enableClick();
 }
-void Widget::setDrawFunction(std::function<void(const Widget&, UiManager&)> drawFunc) {
+void Widget::setDrawFunction(WidgetDrawFunc drawFunc) {
     this->drawFunc = drawFunc;
     enableDraw();
+}
+void Widget::setUpdateFunction(WidgetUpdateFunc updateFunc) {
+    this->updateFunc = updateFunc;
 }
 void Widget::addChild(Widget* widget) {
     children.push_front(widget);
@@ -102,14 +106,16 @@ void Widget::releaseMouse() {
 	funcOnRelease();
 }
 
-void Widget::update(const SDL_Rect &psRect) {
+void Widget::update(const SDL_Rect &psRect, const UiManager &uiManager) {
     if (!active) return;
+
+    updateFunc(this, uiManager);
 
     calcScreenRect(psRect);
 
 	// Update all the children
 	for (Widget* child : children) {
-		child->update(screenRect);
+		child->update(screenRect, uiManager);
 	}
 }
 
@@ -120,7 +126,7 @@ void Widget::renderText(UiManager &uiManager, float x, float y, const char *text
     uiManager.drawText(screenRect.x + x, screenRect.y + y, text);
 }
 
-void Widget::draw(UiManager &uiManager) {
+void Widget::draw(UiManager &uiManager) const {
     if (!active) return;
 
     // Debug display (still shows if Widget is invisible)

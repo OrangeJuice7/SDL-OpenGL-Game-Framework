@@ -38,6 +38,7 @@ void Scene::doTick() {
 
 void Scene::handleKeyDownEvent(SDL_Keycode key) {}
 void Scene::handleKeyUpEvent(SDL_Keycode key) {}
+void Scene::updateFromKeys(const KeyboardState &keyboardState) {}
 
 bool Scene::updateWidgetsFromMouse(const SDL_Rect &screenRect, const MouseState &mouseState) {
     return widgetManager.pickSelectedWidget(mouseState.x, mouseState.y);
@@ -52,7 +53,6 @@ void Scene::updateFromMouse(const SDL_Rect &screenRect, const MouseState &mouseS
 	// Check for Model intercepts
 	updateModelFromMouse(screenRect, mouseState);
 }
-void Scene::updateFromKeys(const KeyboardState &keyboardState) {}
 
 void Scene::handleMouseLDownEvent() {
     // If we have a selectedWidget, just click it and we are done

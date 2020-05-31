@@ -7,11 +7,19 @@
 #include "GuiRegion.hpp"
 class UiManager;
 
+class Widget;
+typedef std::function<void()> WidgetClickFunc;
+typedef std::function<void(Widget*, const UiManager&)> WidgetUpdateFunc; // Pointer to let this function typecast to Widget dervatives and thus access their methods
+typedef std::function<void(const Widget&, UiManager&)> WidgetDrawFunc;
+
+const WidgetClickFunc EMPTY_WIDGET_CLICK_FUNC = [](){};
+const WidgetUpdateFunc EMPTY_WIDGET_UPDATE_FUNC = [](Widget*, const UiManager&){};
+const WidgetDrawFunc EMPTY_WIDGET_DRAW_FUNC = [](const Widget&, UiManager&){};
+
 /**
  *  A Widget is fundamentally a specified section of the screen that (optionally) detects mouse clicks.
  *  Can also be used to align text and such.
  */
-
 class Widget : public GuiRegion {
 	protected:
 		// If a Widget is inactive, then it's neither drawn nor clickable, nor are any of its children active
@@ -19,9 +27,9 @@ class Widget : public GuiRegion {
 
 		bool clickable;
 		// The function that this widget executes on click.
-		std::function<void()> funcOnClick;
+		WidgetClickFunc funcOnClick;
 		// The function that this widget executes on mouse button release.
-		std::function<void()> funcOnRelease;
+		WidgetClickFunc funcOnRelease;
 
 		// Whether this widget can be dragged around on mouse hold
 		// bool draggable;
@@ -29,7 +37,9 @@ class Widget : public GuiRegion {
 		// Whether this Widget is drawn
 		bool visible;
 		// The function that this widget executes on draw
-		std::function<void(const Widget&, UiManager&)> drawFunc;
+		WidgetDrawFunc drawFunc;
+
+		WidgetUpdateFunc updateFunc;
 
 		// Whether this Widget is selected (e.g. if the mouse is over it) (just to help cosmetic purposes)
 		bool selected;
@@ -51,9 +61,10 @@ class Widget : public GuiRegion {
         bool getVisible() const;
         bool getSelected() const;
 
-		void setClickFunction(std::function<void()> funcOnClick); // Setting the click function also enables clicking
-		void setClickFunction(std::function<void()> funcOnClick, std::function<void()> funcOnRelease);
-		void setDrawFunction(std::function<void(const Widget&, UiManager&)> drawFunc); // Also enables drawing
+		void setClickFunction(WidgetClickFunc funcOnClick); // Setting the click function also enables clicking
+		void setClickFunction(WidgetClickFunc funcOnClick, WidgetClickFunc funcOnRelease);
+		void setDrawFunction(WidgetDrawFunc drawFunc); // Also enables drawing
+		void setUpdateFunction(WidgetUpdateFunc updateFunc);
 		void addChild(Widget* widget);
 
         void activate();
@@ -76,8 +87,9 @@ class Widget : public GuiRegion {
         void releaseMouse();
 
 		/**  Update  **/
+		// Mainly updating cached data
 		// psRect: Parent screen rect, also taken from the bottom-left corner
-		void update(const SDL_Rect &psRect);
+		virtual void update(const SDL_Rect &psRect, const UiManager &uiManager);
 
 		/**  Draw  **/
 		// Maybe augment this with a border thickness parameter (for sprites slightly larger than the Widget) in the future
@@ -87,7 +99,7 @@ class Widget : public GuiRegion {
 		// (x,y) denotes the offset from the lower left corner of the widget
 		void renderText(UiManager &uiManager, float x, float y, const char *text) const;
 
-        virtual void draw(UiManager &uiManager);
+        virtual void draw(UiManager &uiManager) const;
 };
 
 #endif // WIDGET_HPP

@@ -39,7 +39,7 @@ void LabelWidget::setTextColor(const GLcolorRGB& color) {
     textColor = color;
 }
 
-void LabelWidget::splitRawTextIntoTextLines(UiManager &uiManager) {
+void LabelWidget::splitRawTextIntoTextLines(const UiManager &uiManager) {
     textLines.clear();
 
     char *rawTextString = new char[rawText.size()+1]; // +1 for terminating null char
@@ -97,7 +97,7 @@ void LabelWidget::splitRawTextIntoTextLines(UiManager &uiManager) {
             } else { // No words to print?
                 if (words.empty()) break; // Yes, we ran out of words for this line
 
-                // Otherwise, it means the next word doesn't fit in the maxLength.
+                // Otherwise, it means the next word doesn't fit in the maxLength (since we have 0 words and adding the next one busts the maxLength)
                 // We will have to fit as much of the word as we can onto this line, then leave the rest for the next line.
                 char* word = words.front();
                 while (word[0] != '\0') { // Condition shouldn't trigger since we've already confirmed that the word is longer than the maxLength
@@ -160,7 +160,24 @@ void LabelWidget::renderTextLines(UiManager &uiManager) const {
     }
 }
 
-void LabelWidget::draw(UiManager &uiManager) { // A modified copypasted version of Widget::draw()
+// update() and draw() are modified copypasted versions of the base class functions
+
+void LabelWidget::update(const SDL_Rect &psRect, const UiManager &uiManager) {
+    if (!active) return;
+
+    updateFunc(this, uiManager);
+
+    calcScreenRect(psRect);
+
+    if (!isTextProcessed) splitRawTextIntoTextLines(uiManager);
+
+	// Update all the children
+	for (Widget* child : children) {
+		child->update(screenRect, uiManager);
+	}
+}
+
+void LabelWidget::draw(UiManager &uiManager) const {
     if (!active) return;
 
     // Debug display (still shows if Widget is invisible)
@@ -172,9 +189,6 @@ void LabelWidget::draw(UiManager &uiManager) { // A modified copypasted version 
 
     if (visible) {
         drawFunc(*this, uiManager);
-
-        // Draw text
-        if (!isTextProcessed) splitRawTextIntoTextLines(uiManager);
         renderTextLines(uiManager);
     }
 
