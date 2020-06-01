@@ -143,6 +143,7 @@ The `ModelManager` is a base class that tracks timing information about the game
 	- Functions: lowerCamelCase
 	- Types (e.g. classes, typedefs, enums): UpperCamelCase
 	- Abbreviations (such as "UI") should be treated as a regular word (e.g. "Ui"). "SDL" and "GL"/"OpenGL" are exceptions.
+- Opening braces (`{`) should be on the same line as the statement that initiates that code block. e.g. `if (...) {`, `for (...) {`.
 - Classes and files:
 	- Classes should have their declaration in header (.hpp) files and implementation in source (.cpp) files.
 		- A header file should have only one main class, but can also have auxiliary classes, typedefs, structs, enums etc.
