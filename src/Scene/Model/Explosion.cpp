@@ -56,8 +56,9 @@ void Explosion::doTick() {
 
 void Explosion::draw(UiManager &uiManager) {
     float a = getLifeFraction();
-    uiManager.setColorMask({1, a, 0});
+    uiManager.setColorMask({1, 1, 1});
     uiManager.setObjectScale(getRadius());
-    uiManager.drawSprite(x, y, SPRITE_ID_CIRCLE);
+    uiManager.setAtlasPhase(false, 1-a, 0);
+    uiManager.drawSprite(x, y, SPRITE_ID_EXPLOSION);
 }
 

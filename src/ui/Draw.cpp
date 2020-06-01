@@ -49,6 +49,10 @@ void UiManager::resetColorMask() {
     shaderProgram.resetColorMask();
 }
 
+void UiManager::setAtlasPhase(bool isLooped, float xPhase, float yPhase) {
+    AtlasSprite::setPhase(isLooped, xPhase, yPhase);
+}
+
 void UiManager::setFont(FontId fontId, FontsizeId fontsizeId) {
     textManager.setActiveFont(fontId, fontsizeId);
 }

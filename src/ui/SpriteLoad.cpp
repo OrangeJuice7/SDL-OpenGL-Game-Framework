@@ -60,6 +60,9 @@ bool SpriteManager::loadData() {
                                  NUM_OF_VERTICES+2, vertices, colors)) return false;
     }
 
+    if (!loadAtlasSprite(SPRITE_ID_ELF, "data/textures/elf_f_idle R.png", 4, 1)) return false;
+    if (!loadAtlasSprite(SPRITE_ID_EXPLOSION, "data/textures/explosion.png", 7, 1)) return false;
+
     {   const int NUM_OF_VERTICES = 60;
         GLvertex2 vertices[NUM_OF_VERTICES];
         GLcolorRGBA colors[NUM_OF_VERTICES];

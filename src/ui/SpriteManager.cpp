@@ -17,6 +17,20 @@ bool SpriteManager::loadTexturedSprite(
     sprites[id] = sprite;
     return true;
 }
+bool SpriteManager::loadAtlasSprite(
+        SpriteId id,
+        const char* filename,
+        unsigned short numOfSpritesX,
+        unsigned short numOfSpritesY) {
+
+    AtlasSprite *sprite = new AtlasSprite();
+    if (!sprite->init(filename, numOfSpritesX, numOfSpritesY)) {
+        printf("Could not load a AtlasSprite! ID: %d\n", id);
+        return false;
+    }
+    sprites[id] = sprite;
+    return true;
+}
 bool SpriteManager::loadGeometricSprite(
         SpriteId id,
         std::function<void()> drawfunc,

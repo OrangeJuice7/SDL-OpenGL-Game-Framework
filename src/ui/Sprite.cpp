@@ -1,6 +1,7 @@
 #include "Sprite.hpp"
 
 #include <cstdio>
+#include <cmath> // for floor() used in AtlasSprite
 
 Sprite::Sprite(std::function<void()> drawfunc) {
     this->drawfunc = drawfunc;
@@ -16,11 +17,11 @@ void Sprite::draw() {
 
 
 
-constexpr GLvertex2 TexturedSprite::vertices[];
-constexpr GLtexcoord TexturedSprite::texcoords[];
-GLuint TexturedSprite::vao = 0;
-GLuint TexturedSprite::vbo = 0;
-GLuint TexturedSprite::tvbo = 0;
+constexpr GLvertex2 TexturedSprite::classVertices[];
+constexpr GLtexcoord TexturedSprite::classTexcoords[];
+GLuint TexturedSprite::classVao = 0;
+GLuint TexturedSprite::classVbo = 0;
+GLuint TexturedSprite::classTvbo = 0;
 
 void texturedSpriteDrawfunc() {
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
@@ -33,9 +34,9 @@ TexturedSprite::~TexturedSprite() {}
 
 bool TexturedSprite::initClass() {
     // Generate buffer objects
-    glGenVertexArrays(1, &vao);
-    glGenBuffers(1, &vbo);
-    glGenBuffers(1, &tvbo);
+    glGenVertexArrays(1, &classVao);
+    glGenBuffers(1, &classVbo);
+    glGenBuffers(1, &classTvbo);
 
     //Check for errors
     GLenum error = glGetError();
@@ -45,20 +46,21 @@ bool TexturedSprite::initClass() {
     }
 
     // Load data into buffers
-    glBindVertexArray(vao);
+    glBindVertexArray(classVao);
 
     // Load vertex data
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, classVbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(classVertices), classVertices, GL_STATIC_DRAW);
     glVertexAttribPointer(VERTEX_ATTRIB_POSITION_LOCATION, 2, GL_FLOAT, GL_FALSE, sizeof(GLvertex2), (void*)0);
     glEnableVertexAttribArray(VERTEX_ATTRIB_POSITION_LOCATION);
 
     // Load texture vertices
-    glBindBuffer(GL_ARRAY_BUFFER, tvbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(texcoords), texcoords, GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, classTvbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(classTexcoords), classTexcoords, GL_STATIC_DRAW);
     glVertexAttribPointer(VERTEX_ATTRIB_TEXCOORDS_LOCATION, 2, GL_FLOAT, GL_FALSE, sizeof(GLvertex2), (void*)0);
     glEnableVertexAttribArray(VERTEX_ATTRIB_TEXCOORDS_LOCATION);
 
+    // Disable colour
     glDisableVertexAttribArray(VERTEX_ATTRIB_COLOUR_LOCATION);
     glVertexAttrib3f(VERTEX_ATTRIB_COLOUR_LOCATION, 1, 1, 1);
 
@@ -79,12 +81,120 @@ bool TexturedSprite::init(const char* filename) {
 }
 
 GLuint TexturedSprite::getVAO() {
-    return vao;
+    return classVao;
 }
 
 void TexturedSprite::draw() {
     texture.bind();
     Sprite::draw();
+}
+
+
+
+bool AtlasSprite::isLooped = true;
+float AtlasSprite::xPhase = 0;
+float AtlasSprite::yPhase = 0;
+AtlasSprite::AtlasSprite()
+        : TexturedSprite() {
+
+    numOfSpritesX = numOfSpritesY = 1;
+}
+AtlasSprite::~AtlasSprite() {
+    delete[] vaos;
+    delete[] tvbos;
+}
+
+bool AtlasSprite::init(const char* filename, unsigned short numOfSpritesX, unsigned short numOfSpritesY) {
+    if (numOfSpritesX < 1 || numOfSpritesY < 1) {
+        return false;
+    }
+    this->numOfSpritesX = numOfSpritesX;
+    this->numOfSpritesY = numOfSpritesY;
+    unsigned short numOfSpritesTotal = numOfSpritesX * numOfSpritesY;
+    GLfloat spriteSizeX = 1.f / numOfSpritesX,
+            spriteSizeY = 1.f / numOfSpritesY;
+
+    if (!TexturedSprite::init(filename)) { // Init the texture
+        return false;
+    }
+
+    // Generate buffer objects
+    vaos = new GLuint[numOfSpritesTotal];
+    tvbos = new GLuint[numOfSpritesTotal];
+    glGenVertexArrays(numOfSpritesTotal, vaos);
+    glGenBuffers(numOfSpritesTotal, tvbos);
+
+    //Check for errors
+    GLenum error = glGetError();
+    if (error != GL_NO_ERROR) {
+        printf("Error generating TexturedSprite buffers: %s\n", glErrorToString(error));
+        return false;
+    }
+
+    for (unsigned short n = 0; n < numOfSpritesTotal; ++n) {
+        unsigned short x = n % numOfSpritesX,
+                       y = n / numOfSpritesX;
+        GLfloat tx =  x    * spriteSizeX,
+                ty =  y    * spriteSizeY,
+                tX = (x+1) * spriteSizeX,
+                tY = (y+1) * spriteSizeY;
+        // Recall TexturedSprite defines the coords in this order: {0,0}, {1,0}, {0,1}, {1,1}
+        GLvertex2 texcoords[] = { {tx,ty}, {tX,ty}, {tx,tY}, {tX,tY} };
+
+        // Load data into buffers
+        glBindVertexArray(vaos[n]);
+
+        // Load vertex data
+        glBindBuffer(GL_ARRAY_BUFFER, classVbo); // reuse TexturedSprite's vertices
+        glBufferData(GL_ARRAY_BUFFER, sizeof(classVertices), classVertices, GL_STATIC_DRAW);
+        glVertexAttribPointer(VERTEX_ATTRIB_POSITION_LOCATION, 2, GL_FLOAT, GL_FALSE, sizeof(GLvertex2), (void*)0);
+        glEnableVertexAttribArray(VERTEX_ATTRIB_POSITION_LOCATION);
+
+        // Load texture vertices
+        glBindBuffer(GL_ARRAY_BUFFER, tvbos[n]);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(texcoords), texcoords, GL_STATIC_DRAW);
+        glVertexAttribPointer(VERTEX_ATTRIB_TEXCOORDS_LOCATION, 2, GL_FLOAT, GL_FALSE, sizeof(GLvertex2), (void*)0);
+        glEnableVertexAttribArray(VERTEX_ATTRIB_TEXCOORDS_LOCATION);
+
+        // Disable colour
+        glDisableVertexAttribArray(VERTEX_ATTRIB_COLOUR_LOCATION);
+        glVertexAttrib3f(VERTEX_ATTRIB_COLOUR_LOCATION, 1, 1, 1);
+    }
+
+    //Check for errors
+    error = glGetError();
+    if (error != GL_NO_ERROR) {
+        printf("Error binding TexturedSprite data to buffers: %s\n", glErrorToString(error));
+        return false;
+    }
+
+    return true;
+}
+
+GLuint AtlasSprite::getVAO() {
+    unsigned short x, y;
+    if (isLooped) {
+        x = (unsigned short)(xPhase * numOfSpritesX + .5f); if (x >= numOfSpritesX) x -= numOfSpritesX;
+        y = (unsigned short)(yPhase * numOfSpritesY + .5f); if (y >= numOfSpritesY) y -= numOfSpritesY;
+    } else {
+        x = (unsigned short)(xPhase * numOfSpritesX);
+        y = (unsigned short)(yPhase * numOfSpritesY);
+    }
+
+    return vaos[y*numOfSpritesX + x];
+}
+
+void AtlasSprite::setPhase(bool isLooped, float xPhase, float yPhase) {
+    AtlasSprite::isLooped = isLooped;
+    if (isLooped) {
+        AtlasSprite::xPhase = xPhase - floor(xPhase);
+        AtlasSprite::yPhase = yPhase - floor(yPhase);
+    } else {
+        if (xPhase > .9999f) xPhase = .9999f; else if (xPhase < .0001f) xPhase = .0001f; // Some tolerance to eliminate float rounding errors in getVAO()
+        if (yPhase > .9999f) yPhase = .9999f; else if (yPhase < .0001f) yPhase = .0001f;
+        AtlasSprite::xPhase = xPhase;
+        AtlasSprite::yPhase = yPhase;
+    }
 }
 
 
@@ -120,8 +230,10 @@ bool GeometricSprite::init(
     glVertexAttribPointer(VERTEX_ATTRIB_POSITION_LOCATION, 2, GL_FLOAT, GL_FALSE, sizeof(GLvertex2), (void*)0);
     glEnableVertexAttribArray(VERTEX_ATTRIB_POSITION_LOCATION);
 
+    // Disable texcoords
     glDisableVertexAttribArray(VERTEX_ATTRIB_TEXCOORDS_LOCATION);
 
+    // Load colours
     glBindBuffer(GL_ARRAY_BUFFER, cvbo);
     glBufferData(GL_ARRAY_BUFFER, numOfVertices*sizeof(GLcolorRGBA), colors, GL_STATIC_DRAW);
     glVertexAttribPointer(VERTEX_ATTRIB_COLOUR_LOCATION, 4, GL_FLOAT, GL_FALSE, sizeof(GLcolorRGBA), (void*)0);

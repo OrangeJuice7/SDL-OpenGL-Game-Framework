@@ -38,7 +38,8 @@ void Mob::doTick() {
 
 void Mob::draw(UiManager &uiManager) {
     float a = getLifeFraction();
-    uiManager.setColorMask({.5f, a, a});
+    uiManager.setColorMask({1, a, a});
     uiManager.setObjectScale(getRadius());
-    uiManager.drawSprite(x, y, SPRITE_ID_CIRCLE);
+    uiManager.setAtlasPhase(true, uiManager.getUiTick() * .02f, 0);
+    uiManager.drawSprite(x, y, SPRITE_ID_ELF);
 }

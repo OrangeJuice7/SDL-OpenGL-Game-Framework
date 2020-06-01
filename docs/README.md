@@ -44,6 +44,8 @@ The following subsections list 3rd party resources used in this project. The lic
 
 #### Textures
 - LearnOpenGL: [crate.jpg](https://learnopengl.com/img/textures/container.jpg), [awesomeface.png](https://learnopengl.com/img/textures/awesomeface.png)
+- [elf_f_idle R.png](https://0x72.itch.io/dungeontileset-ii) (CC-0)
+- [explosion.png](https://opengameart.org/content/iron-plague-explode3bmp) (CC-0)
 
 #### Other Resources
 - [Commissioner font](https://fontesk.com/commissioner-typeface/) (OFL)

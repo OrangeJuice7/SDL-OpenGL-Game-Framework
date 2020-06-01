@@ -98,7 +98,7 @@ class UiManager {
 
         void saveScreenshot(const char* filename);
 
-        // Set draw parameters, defined in Render.cpp
+        // Set draw parameters, defined in Draw.cpp
         // (mainly just passes the info to this object's underlying ShaderProgram)
         void setCamera(const ModelCamera &camera);
         void setObjectTranslate(GLfloat x, GLfloat y);
@@ -111,6 +111,8 @@ class UiManager {
 
         void setColorMask(const GLcolorRGB& color);
         void resetColorMask();
+
+        void setAtlasPhase(bool isLooped, float xPhase, float yPhase);
 
         void setFont(FontId fontId, FontsizeId fontsizeId);
 

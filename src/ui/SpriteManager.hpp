@@ -18,6 +18,11 @@ class SpriteManager {
         bool loadTexturedSprite(
                 SpriteId id,
                 const char* filename);
+        bool loadAtlasSprite(
+                SpriteId id,
+                const char* filename,
+                unsigned short numOfSpritesX,
+                unsigned short numOfSpritesY);
         bool loadGeometricSprite(
                 SpriteId id,
                 std::function<void()> drawfunc,

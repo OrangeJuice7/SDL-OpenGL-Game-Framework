@@ -30,27 +30,57 @@ class Sprite {
 
 class TexturedSprite : public Sprite {
     protected:
-        constexpr static GLvertex2 vertices[] = { {-1,-1}, {1,-1}, {-1,1}, {1,1} };
-        constexpr static GLtexcoord texcoords[] = { {0,0}, {1,0}, {0,1}, {1,1} };
+        constexpr static GLvertex2 classVertices[] = { {-1,-1}, {1,-1}, {-1,1}, {1,1} };
+        constexpr static GLtexcoord classTexcoords[] = { {0,0}, {1,0}, {0,1}, {1,1} };
 
-        static GLuint vao; // vertex array
-        static GLuint vbo; // vertices
-        static GLuint tvbo; // textures
+        static GLuint classVao; // vertex array
+        static GLuint classVbo; // vertices
+        static GLuint classTvbo; // textures
 
         Texture texture;
 
     public:
-        //TexturedSprite(Texture texture);
         TexturedSprite();
-        ~TexturedSprite();
+        virtual ~TexturedSprite();
 
         // Called only after OpenGL has been initialized
         static bool initClass();
-        bool init(const char* filename);
+        virtual bool init(const char* filename);
+
+        virtual GLuint getVAO();
+
+        void draw();
+};
+
+class AtlasSprite : public TexturedSprite { // draws one part of a texture atlas
+    protected:
+         // Arrays now. Convention: y is the big step, x is the small step.
+        GLuint *vaos;
+        GLuint *tvbos;
+
+        // How many sprites fit in each column/row of the texture
+        // Should be >= 1 each
+        unsigned short numOfSpritesX;
+        unsigned short numOfSpritesY;
+
+        // Which sprite in the atlas to draw.
+        // Ranges from 0 to 1, wrapped around.
+        // Defined this way for independence from the actual number of frames in the sprite, and also save some admin calculations from the calling side.
+        // Sadly, have to define the phase out here instead of passing directly to draw(), in order to keep draw() polymorphic
+        static bool isLooped;
+        static float xPhase;
+        static float yPhase;
+
+    public:
+        AtlasSprite();
+        ~AtlasSprite();
+
+        // Doesn't actually override the old init() from TexturedSprite :S (Don't call that!)
+        bool init(const char* filename, unsigned short numOfSpritesX, unsigned short numOfSpritesY);
 
         GLuint getVAO();
 
-        void draw();
+        static void setPhase(bool isLooped, float xPhase, float yPhase);
 };
 
 class GeometricSprite : public Sprite {
