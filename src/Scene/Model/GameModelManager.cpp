@@ -127,7 +127,12 @@ Mob* GameModelManager::spawnMob(const MobData &data, float x, float y) {
     return mobs.addEntity(mob);
 }
 Mob* GameModelManager::spawnPlayerMob(const MobData &data, float x, float y) {
-    return playerMob = spawnMob(data, x, y);
+    playerMob = spawnMob(data, x, y);
+    if (playerMob) {
+        playerMob->addWeapon(genericWeaponData); // id = 0
+        playerMob->addWeapon(explosiveWeaponData); // id = 1
+    }
+    return playerMob;
 }
 Projectile* GameModelManager::spawnProjectile(const ProjectileData &data, float x, float y, float xvel, float yvel) {
     Projectile projectile(data, x, y, xvel, yvel);

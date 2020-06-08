@@ -13,9 +13,8 @@ ExplosionData::ExplosionData(float radius, float maxLife, float maxDamage) {
 
 Explosion::Explosion() : Explosion(genericExplosionData, 0, 0) {}
 Explosion::Explosion(const ExplosionData &data, float x, float y)
-        : ImmovableEntity(x, y, data.maxLife) {
-
-    this->data = &data;
+        : ImmovableEntity(x, y, data.maxLife)
+        , data(&data) {
 
     // Add a one-tick buffer, since all entities are updated by 1 tick before they are allowed to interact with other entities
     ++life;

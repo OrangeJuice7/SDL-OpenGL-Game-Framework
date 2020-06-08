@@ -15,10 +15,8 @@ ProjectileData::ProjectileData(float radius, float maxLife, float mass, float da
 
 Projectile::Projectile() : Projectile(genericProjectileData, 0, 0, 0, 0) {}
 Projectile::Projectile(const ProjectileData &data, float x, float y, float xvel, float yvel)
-        : Entity(x, y, xvel, yvel, data.maxLife) {
-
-    this->data = &data;
-}
+        : Entity(x, y, xvel, yvel, data.maxLife)
+        , data(&data) {}
 
 float Projectile::getRadius() const { return data->radius; }
 float Projectile::getMaxLife() const { return data->maxLife; }

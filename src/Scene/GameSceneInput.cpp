@@ -18,29 +18,14 @@ void GameScene::updateModelFromMouse(const SDL_Rect &screenRect, const MouseStat
     }
 
     // Fire bullets
-    while (true) {
+    while (true) { // Fake loop just to use break statements
         if (paused) break;
 
         Mob* playerMob = getModel()->getPlayerMob();
         if (!playerMob) break;
 
-        // Grab player position and radius
-        float px = playerMob->x,
-              py = playerMob->y;
-        float pr = playerMob->getRadius();
-
-        // Get direction vector of cursor from player
-        float dirX = mouseState.gameX - px,
-              dirY = mouseState.gameY - py;
-
-        // Normalize direction vector
-        float dist = getdist(dirX, dirY);
-        dirX /= dist;
-        dirY /= dist;
-
-        float vel = 1;
-        if (mouseState.isLDown && getModelTick()%10 == 0) getModel()->spawnProjectile(  genericProjectileData, px + dirX*pr, py + dirY*pr, dirX*vel, dirY*vel);
-        if (mouseState.isRDown && getModelTick()%20 == 5) getModel()->spawnProjectile(explosiveProjectileData, px + dirX*pr, py + dirY*pr, dirX*vel, dirY*vel);
+        if (mouseState.isLDown) playerMob->fireAtPositionIfReady(0, *getModel(), mouseState.gameX, mouseState.gameY);
+        if (mouseState.isRDown) playerMob->fireAtPositionIfReady(1, *getModel(), mouseState.gameX, mouseState.gameY);
 
         break;
     }

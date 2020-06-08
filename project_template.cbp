@@ -66,6 +66,8 @@
 		<Unit filename="src/Scene/Model/Particle.hpp" />
 		<Unit filename="src/Scene/Model/Projectile.cpp" />
 		<Unit filename="src/Scene/Model/Projectile.hpp" />
+		<Unit filename="src/Scene/Model/Weapon.cpp" />
+		<Unit filename="src/Scene/Model/Weapon.hpp" />
 		<Unit filename="src/Scene/Scene.cpp" />
 		<Unit filename="src/Scene/Scene.hpp" />
 		<Unit filename="src/Scene/Widget/GuiRegion.cpp" />

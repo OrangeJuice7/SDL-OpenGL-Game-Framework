@@ -25,7 +25,7 @@ class ImmovableEntity {
         void kill();
         virtual void doTick();
 
-        bool isWithinScreen(UiManager &uiManager) const; // currently defunct
+        bool isWithinScreen(UiManager &uiManager) const;
         virtual void draw(UiManager &uiManager);
 };
 

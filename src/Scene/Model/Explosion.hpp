@@ -17,7 +17,7 @@ const ExplosionData genericExplosionData(4, 15, .05f);
 // Explosion does damage to all enemies within it on its initial tick. Everything after that is just for visuals.
 class Explosion : public ImmovableEntity {
     public:
-        const ExplosionData *data;
+        const ExplosionData * const data;
 
         Explosion(); // default constructor
         Explosion(const ExplosionData &data, float x, float y);

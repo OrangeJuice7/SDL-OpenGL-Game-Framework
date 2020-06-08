@@ -1,6 +1,5 @@
 #include "Entity.hpp"
 
-#include <SDL2/SDL.h>
 #include "../../util/math.hpp"
 #include "../../ui/UiManager.hpp"
 

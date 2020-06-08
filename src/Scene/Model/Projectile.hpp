@@ -20,7 +20,7 @@ const ProjectileData explosiveProjectileData(.1f, 30, .1f, 0, &genericExplosionD
 
 class Projectile : public Entity {
     public:
-        const ProjectileData *data;
+        const ProjectileData * const data;
 
         Projectile(); // default constructor
         Projectile(const ProjectileData &data, float x, float y, float xvel, float yvel);
