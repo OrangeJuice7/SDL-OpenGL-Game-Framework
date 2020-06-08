@@ -3,16 +3,19 @@
 
 #include "Entity.hpp"
 #include "Weapon.hpp"
+#include "../../ui/SpriteId.hpp"
 
 struct MobData {
     float radius;
     float maxLife;
     float mass;
 
-    MobData(float radius, float maxLife, float mass);
+    SpriteId spriteId;
+
+    MobData(float radius, float maxLife, float mass, SpriteId spriteId);
 };
-const MobData genericMobData(1, 1, 1);
-const MobData heavyMobData(2, 2, 8);
+const MobData genericMobData(1, 1, 1, SPRITE_ID_ELF);
+const MobData heavyMobData(2, 2, 8, SPRITE_ID_ELF);
 
 
 

@@ -2,15 +2,18 @@
 #define EXPLOSION_HPP
 
 #include "Entity.hpp"
+#include "../../ui/SpriteId.hpp"
 
 struct ExplosionData {
     float radius;
     float maxLife;
     float maxDamage;
 
-    ExplosionData(float radius, float maxLife, float maxDamage);
+    SpriteId spriteId;
+
+    ExplosionData(float radius, float maxLife, float maxDamage, SpriteId spriteId);
 };
-const ExplosionData genericExplosionData(4, 15, .05f);
+const ExplosionData genericExplosionData(4, 15, .05f, SPRITE_ID_EXPLOSION);
 
 
 

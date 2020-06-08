@@ -3,12 +3,14 @@
 #include "../../util/math.hpp"
 #include "../../ui/UiManager.hpp"
 
-ProjectileData::ProjectileData(float radius, float maxLife, float mass, float damage, const ExplosionData* explosionData) {
+ProjectileData::ProjectileData(float radius, float maxLife, float mass, float damage, const ExplosionData* explosionData, SpriteId spriteId) {
     this->radius = radius;
     this->maxLife = maxLife;
     this->mass = mass;
     this->damage = damage;
     this->explosionData = explosionData;
+
+    this->spriteId = spriteId;
 }
 
 
@@ -53,6 +55,6 @@ void Projectile::draw(UiManager &uiManager) {
     float a = getLifeFraction();
     uiManager.setColorMask({1, a, 0});
     uiManager.setObjectScale(getRadius());
-    uiManager.drawSprite(x, y, SPRITE_ID_CIRCLE);
+    uiManager.drawSprite(x, y, data->spriteId);
 }
 

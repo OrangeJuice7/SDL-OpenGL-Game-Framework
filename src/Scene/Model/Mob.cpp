@@ -3,10 +3,12 @@
 #include "../../util/math.hpp"
 #include "../../ui/UiManager.hpp"
 
-MobData::MobData(float radius, float maxLife, float mass) {
+MobData::MobData(float radius, float maxLife, float mass, SpriteId spriteId) {
     this->radius = radius;
     this->maxLife = maxLife;
     this->mass = mass;
+
+    this->spriteId = spriteId;
 }
 
 
@@ -87,5 +89,5 @@ void Mob::draw(UiManager &uiManager) {
     uiManager.setColorMask({1, a, a});
     uiManager.setObjectScale(getRadius());
     uiManager.setAtlasPhase(true, uiManager.getUiTick() * .02f, 0);
-    uiManager.drawSprite(x, y, SPRITE_ID_ELF);
+    uiManager.drawSprite(x, y, data->spriteId);
 }

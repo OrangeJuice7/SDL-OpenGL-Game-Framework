@@ -3,10 +3,12 @@
 #include "../../util/math.hpp"
 #include "../../ui/UiManager.hpp"
 
-ExplosionData::ExplosionData(float radius, float maxLife, float maxDamage) {
+ExplosionData::ExplosionData(float radius, float maxLife, float maxDamage, SpriteId spriteId) {
     this->radius = radius;
     this->maxLife = maxLife;
     this->maxDamage = maxDamage;
+
+    this->spriteId = spriteId;
 }
 
 
@@ -58,6 +60,6 @@ void Explosion::draw(UiManager &uiManager) {
     uiManager.setColorMask({1, 1, 1});
     uiManager.setObjectScale(getRadius());
     uiManager.setAtlasPhase(false, 1-a, 0);
-    uiManager.drawSprite(x, y, SPRITE_ID_EXPLOSION);
+    uiManager.drawSprite(x, y, data->spriteId);
 }
 
