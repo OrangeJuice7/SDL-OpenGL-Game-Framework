@@ -22,6 +22,8 @@ Mob::~Mob() {}
 float Mob::getRadius() const { return data->radius; }
 float Mob::getMaxLife() const { return data->maxLife; }
 float Mob::getMass() const { return data->mass; }
+Weapon* Mob::getWeapon(WeaponManagerWeaponId id) { return weapons.getWeapon(id); }
+const Weapon* Mob::getWeapon(WeaponManagerWeaponId id) const { return weapons.getWeapon(id); }
 
 WeaponManagerWeaponId Mob::addWeapon(const WeaponData &weaponData) {
     return weapons.addWeapon(weaponData);
@@ -56,8 +58,10 @@ void Mob::fireAtEntity(WeaponManagerWeaponId weaponId, GameModelManager &model, 
     fireAtPosition(weaponId, model, target.x, target.y);
 }
 void Mob::leadAndFireAtEntity(WeaponManagerWeaponId weaponId, GameModelManager &model, const Entity& target) {
-    float targetX = target.x,
-          targetY = target.y;
+    Weapon *weapon = weapons.getWeapon(weaponId);
+    if (!weapon) return; // No weapon, abort
+    float projectileSpeed = weapon->data->projectileSpeed;
+    float projectileRadius = weapon->data->projectileData->radius;
 
     // p = projectile
     // e = target's current position
@@ -65,6 +69,14 @@ void Mob::leadAndFireAtEntity(WeaponManagerWeaponId weaponId, GameModelManager &
     // .r = radius
     // Have to solve for the new target position e' when t = (dist(this, e') - this->r, p.r, e.r) / p.speed, and e' = e + t*e.vel
 
+    // Approximation only:
+    // Find the time taken by the projectile to reach the target's current position (i.e. reach its general area)
+    float t = (getdist(target.x - x, target.y - y) - this->getRadius() - target.getRadius() - 2 * projectileRadius) / projectileSpeed;
+    // Find where the target will be after that time has elapsed
+    float targetX = target.x + target.xvel * t,
+          targetY = target.y + target.yvel * t;
+
+    // Fire at that new position
     fireAtPosition(weaponId, model, targetX, targetY);
 }
 

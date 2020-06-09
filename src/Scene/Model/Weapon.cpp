@@ -76,6 +76,15 @@ Weapon* WeaponManager::getWeapon(WeaponManagerWeaponId id) {
     }
     return weapon;
 }
+const Weapon* WeaponManager::getWeapon(WeaponManagerWeaponId id) const {
+    const Weapon* weapon = nullptr;
+    try {
+        weapon = &(weapons.at(id));
+    } catch (const std::out_of_range& oor) {
+        weapon = nullptr;
+    }
+    return weapon;
+}
 
 void WeaponManager::doTick() {
     for (auto it = weapons.begin(); it != weapons.end(); ++it) {

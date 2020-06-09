@@ -21,7 +21,7 @@ GameScene::GameScene()
     loadWidgets();
 
     getModel()->spawnPlayerMob(genericMobData, 0, 0);
-    getModel()->spawnMob(genericMobData, 8, 0);
+    getModel()->spawnMob(genericMobData, 8, 0)->addWeapon(pistolWeaponData);
     getModel()->spawnMob(heavyMobData,-8, 0);
 }
 GameScene::~GameScene() {}

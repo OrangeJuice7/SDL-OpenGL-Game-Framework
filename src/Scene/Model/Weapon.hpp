@@ -9,10 +9,12 @@ struct WeaponData {
     const ProjectileData* projectileData; // nullptr = no projectile fired
     float projectileSpeed; // (On Projectile spawn, anyway) (Can think of how to address the case where the owner can specify the speed)
     float reloadPeriod; // (Minimum) time in between successive shots, in ticks
-    bool hasAutofire;
+    bool hasAutofire; // !! not actually in use
 };
-const WeaponData   genericWeaponData = {&  genericProjectileData, 1.2, .618, true};
-const WeaponData explosiveWeaponData = {&explosiveProjectileData, 0.8, 10, true};
+const WeaponData    genericWeaponData = {&  genericProjectileData, 1.2, 4, true};
+const WeaponData     pistolWeaponData = {&    lightProjectileData, 1.2, 20, true};
+const WeaponData machineGunWeaponData = {&    lightProjectileData, 1.2, .618, true};
+const WeaponData  explosiveWeaponData = {&explosiveProjectileData, 0.8, 10, true};
 
 
 
@@ -53,7 +55,9 @@ class WeaponManager {
 
         WeaponManagerWeaponId addWeapon(const WeaponData &weaponData); // Returns the ID of the new weapon (Note: What to return on failure? Throw exception?)
         bool removeWeapon(WeaponManagerWeaponId id); // Returns true on success
-        Weapon* getWeapon(WeaponManagerWeaponId id); // Will return nullptr if ID does not exist
+        // Will return nullptr if ID does not exist
+        Weapon* getWeapon(WeaponManagerWeaponId id);
+        const Weapon* getWeapon(WeaponManagerWeaponId id) const;
 
         void doTick();
 

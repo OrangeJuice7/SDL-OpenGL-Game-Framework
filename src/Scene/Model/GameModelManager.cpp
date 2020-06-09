@@ -36,7 +36,12 @@ void GameModelManager::updateOneTick() {
         // Respawn a mob somewhere
         const MobData* data = (MobData*)m.data; // Really needs to be replaced once a better Entity system is in
         if (playerMob == nullptr) spawnPlayerMob(*data, 0, 0);
-        else spawnMob(*data, getrand()*16 -8, getrand()*16 -8);
+        else {
+            Mob* mob = spawnMob(*data, getrand()*16 -8, getrand()*16 -8);
+            // Just copy over the weapon at the 0th slot, if it exists
+            const Weapon* weapon = m.getWeapon(0);
+            if (weapon) mob->addWeapon(*(weapon->data));
+        }
     });
     projectiles.doTick();
     explosions.doTick();
