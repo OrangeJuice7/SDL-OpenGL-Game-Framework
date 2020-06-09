@@ -30,9 +30,9 @@ bool Mob::removeWeapon(WeaponManagerWeaponId id) {
     return weapons.removeWeapon(id);
 }
 
-Projectile* Mob::fireAtPositionIfReady(WeaponManagerWeaponId weaponId, GameModelManager &model, float targetX, float targetY) {
+void Mob::fireAtPosition(WeaponManagerWeaponId weaponId, GameModelManager &model, float targetX, float targetY) {
     Weapon *weapon = weapons.getWeapon(weaponId);
-    if (!weapon) return nullptr; // No weapon, abort
+    if (!weapon) return; // No weapon, abort
 
     // Get direction vector of target from this Entity
     float dirX = targetX - x,
@@ -46,16 +46,16 @@ Projectile* Mob::fireAtPositionIfReady(WeaponManagerWeaponId weaponId, GameModel
     float projectileOffset = getRadius() + weapon->data->projectileData->radius;
     float vel = weapon->data->projectileSpeed;
 
-    return weapon->fireIfReady(model,
+    weapon->fireUntilNotReady(model,
         x + dirX * projectileOffset,
         y + dirY * projectileOffset,
         dirX * vel,
         dirY * vel);
 }
-Projectile* Mob::fireAtEntityIfReady(WeaponManagerWeaponId weaponId, GameModelManager &model, const ImmovableEntity& target) {
-    return fireAtPositionIfReady(weaponId, model, target.x, target.y);
+void Mob::fireAtEntity(WeaponManagerWeaponId weaponId, GameModelManager &model, const ImmovableEntity& target) {
+    fireAtPosition(weaponId, model, target.x, target.y);
 }
-Projectile* Mob::leadAndFireAtEntityIfReady(WeaponManagerWeaponId weaponId, GameModelManager &model, const Entity& target) {
+void Mob::leadAndFireAtEntity(WeaponManagerWeaponId weaponId, GameModelManager &model, const Entity& target) {
     float targetX = target.x,
           targetY = target.y;
 
@@ -65,7 +65,7 @@ Projectile* Mob::leadAndFireAtEntityIfReady(WeaponManagerWeaponId weaponId, Game
     // .r = radius
     // Have to solve for the new target position e' when t = (dist(this, e') - this->r, p.r, e.r) / p.speed, and e' = e + t*e.vel
 
-    return fireAtPositionIfReady(weaponId, model, targetX, targetY);
+    fireAtPosition(weaponId, model, targetX, targetY);
 }
 
 void Mob::doTick() {

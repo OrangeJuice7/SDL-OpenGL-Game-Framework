@@ -11,14 +11,11 @@ struct WeaponData {
     float reloadPeriod; // (Minimum) time in between successive shots, in ticks
     bool hasAutofire;
 };
-const WeaponData   genericWeaponData = {&  genericProjectileData, 1.2, 10, true};
-const WeaponData explosiveWeaponData = {&explosiveProjectileData, 0.8, 20, true};
+const WeaponData   genericWeaponData = {&  genericProjectileData, 1.2, .618, true};
+const WeaponData explosiveWeaponData = {&explosiveProjectileData, 0.8, 10, true};
 
 
 
-/**
- *  Usage: Weapons are directly owned and managed by Entity objects.
- */
 class Weapon {
     public:
         const WeaponData * const data;
@@ -31,8 +28,10 @@ class Weapon {
         bool isReadyToFire() const;
 
         // Shoot the weapon
+        // Note: All except fireUntilNotReady() assume the reloadPeriod is at least 1 tick.
         // Note: does not actually use data->projectileSpeed; that's for the owner to reference and control instead
         Projectile* fireIfReady(GameModelManager &model, float x, float y, float xvel, float yvel); // Only fire if ready
+        void fireUntilNotReady(GameModelManager &model, float x, float y, float xvel, float yvel); // Fire until timeout is positive
         Projectile* fire(GameModelManager &model, float x, float y, float xvel, float yvel); // Ignore fire rate restrictions
 
         void doTick();
@@ -43,6 +42,9 @@ class Weapon {
 
 
 
+/**
+ *  Put this WeaponManager in whichever Entity class potentially uses Weapons.
+ */
 typedef unsigned char WeaponManagerWeaponId;
 class WeaponManager {
     public:

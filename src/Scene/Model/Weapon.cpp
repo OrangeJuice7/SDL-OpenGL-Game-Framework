@@ -21,9 +21,20 @@ Projectile* Weapon::fireIfReady(GameModelManager &model, float x, float y, float
     if (isReadyToFire()) return fire(model, x, y, xvel, yvel);
     else return nullptr;
 }
+void Weapon::fireUntilNotReady(GameModelManager &model, float x, float y, float xvel, float yvel) {
+    while (isReadyToFire()) fire(model, x, y, xvel, yvel);
+}
 Projectile* Weapon::fire(GameModelManager &model, float x, float y, float xvel, float yvel) {
+    // Sub-tick correction
+    // Warning: Does not account for other updates within the Projectile, such as life drain
+    float timeCorrection = -timeout;
+    x += xvel * timeCorrection;
+    y += yvel * timeCorrection;
+
+    // Increment the timeout
     timeout += data->reloadPeriod;
 
+    // Spawn the projectile
     return model.spawnProjectile(*(data->projectileData), x, y, xvel, yvel);
 }
 

@@ -16,8 +16,8 @@ struct ProjectileData {
 
     ProjectileData(float radius, float maxLife, float mass, float damage, const ExplosionData* explosionData, SpriteId spriteId);
 };
-const ProjectileData genericProjectileData(.1f, 30, .1f, .2f, nullptr, SPRITE_ID_CIRCLE);
-const ProjectileData explosiveProjectileData(.1f, 30, .1f, 0, &genericExplosionData, SPRITE_ID_CIRCLE);
+const ProjectileData genericProjectileData(.1f, 30, .1f, .08f, nullptr, SPRITE_ID_CIRCLE);
+const ProjectileData explosiveProjectileData(.2f, 36, .4f, 0, &genericExplosionData, SPRITE_ID_CIRCLE);
 
 
 

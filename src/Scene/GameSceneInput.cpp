@@ -24,8 +24,8 @@ void GameScene::updateModelFromMouse(const SDL_Rect &screenRect, const MouseStat
         Mob* playerMob = getModel()->getPlayerMob();
         if (!playerMob) break;
 
-        if (mouseState.isLDown) playerMob->fireAtPositionIfReady(0, *getModel(), mouseState.gameX, mouseState.gameY);
-        if (mouseState.isRDown) playerMob->fireAtPositionIfReady(1, *getModel(), mouseState.gameX, mouseState.gameY);
+        if (mouseState.isLDown) playerMob->fireAtPosition(0, *getModel(), mouseState.gameX, mouseState.gameY);
+        if (mouseState.isRDown) playerMob->fireAtPosition(1, *getModel(), mouseState.gameX, mouseState.gameY);
 
         break;
     }

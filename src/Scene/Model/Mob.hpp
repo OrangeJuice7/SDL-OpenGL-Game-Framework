@@ -34,10 +34,10 @@ class Mob : public Entity {
         WeaponManagerWeaponId addWeapon(const WeaponData &weaponData);
         bool removeWeapon(WeaponManagerWeaponId id);
 
-        // Fire this Mob's Weapon at the specified position, if the Weapon is ready to fire
-        Projectile* fireAtPositionIfReady(WeaponManagerWeaponId weaponId, GameModelManager &model, float targetX, float targetY);
-        Projectile* fireAtEntityIfReady(WeaponManagerWeaponId weaponId, GameModelManager &model, const ImmovableEntity& target);
-        Projectile* leadAndFireAtEntityIfReady(WeaponManagerWeaponId weaponId, GameModelManager &model, const Entity& target); // TODO // Lead the shot i.e. fire where the target is predicted to be
+        // Fire this Mob's Weapon at the specified position (if the Weapon can fire etc.)
+        void fireAtPosition(WeaponManagerWeaponId weaponId, GameModelManager &model, float targetX, float targetY);
+        void fireAtEntity(WeaponManagerWeaponId weaponId, GameModelManager &model, const ImmovableEntity& target);
+        void leadAndFireAtEntity(WeaponManagerWeaponId weaponId, GameModelManager &model, const Entity& target); // TODO // Lead the shot i.e. fire where the target is predicted to be
 
         virtual void doTick();
         virtual void draw(UiManager &uiManager);
