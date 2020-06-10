@@ -1,7 +1,7 @@
 #include "Scene.hpp"
 
 #include "Model/ModelManager.hpp"
-#include "../Ui/UiManager.hpp"
+#include "../ui/UiManager.hpp"
 
 Scene::Scene(ModelManager* modelManager)
         : widgetManager() {
