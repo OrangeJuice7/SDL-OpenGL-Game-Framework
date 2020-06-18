@@ -11,14 +11,16 @@
 class GameModelManager : public ModelManager {
     protected:
         /**  UI  **/
-        Mob *activeMob; // or Mobs, if drag-select is used
+        Mob *activeMob; // (TODO) or Mobs, if drag-select is used
 
         /**  Model  **/
+        // (TODO) Map map;
         EntityManager<Mob> mobs;
         EntityManager<Projectile> projectiles;
         EntityManager<Explosion> explosions;
         EntityManager<Particle> particles;
 
+        // TODO: add players   
         //std::array<Player> players;
         //Player* activePlayer
         Mob *playerMob; // The mob that the player controls
