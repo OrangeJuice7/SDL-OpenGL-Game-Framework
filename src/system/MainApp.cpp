@@ -54,7 +54,7 @@ void MainApp::executeMessages() {
 
 void MainApp::doTick() {
     // Poll for inputs
-    uiManager.getInputs(currScene);
+    uiManager.getInputs(*currScene);
     executeMessages();
 
     // Do model tick
@@ -62,7 +62,7 @@ void MainApp::doTick() {
     executeMessages();
 
     // Draw
-    uiManager.draw(currScene);
+    uiManager.draw(*currScene);
 }
 void MainApp::run() {
     const float TARGET_FRAMETIME = 1.0f / TARGET_FPS; // seconds per frame

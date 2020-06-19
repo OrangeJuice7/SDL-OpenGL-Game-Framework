@@ -79,7 +79,7 @@ class UiManager {
         void sleep(float duration); // in seconds, capped at millisecond precision
 
         // Collect hardware inputs and pass them to scene for interpretation
-        void getInputs(Scene* scene);
+        void getInputs(Scene& scene);
 
         // Converts screen coords to game coords. Primarily used to convert mouse input.
         // Screen coords are in the way OpenGL is specified to draw them (i.e. +x/+y = right/up, origin at lower left corner)
@@ -94,7 +94,7 @@ class UiManager {
         void resizeWindow(int width, int height);
 
         // Draws the scene to screen
-        void draw(Scene* scene);
+        void draw(Scene& scene);
 
         void saveScreenshot(const char* filename);
 

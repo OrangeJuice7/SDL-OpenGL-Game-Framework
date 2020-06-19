@@ -40,7 +40,7 @@ class Scene {
         virtual void handleMouseWheelEvent(Sint32 delta); // positive delta: away from the user
 
         // Draws to the uiManager (called by the uiManager)
-        void draw(UiManager &uiManager);
+        void draw(UiManager &uiManager); // Not const because Widgets need to update cached data
 
         /**  Model  **/
         bool getPaused() const;
