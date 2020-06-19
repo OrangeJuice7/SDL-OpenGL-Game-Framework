@@ -1,6 +1,7 @@
 #ifndef MAP_HPP
 #define MAP_HPP
 
+class GameModelManager;
 class UiManager;
 
 class Map {
@@ -13,6 +14,7 @@ class Map {
 
         // Map borders?
 
+        void doTick(GameModelManager& model);
         void draw(UiManager &uiManager) const;
 
     protected:

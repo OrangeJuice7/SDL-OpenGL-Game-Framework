@@ -30,9 +30,10 @@ Mob* GameModelManager::getPlayerMob() const {
 }
 
 void GameModelManager::updateOneTick() {
-    //spawnParticleExplosion(2, 0, 0, .1f, .2f);
+    // Update the map
+    map.doTick(*this);
 
-    /**  Update the entities individually **/
+    /** Update the entities individually **/
     mobs.doTick(*this, [=](const Mob& m) {
         // Dereference activeMob / playerMob
         if (activeMob == &m) activeMob = nullptr;

@@ -1,5 +1,6 @@
 #include "Map.hpp"
 
+//#include "GameModelManager.hpp"
 #include "../../ui/UiManager.hpp"
 
 Map::Map() {
@@ -14,6 +15,8 @@ float Map::getWindVelX() const {
 float Map::getWindVelY() const {
     return windVelY;
 }
+
+void Map::doTick(GameModelManager& model) {}
 
 void Map::draw(UiManager &uiManager) const {
     uiManager.resetColorMask();
