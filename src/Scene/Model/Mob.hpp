@@ -44,8 +44,8 @@ class Mob : public Entity {
         void fireAtEntity(WeaponManagerWeaponId weaponId, GameModelManager &model, const ImmovableEntity& target);
         void leadAndFireAtEntity(WeaponManagerWeaponId weaponId, GameModelManager &model, const Entity& target); // Lead the shot i.e. fire where the target is predicted to be (approx only)
 
-        virtual void doTick();
-        virtual void draw(UiManager &uiManager);
+        virtual void doTick(GameModelManager& model);
+        virtual void draw(UiManager &uiManager) const;
 
     protected:
         WeaponManager weapons;

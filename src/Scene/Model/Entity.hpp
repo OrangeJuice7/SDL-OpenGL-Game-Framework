@@ -2,6 +2,7 @@
 #define ENTITY_HPP
 
 #include <functional>
+class GameModelManager;
 class UiManager;
 
 class ImmovableEntity {
@@ -23,10 +24,10 @@ class ImmovableEntity {
 
         virtual void takeDamage(float dmg);
         void kill();
-        virtual void doTick();
+        virtual void doTick(GameModelManager& model); // May interact with (i.e. change) the model as well
 
         bool isWithinScreen(UiManager &uiManager) const;
-        virtual void draw(UiManager &uiManager);
+        virtual void draw(UiManager &uiManager) const;
 };
 
 class Entity : public ImmovableEntity {
@@ -41,7 +42,7 @@ class Entity : public ImmovableEntity {
 
         void applyForce(float forceX, float forceY);
         void backtrackToPointOfContact(const ImmovableEntity &e); // Assumes they are already overlapping, otherwise this might "forward-track"
-        virtual void doTick();
+        virtual void doTick(GameModelManager& model);
 };
 
 #endif // ENTITY_HPP

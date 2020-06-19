@@ -1,6 +1,7 @@
 #include "Explosion.hpp"
 
 #include "../../util/math.hpp"
+#include "GameModelManager.hpp"
 #include "../../ui/UiManager.hpp"
 
 ExplosionData::ExplosionData(float radius, float maxLife, float maxDamage, SpriteId spriteId) {
@@ -51,11 +52,11 @@ void Explosion::damageEntity(ImmovableEntity &e) {
     e.takeDamage(getMaxDamage() / (dist / getRadius() + 1));
 }
 
-void Explosion::doTick() {
+void Explosion::doTick(GameModelManager& model) {
     --life;
 }
 
-void Explosion::draw(UiManager &uiManager) {
+void Explosion::draw(UiManager &uiManager) const {
     float a = getLifeFraction();
     uiManager.setColorMask({1, 1, 1});
     uiManager.setObjectScale(getRadius());

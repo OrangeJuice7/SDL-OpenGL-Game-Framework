@@ -1,6 +1,7 @@
 #include "Particle.hpp"
 
 #include "../../util/math.hpp"
+#include "GameModelManager.hpp"
 #include "../../ui/UiManager.hpp"
 
 Particle::Particle() : Particle(0, 0, 0, 0, 1, 1, 1) {}
@@ -16,8 +17,8 @@ float Particle::getRadius() const { return radius; }
 float Particle::getMaxLife() const { return maxLife; }
 float Particle::getMass() const { return mass; }
 
-void Particle::doTick() {
-    Entity::doTick();
+void Particle::doTick(GameModelManager& model) {
+    Entity::doTick(model);
     --life;
 
     // Drag force is proportional to the square of the velocity
@@ -28,16 +29,15 @@ void Particle::doTick() {
 
     // Add wind
     applyForce(
-        (-0.2f - xvel)*.0001f,
-        ( 0.0f - yvel)*.0001f);
+        (model.getWindVelX() - xvel)*.0001f,
+        (model.getWindVelY() - yvel)*.0001f);
 
     // decay
     radius *= .95f;
-    //mass *= .86f;
-    mass *= .95f;
+    mass *= .95f; //.86f;
 }
 
-void Particle::draw(UiManager &uiManager) {
+void Particle::draw(UiManager &uiManager) const {
     float a = getLifeFraction();
     uiManager.setColorMask({1, a, 0});
     uiManager.setObjectScale(getRadius());

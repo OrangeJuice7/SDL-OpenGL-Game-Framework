@@ -11,7 +11,7 @@ struct WeaponData {
     float reloadPeriod; // (Minimum) time in between successive shots, in ticks
     bool hasAutofire; // !! not actually in use
 };
-const WeaponData    genericWeaponData = {&  genericProjectileData, 1.2, 4, true};
+const WeaponData    genericWeaponData = {&  genericProjectileData, 1.2, 3.618, true};
 const WeaponData     pistolWeaponData = {&    lightProjectileData, 1.2, 20, true};
 const WeaponData machineGunWeaponData = {&    lightProjectileData, 1.2, .618, true};
 const WeaponData  explosiveWeaponData = {&explosiveProjectileData, 0.8, 10, true};

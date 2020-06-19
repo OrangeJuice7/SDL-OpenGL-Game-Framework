@@ -39,6 +39,8 @@ bool SpriteManager::loadData() {
             8, vertices, colors)) return false;
     }
 
+    if (!loadTexturedSprite(SPRITE_ID_TILE_GRASS, "data/textures/grass.png")) return false;
+
     if (!loadTexturedSprite(SPRITE_ID_CURSOR, "data/textures/cursor.tga")) return false;
 
     {   const int NUM_OF_VERTICES = 8;

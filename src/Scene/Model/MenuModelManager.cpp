@@ -13,7 +13,7 @@ void MenuModelManager::updateOneTick() {
     //
 }
 
-void MenuModelManager::draw(UiManager &uiManager) {
+void MenuModelManager::draw(UiManager &uiManager) const {
     uiManager.setColorMask({1,1,1});
 
     uiManager.setObjectScale(1 + .8f*sin(modelTick*.01618f +.8f));

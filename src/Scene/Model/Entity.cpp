@@ -39,7 +39,7 @@ void ImmovableEntity::kill() {
     life = -1; // 0 should work, but -1 just to be safe from floating point errors
 }
 
-void ImmovableEntity::doTick() {}
+void ImmovableEntity::doTick(GameModelManager& model) {}
 
 bool ImmovableEntity::isWithinScreen(UiManager &uiManager) const {
     // Bounding box check
@@ -51,8 +51,7 @@ bool ImmovableEntity::isWithinScreen(UiManager &uiManager) const {
     return (bX >= 0 && bx < uiManager.getScreenWidth() &&
             bY >= 0 && by < uiManager.getScreenHeight() );
 }
-void ImmovableEntity::draw(UiManager &uiManager) {
-
+void ImmovableEntity::draw(UiManager &uiManager) const {
     float a = getLifeFraction();
     uiManager.setColorMask({a, 0, a});
     uiManager.setObjectScale(getRadius());
@@ -92,7 +91,7 @@ void Entity::backtrackToPointOfContact(const ImmovableEntity &e) {
     }
 }
 
-void Entity::doTick() {
+void Entity::doTick(GameModelManager& model) {
     x += xvel;
     y += yvel;
 }

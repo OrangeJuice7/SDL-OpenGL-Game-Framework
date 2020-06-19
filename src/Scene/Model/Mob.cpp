@@ -1,6 +1,7 @@
 #include "Mob.hpp"
 
 #include "../../util/math.hpp"
+#include "GameModelManager.hpp"
 #include "../../ui/UiManager.hpp"
 
 MobData::MobData(float radius, float maxLife, float mass, SpriteId spriteId) {
@@ -80,8 +81,8 @@ void Mob::leadAndFireAtEntity(WeaponManagerWeaponId weaponId, GameModelManager &
     fireAtPosition(weaponId, model, targetX, targetY);
 }
 
-void Mob::doTick() {
-    Entity::doTick();
+void Mob::doTick(GameModelManager& model) {
+    Entity::doTick(model);
 
     weapons.doTick();
 
@@ -96,7 +97,7 @@ void Mob::doTick() {
     }
 }
 
-void Mob::draw(UiManager &uiManager) {
+void Mob::draw(UiManager &uiManager) const {
     float a = getLifeFraction();
     uiManager.setColorMask({1, a, a});
     uiManager.setObjectScale(getRadius());

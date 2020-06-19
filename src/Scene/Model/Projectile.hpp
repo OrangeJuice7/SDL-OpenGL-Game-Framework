@@ -38,8 +38,8 @@ class Projectile : public Entity {
         void pushEntity(Entity &e);
         void damageEntity(ImmovableEntity &e);
 
-        virtual void doTick();
-        virtual void draw(UiManager &uiManager);
+        virtual void doTick(GameModelManager& model);
+        virtual void draw(UiManager &uiManager) const;
 };
 
 #endif // PROJECTILE_HPP

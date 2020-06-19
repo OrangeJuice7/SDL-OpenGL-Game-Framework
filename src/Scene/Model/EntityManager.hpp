@@ -4,6 +4,7 @@
 #include <forward_list>
 #include <functional>
 #include "../../util/math.hpp"
+class GameModelManager;
 class UiManager;
 
 template <class TEntity>
@@ -24,8 +25,8 @@ class EntityManager {
         TEntity* addEntity(const TEntity& entity);
         void clearEntities();
 
-        void doTick();
-        void doTick(std::function<void(const TEntity&)> entityDeletedFunc); // Lets the parent dereference any entity it might be pointing to that has been deleted
+        void doTick(GameModelManager& model);
+        void doTick(GameModelManager& model, std::function<void(const TEntity&)> entityDeletedFunc); // Lets the parent dereference any entity it might be pointing to that has been deleted
 
         void checkCollisionsSelf(
                 std::function<void(TEntity&, TEntity&)> collisionFunc );
@@ -37,7 +38,7 @@ class EntityManager {
 
         TEntity* pickEntity(float x, float y);
 
-        void draw(UiManager &uiManager);
+        void draw(UiManager &uiManager) const;
 };
 
 
@@ -61,7 +62,7 @@ void EntityManager<TEntity>::clearEntities() {
 }
 
 template <class TEntity>
-void EntityManager<TEntity>::doTick() {
+void EntityManager<TEntity>::doTick(GameModelManager& model) {
     // Remove dead entities
     entities.remove_if( [](const TEntity& entity) -> bool { return entity.isDead(); } );
 
@@ -70,11 +71,11 @@ void EntityManager<TEntity>::doTick() {
 
     // Update the rest
     for (TEntity &entity : entities) {
-        entity.doTick();
+        entity.doTick(model);
     }
 }
 template <class TEntity>
-void EntityManager<TEntity>::doTick(std::function<void(const TEntity&)> entityDeletedFunc) {
+void EntityManager<TEntity>::doTick(GameModelManager& model, std::function<void(const TEntity&)> entityDeletedFunc) {
     // Remove dead entities
     entities.remove_if( [this, entityDeletedFunc](const TEntity& entity) -> bool {
         if (entity.isDead()) {
@@ -88,7 +89,7 @@ void EntityManager<TEntity>::doTick(std::function<void(const TEntity&)> entityDe
 
     // Update the rest
     for (TEntity &entity : entities) {
-        entity.doTick();
+        entity.doTick(model);
     }
 }
 
@@ -142,8 +143,8 @@ TEntity* EntityManager<TEntity>::pickEntity(float x, float y) {
 }
 
 template <class TEntity>
-void EntityManager<TEntity>::draw(UiManager &uiManager) {
-    for (TEntity &entity : entities) {
+void EntityManager<TEntity>::draw(UiManager &uiManager) const {
+    for (const TEntity &entity : entities) {
         if (entity.isWithinScreen(uiManager))
             entity.draw(uiManager);
     }
