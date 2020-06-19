@@ -35,6 +35,7 @@ class GameModelManager : public ModelManager {
         // Map access
         float getWindVelX() const;
         float getWindVelY() const;
+        float getWindDragCoeff() const;
 
         // Misc. access
         Mob* getActiveMob() const;

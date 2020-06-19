@@ -6,15 +6,13 @@
 Map::Map() {
     windVelX = -0.2f;
     windVelY =  0.0f;
+    windDragCoeff = .0001f;
 }
 Map::~Map() {}
 
-float Map::getWindVelX() const {
-    return windVelX;
-}
-float Map::getWindVelY() const {
-    return windVelY;
-}
+float Map::getWindVelX() const { return windVelX; }
+float Map::getWindVelY() const { return windVelY; }
+float Map::getWindDragCoeff() const { return windDragCoeff; }
 
 void Map::doTick(GameModelManager& model) {}
 

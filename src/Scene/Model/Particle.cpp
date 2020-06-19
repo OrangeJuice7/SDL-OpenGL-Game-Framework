@@ -1,7 +1,6 @@
 #include "Particle.hpp"
 
 #include "../../util/math.hpp"
-#include "GameModelManager.hpp"
 #include "../../ui/UiManager.hpp"
 
 Particle::Particle() : Particle(0, 0, 0, 0, 1, 1, 1) {}
@@ -20,17 +19,6 @@ float Particle::getMass() const { return mass; }
 void Particle::doTick(GameModelManager& model) {
     Entity::doTick(model);
     --life;
-
-    // Drag force is proportional to the square of the velocity
-    // (Other factors for the proportion are cross section, shape and fluid density and viscosity)
-    // But screw that, too much to balance
-    //xvel *= .9f;
-    //yvel *= .9f;
-
-    // Add wind
-    applyForce(
-        (model.getWindVelX() - xvel)*.0001f,
-        (model.getWindVelY() - yvel)*.0001f);
 
     // decay
     radius *= .95f;

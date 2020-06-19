@@ -1,7 +1,6 @@
 #include "Projectile.hpp"
 
 #include "../../util/math.hpp"
-#include "GameModelManager.hpp"
 #include "../../ui/UiManager.hpp"
 
 ProjectileData::ProjectileData(float radius, float maxLife, float mass, float damage, const ExplosionData* explosionData, SpriteId spriteId) {
@@ -39,17 +38,6 @@ void Projectile::damageEntity(ImmovableEntity &e) {
 void Projectile::doTick(GameModelManager& model) {
     Entity::doTick(model);
     --life;
-
-    // Drag force is proportional to the square of the velocity
-    // (Other factors for the proportion are cross section, shape and fluid density and viscosity)
-    // But screw that, too much to balance
-    //xvel *= .9f;
-    //yvel *= .9f;
-
-    // Add wind
-    applyForce(
-        (model.getWindVelX() - xvel)*.0001f,
-        (model.getWindVelY() - yvel)*.0001f);
 }
 
 void Projectile::draw(UiManager &uiManager) const {

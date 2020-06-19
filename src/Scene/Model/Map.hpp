@@ -11,6 +11,7 @@ class Map {
 
         float getWindVelX() const;
         float getWindVelY() const;
+        float getWindDragCoeff() const;
 
         // Map borders?
 
@@ -20,6 +21,7 @@ class Map {
     protected:
         float windVelX,
               windVelY;
+        float windDragCoeff; // This is the coeff in Hooke's law for springs (where the springed quantity is velocity)
 };
 
 #endif // MAP_HPP

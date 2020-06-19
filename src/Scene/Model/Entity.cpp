@@ -1,6 +1,7 @@
 #include "Entity.hpp"
 
 #include "../../util/math.hpp"
+#include "GameModelManager.hpp"
 #include "../../ui/UiManager.hpp"
 
 ImmovableEntity::ImmovableEntity() : ImmovableEntity(0, 0, 1) {}
@@ -94,4 +95,9 @@ void Entity::backtrackToPointOfContact(const ImmovableEntity &e) {
 void Entity::doTick(GameModelManager& model) {
     x += xvel;
     y += yvel;
+
+    // Apply wind
+    applyForce(
+        (model.getWindVelX() - xvel) * model.getWindDragCoeff(),
+        (model.getWindVelY() - yvel) * model.getWindDragCoeff());
 }

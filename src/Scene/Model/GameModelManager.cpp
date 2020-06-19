@@ -21,6 +21,9 @@ float GameModelManager::getWindVelX() const {
 float GameModelManager::getWindVelY() const {
     return map.getWindVelY();
 }
+float GameModelManager::getWindDragCoeff() const {
+    return map.getWindDragCoeff();
+}
 
 Mob* GameModelManager::getActiveMob() const {
     return activeMob;
