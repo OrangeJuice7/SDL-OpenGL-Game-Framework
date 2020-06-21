@@ -62,6 +62,8 @@
 		<Unit filename="src/Scene/Model/MenuModelManager.hpp" />
 		<Unit filename="src/Scene/Model/Mob.cpp" />
 		<Unit filename="src/Scene/Model/Mob.hpp" />
+		<Unit filename="src/Scene/Model/MobAi.cpp" />
+		<Unit filename="src/Scene/Model/MobAi.hpp" />
 		<Unit filename="src/Scene/Model/ModelManager.cpp" />
 		<Unit filename="src/Scene/Model/ModelManager.hpp" />
 		<Unit filename="src/Scene/Model/Particle.cpp" />

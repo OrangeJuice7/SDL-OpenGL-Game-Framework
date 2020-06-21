@@ -140,8 +140,7 @@ void GameModelManager::updateOneTick() {
 }
 
 Mob* GameModelManager::spawnMob(const MobData &data, float x, float y) {
-    Mob mob(data, x, y);
-    return mobs.addEntity(mob);
+    return mobs.addEntity( new Mob(data, x, y) );
 }
 Mob* GameModelManager::spawnPlayerMob(const MobData &data, float x, float y) {
     playerMob = spawnMob(data, x, y);
@@ -152,12 +151,10 @@ Mob* GameModelManager::spawnPlayerMob(const MobData &data, float x, float y) {
     return playerMob;
 }
 Projectile* GameModelManager::spawnProjectile(const ProjectileData &data, float x, float y, float xvel, float yvel) {
-    Projectile projectile(data, x, y, xvel, yvel);
-    return projectiles.addEntity(projectile);
+    return projectiles.addEntity( new Projectile(data, x, y, xvel, yvel) );
 }
 Explosion* GameModelManager::spawnExplosion(const ExplosionData &data, float x, float y) {
-    Explosion explosion(data, x, y);
-    return explosions.addEntity(explosion);
+    return explosions.addEntity(new Explosion(data, x, y) );
 }
 void GameModelManager::spawnParticleExplosion(int numOfParticles, float x, float y, float maxVel, float maxRadius) {
     Particle p(x, y, 0, 0, .2f, 30, 1);
@@ -174,7 +171,7 @@ void GameModelManager::spawnParticleExplosion(int numOfParticles, float x, float
         p.xvel = sin(angle)*vel;
         p.yvel = cos(angle)*vel;
 
-        particles.addEntity(p);
+        particles.addEntity( new Particle(p) );
     }
 }
 

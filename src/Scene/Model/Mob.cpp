@@ -4,7 +4,8 @@
 #include "GameModelManager.hpp"
 #include "../../ui/UiManager.hpp"
 
-MobData::MobData(float radius, float maxLife, float mass, SpriteId spriteId) {
+MobData::MobData(MobAiConstructor aiConstructor, float radius, float maxLife, float mass, SpriteId spriteId) {
+    this->aiConstructor = aiConstructor;
     this->radius = radius;
     this->maxLife = maxLife;
     this->mass = mass;
@@ -17,8 +18,13 @@ MobData::MobData(float radius, float maxLife, float mass, SpriteId spriteId) {
 Mob::Mob() : Mob(genericMobData, 0, 0) {}
 Mob::Mob(const MobData &data, float x, float y)
         : Entity(x, y, 0, 0, data.maxLife)
-        , data(&data) {}
-Mob::~Mob() {}
+        , data(&data) {
+
+    ai = data.aiConstructor(); // May be nullptr
+}
+Mob::~Mob() {
+    delete ai;
+}
 
 float Mob::getRadius() const { return data->radius; }
 float Mob::getMaxLife() const { return data->maxLife; }
@@ -69,10 +75,11 @@ void Mob::leadAndFireAtEntity(WeaponManagerWeaponId weaponId, GameModelManager &
     // t = time till collision
     // .r = radius
     // Have to solve for the new target position e' when t = (dist(this, e') - this->r, p.r, e.r) / p.speed, and e' = e + t*e.vel
+    float targetDist = getdist(target.x - x, target.y - y);
 
     // Approximation only:
     // Find the time taken by the projectile to reach the target's current position (i.e. reach its general area)
-    float t = (getdist(target.x - x, target.y - y) - this->getRadius() - target.getRadius() - 2 * projectileRadius) / projectileSpeed;
+    float t = (targetDist - this->getRadius() - target.getRadius() - 2 * projectileRadius) / projectileSpeed;
     // Find where the target will be after that time has elapsed
     float targetX = target.x + target.xvel * t,
           targetY = target.y + target.yvel * t;
@@ -82,18 +89,27 @@ void Mob::leadAndFireAtEntity(WeaponManagerWeaponId weaponId, GameModelManager &
 }
 
 void Mob::doTick(GameModelManager& model) {
+    // Invoke the AI to make decisions
+    if (ai) ai->act(*this, model);
+
+    // Move the Mob
     Entity::doTick(model);
 
+    // Update the weapon cooldowns
     weapons.doTick();
 
     // Add drag
+    float wantedVelX = 0,
+          wantedVelY = 0;
     float maxVelChange = .1f;
-    float vel = getdist(xvel, yvel);
-    if (vel <= maxVelChange) xvel = yvel = 0;
-    else {
+    float vel = getdist(xvel - wantedVelX, yvel - wantedVelY);
+    if (vel <= maxVelChange) {
+        xvel = wantedVelX;
+        yvel = wantedVelY;
+    } else {
         float mod = (vel - maxVelChange) / vel;
-        xvel *= mod;
-        yvel *= mod;
+        xvel = (xvel - wantedVelX)*mod + wantedVelX;
+        yvel = (yvel - wantedVelY)*mod + wantedVelY;
     }
 }
 
