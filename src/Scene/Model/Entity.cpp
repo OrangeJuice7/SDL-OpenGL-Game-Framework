@@ -65,11 +65,13 @@ Entity::Entity() : Entity(0, 0, 0, 0, 1) {}
 Entity::Entity(float x, float y, float xvel, float yvel, float life)
         : ImmovableEntity(x, y, life) {
 
-    this->xvel = xvel;
-    this->yvel = yvel;
+    this->observedVelX = this->xvel = xvel;
+    this->observedVelY = this->yvel = yvel;
 }
 Entity::~Entity() {}
 
+float Entity::getObservedVelX() const { return observedVelX; }
+float Entity::getObservedVelY() const { return observedVelY; }
 void Entity::applyForce(float forceX, float forceY) {
     xvel += forceX / getMass();
     yvel += forceY / getMass();
@@ -93,8 +95,8 @@ void Entity::backtrackToPointOfContact(const ImmovableEntity &e) {
 }
 
 void Entity::doTick(GameModelManager& model) {
-    x += xvel;
-    y += yvel;
+    x += observedVelX = xvel;
+    y += observedVelY = yvel;
 
     // Apply wind
     applyForce(

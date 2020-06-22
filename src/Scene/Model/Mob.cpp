@@ -80,9 +80,10 @@ void Mob::leadAndFireAtEntity(WeaponManagerWeaponId weaponId, GameModelManager &
     // Approximation only:
     // Find the time taken by the projectile to reach the target's current position (i.e. reach its general area)
     float t = (targetDist - this->getRadius() - target.getRadius() - 2 * projectileRadius) / projectileSpeed;
+    //float t = targetDist / projectileSpeed;
     // Find where the target will be after that time has elapsed
-    float targetX = target.x + target.xvel * t,
-          targetY = target.y + target.yvel * t;
+    float targetX = target.x + target.getObservedVelX() * t,
+          targetY = target.y + target.getObservedVelY() * t;
 
     // Fire at that new position
     fireAtPosition(weaponId, model, targetX, targetY);
