@@ -15,7 +15,7 @@ class EntityManager {
     friend class EntityManager;
 
     protected:
-        std::forward_list<TEntity*> entities;
+        std::forward_list<TEntity*> entities; // There shouldn't be any nullptrs in here
         std::forward_list<TEntity*> toAdd; // Buffer list, to prevent element additions in the middle of iterating thru entities (which will screw up the iterator)
 
     public:
@@ -47,7 +47,9 @@ template <class TEntity>
 EntityManager<TEntity>::EntityManager() {}
 
 template <class TEntity>
-EntityManager<TEntity>::~EntityManager() {}
+EntityManager<TEntity>::~EntityManager() {
+    clearEntities();
+}
 
 template <class TEntity>
 TEntity* EntityManager<TEntity>::addEntity(TEntity* entity) {
@@ -57,7 +59,14 @@ TEntity* EntityManager<TEntity>::addEntity(TEntity* entity) {
 
 template <class TEntity>
 void EntityManager<TEntity>::clearEntities() {
+    for (TEntity *entity : entities) {
+        delete entity;
+    }
     entities.clear();
+
+    for (TEntity *entity : toAdd) {
+        delete entity;
+    }
     toAdd.clear();
 }
 
