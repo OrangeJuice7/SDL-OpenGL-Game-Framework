@@ -67,6 +67,17 @@ void Mob::fireAtEntity(WeaponManagerWeaponId weaponId, GameModelManager &model, 
 void Mob::leadAndFireAtEntity(WeaponManagerWeaponId weaponId, GameModelManager &model, const Entity& target) {
     Weapon *weapon = weapons.getWeapon(weaponId);
     if (!weapon) return; // No weapon, abort
+
+    float targetVelX = target.getObservedVelX(),
+          targetVelY = target.getObservedVelY();
+    float targetSpeed = getdist(targetVelX, targetVelY);
+    if (targetSpeed <= 0) { // If target is stationary, there's no leading to be had. Just deal with it normally and nothing more
+        fireAtEntity(weaponId, model, target);
+        return;
+    }
+    float targetVelDirX = targetVelX / targetSpeed,
+          targetVelDirY = targetVelY / targetSpeed;
+
     float projectileSpeed = weapon->data->projectileSpeed;
     float projectileRadius = weapon->data->projectileData->radius;
 
@@ -74,16 +85,60 @@ void Mob::leadAndFireAtEntity(WeaponManagerWeaponId weaponId, GameModelManager &
     // e = target's current position
     // t = time till collision
     // .r = radius
-    // Have to solve for the new target position e' when t = (dist(this, e') - this->r, p.r, e.r) / p.speed, and e' = e + t*e.vel
-    float targetDist = getdist(target.x - x, target.y - y);
+    // r = distance compensation due to entity radii = this->r + 2*p.r + e.r
+    float r = this->getRadius() + 2*projectileRadius + target.getRadius();
+    // Have to solve for the new target position e' when t = (dist(this, e') - r) / p.speed, and e' = e + t*e.vel
+    // We'll just solve for t, and derive e' from there
 
-    // Approximation only:
-    // Find the time taken by the projectile to reach the target's current position (i.e. reach its general area)
-    float t = (targetDist - this->getRadius() - target.getRadius() - 2 * projectileRadius) / projectileSpeed;
-    //float t = targetDist / projectileSpeed;
-    // Find where the target will be after that time has elapsed
-    float targetX = target.x + target.getObservedVelX() * t,
-          targetY = target.y + target.getObservedVelY() * t;
+    // First, rewrite the coord system so that this mob is at the origin
+    float targetX = target.x - x,
+          targetY = target.y - y;
+    // and +x is pointing in the direction of the target's velocity
+    // (and it doesn't matter which direction +y is, as long as it's orthogonal to +x)
+    {   float tx = targetX,
+              ty = targetY;
+        targetX = targetVelDirX * tx + targetVelDirY * ty; // Project (tx,ty) onto targetVelDir
+        targetY = targetVelDirY * tx - targetVelDirX * ty; // Project (tx,ty) onto something orthonormal to targetVelDir
+    }
+
+    // Find t such that dist(e') - r = t * p.speed
+    // e'.x^2 + e'.y^2 - r = t^2 * p.speed^2
+    // (e.x + t * e.speed)^2 + e.y^2 - r = t^2 * p.speed^2
+    // e.x^2 + 2*e.x*t*e.speed + t^2 * e.speed^2 + e.y^2 - r = t^2 * p.speed^2
+    // Quadratic in t with a = e.speed^2 - p.speed^2, b = 2*e.x*e.speed, c = e.x^2 + e.y^2 - r
+    float t = 0;
+    {   float a = targetSpeed*targetSpeed - projectileSpeed*projectileSpeed;
+        float b = 2 * targetX * targetSpeed;
+        float c = getdist2(targetX, targetY) - r;
+
+        float det = b*b - 4*a*c; // determinant
+
+        if (det > 0) { // quadratic has 2 solutions
+            float sqrtDet = sqrt(det);
+            float two_a = 2*a;
+            // The two solutions
+            float t1 = (-b + sqrtDet) / two_a,
+                  t2 = (-b - sqrtDet) / two_a;
+
+            // Pick the least positive solution (want t to be positive so it's in the future, and low so that they get hit sooner)
+            // Or if both are negative, just default to t = 0
+            if (t1 < 0) {
+                t = (t2 <  0) ?  0 : t2;
+            } else {
+                t = (t2 <  0) ? t1 :
+                    (t2 < t1) ? t2 : t1;
+            }
+        } else if (det < 0) { // quadratic has no solution, so leave t = 0, i.e. just fire at the target's current position
+            t = 0;
+        } else { // det == 0 (almost never): one solution
+            t = -b/(2*a);
+            if (t < 0) t = 0; // Do check that the solution is non-negative
+        }
+    }
+
+    // Find where the target will be after t has elapsed
+    targetX = target.x + targetVelX * t;
+    targetY = target.y + targetVelY * t;
 
     // Fire at that new position
     fireAtPosition(weaponId, model, targetX, targetY);
