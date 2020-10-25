@@ -42,6 +42,7 @@ bool MainApp::init() {
 }
 
 void MainApp::deinit() {
+    printf("Unloading UI...\n");
     uiManager.deinit();
 
     printf("Saving settings...\n");
