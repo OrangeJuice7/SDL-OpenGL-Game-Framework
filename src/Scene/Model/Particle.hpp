@@ -18,8 +18,8 @@ class Particle : public Entity {
         float getMaxLife() const;
         float getMass() const;
 
-        virtual void doTick();
-        virtual void draw(UiManager &uiManager);
+        virtual void doTick(GameModelManager& model);
+        virtual void draw(UiManager &uiManager) const;
 };
 
 #endif // PARTICLE_HPP

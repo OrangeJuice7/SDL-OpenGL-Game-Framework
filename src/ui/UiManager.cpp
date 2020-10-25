@@ -125,13 +125,13 @@ void UiManager::resizeWindow(int width, int height) {
     updateWindowSize(width, height);
 }
 
-void UiManager::draw(Scene* scene) {
+void UiManager::draw(Scene& scene) {
     // Clear color buffer
     glClear(GL_COLOR_BUFFER_BIT);
     //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // Draw the scene
-    scene->draw(*this);
+    scene.draw(*this);
 
     // Draw the cursor
     setDrawToScreenSpace();

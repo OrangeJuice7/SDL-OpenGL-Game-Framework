@@ -56,10 +56,14 @@
 		<Unit filename="src/Scene/Model/Explosion.hpp" />
 		<Unit filename="src/Scene/Model/GameModelManager.cpp" />
 		<Unit filename="src/Scene/Model/GameModelManager.hpp" />
+		<Unit filename="src/Scene/Model/Map.cpp" />
+		<Unit filename="src/Scene/Model/Map.hpp" />
 		<Unit filename="src/Scene/Model/MenuModelManager.cpp" />
 		<Unit filename="src/Scene/Model/MenuModelManager.hpp" />
 		<Unit filename="src/Scene/Model/Mob.cpp" />
 		<Unit filename="src/Scene/Model/Mob.hpp" />
+		<Unit filename="src/Scene/Model/MobAi.cpp" />
+		<Unit filename="src/Scene/Model/MobAi.hpp" />
 		<Unit filename="src/Scene/Model/ModelManager.cpp" />
 		<Unit filename="src/Scene/Model/ModelManager.hpp" />
 		<Unit filename="src/Scene/Model/Particle.cpp" />

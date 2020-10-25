@@ -33,8 +33,8 @@ class Explosion : public ImmovableEntity {
         void pushEntity(Entity &e);
         void damageEntity(ImmovableEntity &e);
 
-        virtual void doTick();
-        virtual void draw(UiManager &uiManager);
+        virtual void doTick(GameModelManager& model);
+        virtual void draw(UiManager &uiManager) const;
 };
 
 #endif // EXPLOSION_HPP

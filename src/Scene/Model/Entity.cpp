@@ -1,6 +1,7 @@
 #include "Entity.hpp"
 
 #include "../../util/math.hpp"
+#include "GameModelManager.hpp"
 #include "../../ui/UiManager.hpp"
 
 ImmovableEntity::ImmovableEntity() : ImmovableEntity(0, 0, 1) {}
@@ -39,7 +40,7 @@ void ImmovableEntity::kill() {
     life = -1; // 0 should work, but -1 just to be safe from floating point errors
 }
 
-void ImmovableEntity::doTick() {}
+void ImmovableEntity::doTick(GameModelManager& model) {}
 
 bool ImmovableEntity::isWithinScreen(UiManager &uiManager) const {
     // Bounding box check
@@ -51,8 +52,7 @@ bool ImmovableEntity::isWithinScreen(UiManager &uiManager) const {
     return (bX >= 0 && bx < uiManager.getScreenWidth() &&
             bY >= 0 && by < uiManager.getScreenHeight() );
 }
-void ImmovableEntity::draw(UiManager &uiManager) {
-
+void ImmovableEntity::draw(UiManager &uiManager) const {
     float a = getLifeFraction();
     uiManager.setColorMask({a, 0, a});
     uiManager.setObjectScale(getRadius());
@@ -65,11 +65,13 @@ Entity::Entity() : Entity(0, 0, 0, 0, 1) {}
 Entity::Entity(float x, float y, float xvel, float yvel, float life)
         : ImmovableEntity(x, y, life) {
 
-    this->xvel = xvel;
-    this->yvel = yvel;
+    this->observedVelX = this->xvel = xvel;
+    this->observedVelY = this->yvel = yvel;
 }
 Entity::~Entity() {}
 
+float Entity::getObservedVelX() const { return observedVelX; }
+float Entity::getObservedVelY() const { return observedVelY; }
 void Entity::applyForce(float forceX, float forceY) {
     xvel += forceX / getMass();
     yvel += forceY / getMass();
@@ -92,7 +94,12 @@ void Entity::backtrackToPointOfContact(const ImmovableEntity &e) {
     }
 }
 
-void Entity::doTick() {
-    x += xvel;
-    y += yvel;
+void Entity::doTick(GameModelManager& model) {
+    x += observedVelX = xvel;
+    y += observedVelY = yvel;
+
+    // Apply wind
+    applyForce(
+        (model.getWindVelX() - xvel) * model.getWindDragCoeff(),
+        (model.getWindVelY() - yvel) * model.getWindDragCoeff());
 }

@@ -30,7 +30,7 @@ class ModelManager {
         virtual void click();
         virtual void releaseMouse();
 
-        virtual void draw(UiManager &uiManager);
+        virtual void draw(UiManager &uiManager) const;
 };
 
 #endif // MODEL_MANAGER_HPP

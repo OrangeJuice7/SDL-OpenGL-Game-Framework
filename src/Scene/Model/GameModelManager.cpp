@@ -6,6 +6,7 @@
 
 GameModelManager::GameModelManager()
         : ModelManager(Settings::initialGameModelScale.get())
+        , map()
         , mobs()
         , particles() {
 
@@ -13,6 +14,16 @@ GameModelManager::GameModelManager()
     playerMob = nullptr;
 }
 GameModelManager::~GameModelManager() {}
+
+float GameModelManager::getWindVelX() const {
+    return map.getWindVelX();
+}
+float GameModelManager::getWindVelY() const {
+    return map.getWindVelY();
+}
+float GameModelManager::getWindDragCoeff() const {
+    return map.getWindDragCoeff();
+}
 
 Mob* GameModelManager::getActiveMob() const {
     return activeMob;
@@ -22,10 +33,11 @@ Mob* GameModelManager::getPlayerMob() const {
 }
 
 void GameModelManager::updateOneTick() {
-    //spawnParticleExplosion(2, 0, 0, .1f, .2f);
+    // Update the map
+    map.doTick(*this);
 
-    /**  Update the entities individually **/
-    mobs.doTick([=](const Mob& m) {
+    /** Update the entities individually **/
+    mobs.doTick(*this, [=](const Mob& m) {
         // Dereference activeMob / playerMob
         if (activeMob == &m) activeMob = nullptr;
         if (playerMob == &m) playerMob = nullptr;
@@ -43,9 +55,9 @@ void GameModelManager::updateOneTick() {
             if (weapon) mob->addWeapon(*(weapon->data));
         }
     });
-    projectiles.doTick();
-    explosions.doTick();
-    particles.doTick();
+    projectiles.doTick(*this);
+    explosions.doTick(*this);
+    particles.doTick(*this);
 
     /** Inter-entity interactions (esp. collision detection and resolution) **/
     // Note: spawn all explosions first, then check interactions with them
@@ -128,8 +140,7 @@ void GameModelManager::updateOneTick() {
 }
 
 Mob* GameModelManager::spawnMob(const MobData &data, float x, float y) {
-    Mob mob(data, x, y);
-    return mobs.addEntity(mob);
+    return mobs.addEntity( new Mob(data, x, y) );
 }
 Mob* GameModelManager::spawnPlayerMob(const MobData &data, float x, float y) {
     playerMob = spawnMob(data, x, y);
@@ -140,12 +151,10 @@ Mob* GameModelManager::spawnPlayerMob(const MobData &data, float x, float y) {
     return playerMob;
 }
 Projectile* GameModelManager::spawnProjectile(const ProjectileData &data, float x, float y, float xvel, float yvel) {
-    Projectile projectile(data, x, y, xvel, yvel);
-    return projectiles.addEntity(projectile);
+    return projectiles.addEntity( new Projectile(data, x, y, xvel, yvel) );
 }
 Explosion* GameModelManager::spawnExplosion(const ExplosionData &data, float x, float y) {
-    Explosion explosion(data, x, y);
-    return explosions.addEntity(explosion);
+    return explosions.addEntity(new Explosion(data, x, y) );
 }
 void GameModelManager::spawnParticleExplosion(int numOfParticles, float x, float y, float maxVel, float maxRadius) {
     Particle p(x, y, 0, 0, .2f, 30, 1);
@@ -162,7 +171,7 @@ void GameModelManager::spawnParticleExplosion(int numOfParticles, float x, float
         p.xvel = sin(angle)*vel;
         p.yvel = cos(angle)*vel;
 
-        particles.addEntity(p);
+        particles.addEntity( new Particle(p) );
     }
 }
 
@@ -173,7 +182,9 @@ void GameModelManager::click() {
     //
 }
 
-void GameModelManager::draw(UiManager &uiManager) {
+void GameModelManager::draw(UiManager &uiManager) const {
+    map.draw(uiManager);
+
     mobs.draw(uiManager);
     projectiles.draw(uiManager);
     explosions.draw(uiManager);

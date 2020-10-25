@@ -5,7 +5,7 @@
 #include "../system/MessageHandler.hpp"
 #include "../system/Message.hpp"
 
-void UiManager::getInputs(Scene* scene) {
+void UiManager::getInputs(Scene& scene) {
     SDL_Event event;
 
     while (SDL_PollEvent(&event) != 0) {
@@ -33,7 +33,7 @@ void UiManager::getInputs(Scene* scene) {
             case SDL_KEYDOWN:
                 {   SDL_Keycode key = event.key.keysym.sym;
                     keyboardState.keys[key] = true;
-                    scene->handleKeyDownEvent(key);
+                    scene.handleKeyDownEvent(key);
 
                     // Toggle fullscreen
                     if (key == SDLK_F1) toggleFullscreen();
@@ -53,7 +53,7 @@ void UiManager::getInputs(Scene* scene) {
             case SDL_KEYUP:
                 {   SDL_Keycode key = event.key.keysym.sym;
                     keyboardState.keys[key] = false;
-                    scene->handleKeyUpEvent(key);
+                    scene.handleKeyUpEvent(key);
                 }
                 break;
 
@@ -65,23 +65,23 @@ void UiManager::getInputs(Scene* scene) {
             case SDL_MOUSEBUTTONDOWN:
                 switch (event.button.button) {
                     default: break; // Ignore other mouse buttons
-                    case SDL_BUTTON_LEFT  : mouseState.isLDown = true; scene->handleMouseLDownEvent(); break;
-                    case SDL_BUTTON_RIGHT : mouseState.isRDown = true; scene->handleMouseRDownEvent(); break;
-                    case SDL_BUTTON_MIDDLE: mouseState.isMDown = true; scene->handleMouseMDownEvent(); break;
+                    case SDL_BUTTON_LEFT  : mouseState.isLDown = true; scene.handleMouseLDownEvent(); break;
+                    case SDL_BUTTON_RIGHT : mouseState.isRDown = true; scene.handleMouseRDownEvent(); break;
+                    case SDL_BUTTON_MIDDLE: mouseState.isMDown = true; scene.handleMouseMDownEvent(); break;
                 }
                 break;
 
             case SDL_MOUSEBUTTONUP:
                 switch (event.button.button) {
                     default: break; // Ignore other mouse buttons
-                    case SDL_BUTTON_LEFT  : mouseState.isLDown = false; scene->handleMouseLUpEvent(); break;
-                    case SDL_BUTTON_RIGHT : mouseState.isRDown = false; scene->handleMouseRUpEvent(); break;
-                    case SDL_BUTTON_MIDDLE: mouseState.isMDown = false; scene->handleMouseMUpEvent(); break;
+                    case SDL_BUTTON_LEFT  : mouseState.isLDown = false; scene.handleMouseLUpEvent(); break;
+                    case SDL_BUTTON_RIGHT : mouseState.isRDown = false; scene.handleMouseRUpEvent(); break;
+                    case SDL_BUTTON_MIDDLE: mouseState.isMDown = false; scene.handleMouseMUpEvent(); break;
                 }
                 break;
 
             case SDL_MOUSEWHEEL:
-                scene->handleMouseWheelEvent(event.wheel.y);
+                scene.handleMouseWheelEvent(event.wheel.y);
                 break;
         }
     }
@@ -89,6 +89,6 @@ void UiManager::getInputs(Scene* scene) {
     // Update the scene with the current input state (called every frame because even if the input state doesn't change, the scene may)
     // Todo: Let the Scene remember its own state, which is triggered based on the input presses?
     screenToGameCoords(mouseState.gameX, mouseState.gameY, mouseState.x, mouseState.y);
-    scene->updateFromMouse(getScreenRect(), mouseState);
-    scene->updateFromKeys(keyboardState);
+    scene.updateFromMouse(getScreenRect(), mouseState);
+    scene.updateFromKeys(keyboardState);
 }

@@ -2,26 +2,30 @@
 #define MOB_HPP
 
 #include "Entity.hpp"
+#include "MobAi.hpp"
 #include "Weapon.hpp"
 #include "../../ui/SpriteId.hpp"
 
 struct MobData {
+    MobAiConstructor aiConstructor;
+    // default Weapons?
     float radius;
     float maxLife;
     float mass;
-    // default Weapons?
 
     SpriteId spriteId;
 
-    MobData(float radius, float maxLife, float mass, SpriteId spriteId);
+    MobData(MobAiConstructor aiConstructor, float radius, float maxLife, float mass, SpriteId spriteId);
 };
-const MobData genericMobData(1, 1, 1, SPRITE_ID_ELF);
-const MobData gunnerMobData(1, 1, 1, SPRITE_ID_ELF);
-const MobData heavyMobData(2, 2, 8, SPRITE_ID_ELF);
+const MobData genericMobData(emptyMobAiConstructor, 1, 1, 1, SPRITE_ID_ELF);
+const MobData gunnerMobData(gunnerMobAiConstructor, 1, 1, 1, SPRITE_ID_ELF);
+const MobData heavyMobData(emptyMobAiConstructor, 2, 2, 8, SPRITE_ID_ELF);
 
 
 
 class Mob : public Entity {
+    friend MobAi; // MobAi can freely access and manipulate Mob data
+
     public:
         const MobData * const data; // Change to `const MobData& data;`?
 
@@ -44,10 +48,11 @@ class Mob : public Entity {
         void fireAtEntity(WeaponManagerWeaponId weaponId, GameModelManager &model, const ImmovableEntity& target);
         void leadAndFireAtEntity(WeaponManagerWeaponId weaponId, GameModelManager &model, const Entity& target); // Lead the shot i.e. fire where the target is predicted to be (approx only)
 
-        virtual void doTick();
-        virtual void draw(UiManager &uiManager);
+        virtual void doTick(GameModelManager& model);
+        virtual void draw(UiManager &uiManager) const;
 
     protected:
+        MobAi* ai; // May be nullptr
         WeaponManager weapons;
 };
 

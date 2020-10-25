@@ -16,28 +16,16 @@ float Particle::getRadius() const { return radius; }
 float Particle::getMaxLife() const { return maxLife; }
 float Particle::getMass() const { return mass; }
 
-void Particle::doTick() {
-    Entity::doTick();
+void Particle::doTick(GameModelManager& model) {
+    Entity::doTick(model);
     --life;
-
-    // Drag force is proportional to the square of the velocity
-    // (Other factors for the proportion are cross section, shape and fluid density and viscosity)
-    // But screw that, too much to balance
-    //xvel *= .9f;
-    //yvel *= .9f;
-
-    // Add wind
-    applyForce(
-        (-0.2f - xvel)*.0001f,
-        ( 0.0f - yvel)*.0001f);
 
     // decay
     radius *= .95f;
-    //mass *= .86f;
-    mass *= .95f;
+    mass *= .95f; //.86f;
 }
 
-void Particle::draw(UiManager &uiManager) {
+void Particle::draw(UiManager &uiManager) const {
     float a = getLifeFraction();
     uiManager.setColorMask({1, a, 0});
     uiManager.setObjectScale(getRadius());

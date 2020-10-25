@@ -23,4 +23,4 @@ void ModelManager::pickSelectedEntity(float x, float y) {}
 void ModelManager::click() {}
 void ModelManager::releaseMouse() {}
 
-void ModelManager::draw(UiManager &uiManager) {}
+void ModelManager::draw(UiManager &uiManager) const {}
