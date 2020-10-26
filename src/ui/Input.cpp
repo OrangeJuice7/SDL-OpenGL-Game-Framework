@@ -2,7 +2,6 @@
 
 #include <cstdio>
 #include "../Scene/Scene.hpp"
-#include "../system/MessageHandler.hpp"
 #include "../system/Message.hpp"
 
 void UiManager::getInputs(Scene& scene) {
@@ -15,7 +14,7 @@ void UiManager::getInputs(Scene& scene) {
                 break;
 
             case SDL_QUIT:
-                MessageHandler::postMessage( new QuitMessage() );
+                publish<QuitMessage>({});
                 break;
 
             case SDL_WINDOWEVENT:

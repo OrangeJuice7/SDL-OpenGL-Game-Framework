@@ -5,9 +5,7 @@
 #include "Model/GameModelManager.hpp"
 #include "Widget/Widget.hpp"
 #include "Widget/LabelWidget.hpp"
-#include "../system/MessageHandler.hpp"
 #include "../system/Message.hpp"
-#include "../system/SceneTransitMessage.hpp"
 #include "../ui/UiManager.hpp"
 #include "MenuScene.hpp"
 
@@ -134,7 +132,7 @@ void GameScene::loadWidgets() {
         // "Quit to Desktop" button
         newLabelWidget = new LabelWidget({0, 60, 160, 30}, GuiRegion::HORZALIGN_CENTER, GuiRegion::VERTALIGN_BOTTOM);
         newLabelWidget->setClickFunction( []() {
-            MessageHandler::postMessage( new QuitMessage() );
+            publish<QuitMessage>({});
         } );
         newLabelWidget->setDrawFunction( [](const Widget& widget, UiManager& uiManager) {
             uiManager.setColorMask(white);
@@ -153,7 +151,7 @@ void GameScene::loadWidgets() {
         // "Quit to Menu" button
         newLabelWidget = new LabelWidget({0, 100, 160, 30}, GuiRegion::HORZALIGN_CENTER, GuiRegion::VERTALIGN_BOTTOM);
         newLabelWidget->setClickFunction( []() {
-            MessageHandler::postMessage( new SceneTransitMessage( new MenuScene() ) );
+            publish<SceneTransitMessage>({ new MenuScene() });
         } );
         newLabelWidget->setDrawFunction( [](const Widget& widget, UiManager& uiManager) {
             uiManager.setColorMask(white);

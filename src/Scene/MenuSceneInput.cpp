@@ -1,8 +1,6 @@
 #include "MenuScene.hpp"
 
-#include "../system/MessageHandler.hpp"
 #include "../system/Message.hpp"
-#include "../system/SceneTransitMessage.hpp"
 #include "GameScene.hpp"
 
 void MenuScene::handleKeyDownEvent(SDL_Keycode key) {
@@ -33,7 +31,7 @@ void MenuScene::handleKeyDownEvent(SDL_Keycode key) {
             break;
 
         case SDLK_q:
-            MessageHandler::postMessage( new SceneTransitMessage( new GameScene() ) );
+            publish<SceneTransitMessage>({ new GameScene() });
             break;
     }
 }

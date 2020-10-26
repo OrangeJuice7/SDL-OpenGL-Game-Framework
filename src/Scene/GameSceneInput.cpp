@@ -3,9 +3,7 @@
 #include "../util/math.hpp"
 #include "Model/GameModelManager.hpp"
 
-#include "../system/MessageHandler.hpp"
 #include "../system/Message.hpp"
-#include "../system/SceneTransitMessage.hpp"
 #include "MenuScene.hpp"
 
 void GameScene::updateModelFromMouse(const SDL_Rect &screenRect, const MouseState &mouseState) {
@@ -84,7 +82,7 @@ void GameScene::handleKeyDownEvent(SDL_Keycode key) {
         //
 
         case SDLK_q:
-            MessageHandler::postMessage( new SceneTransitMessage( new MenuScene() ) );
+            publish<SceneTransitMessage>({ new MenuScene() });
             break;
     }
 }

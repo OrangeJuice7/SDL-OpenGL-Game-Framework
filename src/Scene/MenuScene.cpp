@@ -5,9 +5,7 @@
 #include "Model/MenuModelManager.hpp"
 #include "Widget/Widget.hpp"
 #include "Widget/LabelWidget.hpp"
-#include "../system/MessageHandler.hpp"
 #include "../system/Message.hpp"
-#include "../system/SceneTransitMessage.hpp"
 #include "../ui/UiManager.hpp"
 #include "GameScene.hpp"
 
@@ -28,7 +26,7 @@ void MenuScene::loadWidgets() {
     // "Go to game" button
     newLabelWidget = new LabelWidget({40, 20, 240, 20}, GuiRegion::HORZALIGN_LEFT, GuiRegion::VERTALIGN_TOP);
 	newLabelWidget->setClickFunction( []() {
-        MessageHandler::postMessage( new SceneTransitMessage( new GameScene() ) );
+        publish<SceneTransitMessage>({ new GameScene() });
     } );
 	newLabelWidget->setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
     newLabelWidget->setTextAlignment(GuiRegion::HORZALIGN_CENTER, GuiRegion::VERTALIGN_CENTER);
@@ -43,7 +41,7 @@ void MenuScene::loadWidgets() {
     // "Quit" button
 	newLabelWidget = new LabelWidget({40, 60, 60, 40}, GuiRegion::HORZALIGN_LEFT, GuiRegion::VERTALIGN_BOTTOM);
     newLabelWidget->setClickFunction( []() {
-        MessageHandler::postMessage( new QuitMessage() );
+        publish<QuitMessage>({});
     } );
 	newLabelWidget->setFont(FONT_ID_STANDARD, FONTSIZE_ID_NORMAL);
     newLabelWidget->setTextAlignment(GuiRegion::HORZALIGN_CENTER, GuiRegion::VERTALIGN_CENTER);

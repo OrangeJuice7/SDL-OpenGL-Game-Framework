@@ -14,6 +14,7 @@ MainApp::MainApp()
         , LAG_COMPENSATION_THRESHOLD(1) {
 
     currScene = new MenuScene();
+    nextScene = nullptr;
 
     quitFlag = false;
 }
@@ -35,6 +36,9 @@ bool MainApp::init() {
         return false;
     }
 
+    printf("Subscribing to messages...\n");
+    subToMessages();
+
     initializeTimer.stop();
     printf("Initialized! (%.3f s)\n", initializeTimer.getTime());
 
@@ -49,18 +53,25 @@ void MainApp::deinit() {
     Settings::save();
 }
 
-void MainApp::executeMessages() {
-    MessageHandler::executeMessages(this);
+void MainApp::subToMessages() {
+    subscribe<QuitMessage>("closeMainApp", [&](const QuitMessage& msg) {
+        quit();
+    });
+
+    subscribe<SceneTransitMessage>("MainAppTransitScene", [&](const SceneTransitMessage& msg) {
+        setNextScene(msg.scene);
+    });
 }
 
 void MainApp::doTick() {
     // Poll for inputs
     uiManager.getInputs(*currScene);
-    executeMessages();
+
+    // Transit to the nextScene, if set
+    if (nextScene) transitScene();
 
     // Do model tick
     currScene->doTick();
-    executeMessages();
 
     // Draw
     uiManager.draw(*currScene);
@@ -111,9 +122,11 @@ void MainApp::quit() {
     quitFlag = true;
 }
 
-void MainApp::transitScene(Scene* newScene) {
-    if (newScene == nullptr) return; // Reject transiting to a nullptr Scene
-
+void MainApp::setNextScene(Scene* newScene) {
+    nextScene = newScene;
+}
+void MainApp::transitScene() {
     delete currScene;
-    currScene = newScene;
+    currScene = nextScene;
+    nextScene = nullptr;
 }

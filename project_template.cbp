@@ -84,12 +84,8 @@
 		<Unit filename="src/Scene/Widget/WidgetManager.hpp" />
 		<Unit filename="src/system/MainApp.cpp" />
 		<Unit filename="src/system/MainApp.hpp" />
-		<Unit filename="src/system/Message.cpp" />
 		<Unit filename="src/system/Message.hpp" />
-		<Unit filename="src/system/MessageHandler.cpp" />
-		<Unit filename="src/system/MessageHandler.hpp" />
-		<Unit filename="src/system/SceneTransitMessage.cpp" />
-		<Unit filename="src/system/SceneTransitMessage.hpp" />
+		<Unit filename="src/system/MessageBroker.hpp" />
 		<Unit filename="src/system/Settings.cpp" />
 		<Unit filename="src/system/Settings.hpp" />
 		<Unit filename="src/system/main.cpp" />

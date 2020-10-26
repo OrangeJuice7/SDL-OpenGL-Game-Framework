@@ -1,7 +1,6 @@
 #ifndef MAIN_APP_HPP_INCLUDED
 #define MAIN_APP_HPP_INCLUDED
 
-#include "MessageHandler.hpp"
 #include "../ui/UiManager.hpp"
 class Scene;
 
@@ -9,11 +8,14 @@ class MainApp {
     protected:
         UiManager uiManager;
         Scene *currScene; // should always exist
+        Scene *nextScene; // Next scene to load. Is a buffer so that a new Scene is not loaded in the middle of updating currScene.
 
         bool quitFlag;
 
-        void executeMessages();
+        void subToMessages();
         void doTick();
+        void setNextScene(Scene* newScene);
+        void transitScene();
 
     public:
         const float TARGET_FPS;
@@ -30,7 +32,6 @@ class MainApp {
 
         // Message/misc commands
         void quit();
-        void transitScene(Scene* newScene);
 };
 
 #endif // MAIN_APP_HPP_INCLUDED
