@@ -64,7 +64,7 @@ This section describes how the code base is organized.
 
 The `MainApp` hosts all the other components, and tracks application-wide data such as frames per second (FPS). It contains methods to initialize (`init()`), run (`run()`) and de-initialize (`deinit()`) the whole program. It also contains methods that allow `Message`s to affect its underlying data.
 
-Independent of `MainApp` and indeed the rest of the program are the `MessageHandler` and `Settings`. `MessageHandler` is a singleton class which collects `Message`s posted to it by any part of the main program, and lets a `MainApp` instance clear the `Message`s.
+Independent of `MainApp` and indeed the rest of the program are the `Message` publisher-subscriber system, and the `Settings` system. Any component can publish `Message`s of any type, and subscribe to any type of `Message` by providing a callback function.
 
 `Settings` is another singleton class that is told by `MainApp` on initialization to load values from a settings file (default: `data/settings.ini`). Note that setting names and values are case-sensitive. `Settings` may then be accessed from anywhere else in the program to access these values. On program deinitialization, `MainApp` tells `Settings` to save those same values to the settings file.
 
@@ -79,11 +79,9 @@ When the whole program starts, an instance of `MainApp` is created. `init()` is 
 		1. Keyboard input is interpreted immediately.
 		2. The `WidgetManager` is checked to see if the the mouse triggers any `Widget`s.
 		3. If the mouse did not, the `ModelManager` is checked to see if the the mouse triggers any model events, such as clicking an entity.
-	3. Any input processing may involve posting `Message`s to the `MessageHandler` (although the Model typically does not). After all the input has been processed, `MainApp` clears all the `Message`s from the `MessageHandler`.
-2. Update
-	1. `MainApp` tells `Scene` to update itself by 1 tick. `Scene` may post more `Message`s.
-	2. `MainApp` clears `Message`s.
-3. Draw
+2. If there were any `SceneTransitMessage`s posted, `MainApp` transits to the new `Scene` now.
+3. `MainApp` tells the current `Scene` to update itself by 1 tick.
+4. Draw
 	1. `MainApp` tells `Scene` to draw, passing it a reference to the `UiManager`.
 	2. `Scene` sets up `UiManager` and passes it to the `ModelManager` then `WidgetManager` (so that the `Widget`s are drawn on top of the model). The `WidgetManager` may also read from the model state to determine what to draw (e.g. to print a statistic).
 
