@@ -1,7 +1,7 @@
 #include "Timer.hpp"
 
 TimePoint getCurrentTime() {
-    return std::chrono::system_clock::now();
+    return std::chrono::steady_clock::now();
 }
 
 Timer::Timer() {
@@ -17,7 +17,7 @@ void Timer::stop() {
     stopped = true;
 }
 
-float Timer::getTime() {
+float Timer::getTime() const {
     TimePoint end = stopped ? endTime : getCurrentTime();
     return std::chrono::duration_cast<std::chrono::milliseconds>(end - startTime).count() * .001f;
 }

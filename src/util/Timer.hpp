@@ -2,7 +2,7 @@
 #define TIMER_HPP
 
 #include <chrono>
-typedef std::chrono::system_clock::time_point TimePoint;
+typedef std::chrono::steady_clock::time_point TimePoint;
 
 class Timer {
     protected:
@@ -19,7 +19,7 @@ class Timer {
         // Time in seconds.
         // If timer is still running, return time elapsed since the start
         // Else, return duration between start and end
-        float getTime();
+        float getTime() const;
 };
 
 #endif // TIMER_HPP
