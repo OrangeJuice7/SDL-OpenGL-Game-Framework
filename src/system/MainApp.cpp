@@ -8,16 +8,13 @@
 #include "../util/Timer.hpp"
 
 MainApp::MainApp()
-        : uiManager("[PROJECT TITLE]")
-        , TARGET_FPS(60)
+        : TARGET_FPS(60)
         , FPS_UPDATE_RATE(1)
-        , LAG_COMPENSATION_THRESHOLD(1) {
-
-    currScene = new MenuScene();
-    nextScene = nullptr;
-
-    quitFlag = false;
-}
+        , LAG_COMPENSATION_THRESHOLD(1)
+        , uiManager("[PROJECT TITLE]")
+        , currScene( new MenuScene() )
+        , nextScene(nullptr)
+        , quitFlag(false) {}
 MainApp::~MainApp() {
     delete currScene;
 }

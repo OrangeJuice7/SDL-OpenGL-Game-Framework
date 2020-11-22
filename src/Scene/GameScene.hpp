@@ -6,21 +6,6 @@
 class GameModelManager;
 
 class GameScene : public Scene {
-    protected:
-        /**  UI  **/
-        float cameraScaleFactor; // Should be > 1
-        float cameraMoveRate; // in pixels per frame, positive
-        int moveCameraScreenBorder; // The cursor should be within this number of pixels from the window border in order to move the camera
-
-        LabelWidget *pauseInstructionWidget;
-        Widget *pauseDisplayWidget;
-
-        void loadWidgets();
-
-        GameModelManager* getModel();
-
-        void updateModelFromMouse(const SDL_Rect &screenRect, const MouseState &mouseState);
-
     public:
         GameScene();
         ~GameScene();
@@ -37,6 +22,21 @@ class GameScene : public Scene {
         /**  Model  **/
         virtual void pause();
         virtual void unpause();
+
+    protected:
+        /**  UI  **/
+        float cameraScaleFactor; // Should be > 1
+        float cameraMoveRate; // in pixels per frame, positive
+        int moveCameraScreenBorder; // The cursor should be within this number of pixels from the window border in order to move the camera
+
+        LabelWidget *pauseInstructionWidget;
+        Widget *pauseDisplayWidget;
+
+        void loadWidgets();
+
+        GameModelManager* getModel();
+
+        void updateModelFromMouse(const SDL_Rect &screenRect, const MouseState &mouseState);
 };
 
 #endif // GAME_SCENE_HPP

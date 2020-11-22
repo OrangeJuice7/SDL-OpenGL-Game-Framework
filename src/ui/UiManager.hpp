@@ -12,44 +12,6 @@
 class Scene;
 
 class UiManager {
-    protected:
-        // SDL
-        SDL_Window* mainWindow;
-        bool isFullscreen;
-        SDL_Rect screenRect; // Screen dimensions
-        float screenHalfWidth; // Half-sizes to save some runtime computations
-        float screenHalfHeight;
-
-        // OpenGL
-        SDL_GLContext glContext; // Rendering context
-        ShaderProgram shaderProgram;
-        SpriteManager spriteManager;
-        TextManager textManager;
-
-        // Hardware input states
-        MouseState mouseState;
-        KeyboardState keyboardState;
-
-        // Utility
-        const ModelCamera *camera; // Reference to a ModelCamera in a Scene
-        ModelCamera _dummy_camera; // Exists only to make sure camera is not nullptr
-        bool orthoMode; // ortho = drawing to screen coords instead of game coords
-
-        Uint32 uiTick;
-
-        bool initSDL();
-        bool initOpenGL();
-        bool initWindow(); // requires initSDL()
-
-        void deinitSDL();
-        void deinitOpenGL();
-        void deinitWindow();
-
-        Sprite* getSprite(SpriteId id) const;
-
-        void setScreenRect(int width, int height);
-        void updateWindowSize(int width, int height);
-
     public:
         const char *WINDOW_TITLE;
 
@@ -121,6 +83,44 @@ class UiManager {
         void drawSpriteStretched(float x, float y, float width, float height, SpriteId id);
 
         void drawText(float x, float y, const char* text); // Draws a single unwrapped line
+
+    protected:
+        // SDL
+        SDL_Window* mainWindow;
+        bool isFullscreen;
+        SDL_Rect screenRect; // Screen dimensions
+        float screenHalfWidth; // Half-sizes to save some runtime computations
+        float screenHalfHeight;
+
+        // OpenGL
+        SDL_GLContext glContext; // Rendering context
+        ShaderProgram shaderProgram;
+        SpriteManager spriteManager;
+        TextManager textManager;
+
+        // Hardware input states
+        MouseState mouseState;
+        KeyboardState keyboardState;
+
+        // Utility
+        const ModelCamera *camera; // Reference to a ModelCamera in a Scene
+        ModelCamera _dummy_camera; // Exists only to make sure camera is not nullptr
+        bool orthoMode; // ortho = drawing to screen coords instead of game coords
+
+        Uint32 uiTick;
+
+        bool initSDL();
+        bool initOpenGL();
+        bool initWindow(); // requires initSDL()
+
+        void deinitSDL();
+        void deinitOpenGL();
+        void deinitWindow();
+
+        Sprite* getSprite(SpriteId id) const;
+
+        void setScreenRect(int width, int height);
+        void updateWindowSize(int width, int height);
 };
 
 #endif // UI_MANAGER_HPP

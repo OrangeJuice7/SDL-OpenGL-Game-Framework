@@ -2,10 +2,6 @@
 #define MODEL_CAMERA_HPP
 
 class ModelCamera {
-    protected:
-        float modelScale, initialModelScale; // pixels per game coord
-        float cameraX, cameraY; // position of the center of the camera in game coords
-
     public:
         ModelCamera(float initialModelScale);
         ~ModelCamera();
@@ -17,6 +13,10 @@ class ModelCamera {
         void reset();
         void move(float x, float y); // Move the camera by (x,y)
         void scale(float scale); // Scale the modelScale by a factor of scale
+
+    protected:
+        float modelScale, initialModelScale; // pixels per game coord
+        float cameraX, cameraY; // position of the center of the camera in game coords
 };
 
 #endif // MODEL_CAMERA_HPP

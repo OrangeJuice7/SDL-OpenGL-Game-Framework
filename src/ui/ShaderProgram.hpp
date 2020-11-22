@@ -6,9 +6,6 @@
 
 template <class T>
 class ShaderUniform {
-    protected:
-        int loc; // Location in the shader program
-
     public:
         // Freely viewable and modifiable value
         T value;
@@ -32,6 +29,9 @@ class ShaderUniform {
         // Load uniform into shader
         // Essentially calls the appropriate glUniform function based on T
         virtual void load()=0;
+
+    protected:
+        int loc; // Location in the shader program
 };
 class ShaderUniform1f : public ShaderUniform<GLfloat> {
     public:
@@ -67,23 +67,6 @@ class ShaderUniform1ui : public ShaderUniform<GLuint> {
 const GLuint SHADER_FLAG_RENDER_TEXT = 1 << 0;
 
 class ShaderProgram {
-    protected:
-        GLuint id; // Program ID
-
-        // Shader uniforms
-        ShaderUniform2f coordToScreenScale;
-        ShaderUniform2f objectTranslate;
-        ShaderUniform2f objectScale;
-        ShaderUniform3f colorMask;
-        ShaderUniform1ui flags; // smallest uniform size is uint, sadly
-
-        // Retrieves uniform info (just location for now) from the shader
-        // Returns true on success
-        template <class T>
-        bool loadUniform(
-                ShaderUniform<T>& uniform,
-                const char* name); // Variable name in the shader program
-
     public:
         ShaderProgram();
         virtual ~ShaderProgram();
@@ -122,6 +105,23 @@ class ShaderProgram {
         void addFlags(GLuint flags);
         void removeFlags(GLuint flags);
         void resetFlags();
+
+    protected:
+        GLuint id; // Program ID
+
+        // Shader uniforms
+        ShaderUniform2f coordToScreenScale;
+        ShaderUniform2f objectTranslate;
+        ShaderUniform2f objectScale;
+        ShaderUniform3f colorMask;
+        ShaderUniform1ui flags; // smallest uniform size is uint, sadly
+
+        // Retrieves uniform info (just location for now) from the shader
+        // Returns true on success
+        template <class T>
+        bool loadUniform(
+                ShaderUniform<T>& uniform,
+                const char* name); // Variable name in the shader program
 };
 
 #endif // SHADER_PROGRAM_HPP

@@ -6,6 +6,19 @@
 #include "SpriteId.hpp"
 
 class SpriteManager {
+    public:
+        SpriteManager();
+        ~SpriteManager();
+
+        // Called only after OpenGL has been initialized
+        // Loads and generates all the textures and sprites
+        bool init();
+        void deinit();
+
+        // Gets the sprite specified by the id.
+        // Returns nullptr if id is out of range.
+        Sprite* getSprite(SpriteId id) const;
+
     protected:
         Sprite* sprites[SPRITE_ID_COUNT];
 
@@ -29,19 +42,6 @@ class SpriteManager {
                 GLuint numOfVertices,
                 const GLvertex2* vertices,
                 const GLcolorRGBA* colors);
-
-    public:
-        SpriteManager();
-        ~SpriteManager();
-
-        // Called only after OpenGL has been initialized
-        // Loads and generates all the textures and sprites
-        bool init();
-        void deinit();
-
-        // Gets the sprite specified by the id.
-        // Returns nullptr if id is out of range.
-        Sprite* getSprite(SpriteId id) const;
 };
 
 #endif // SPRITE_MANAGER_HPP

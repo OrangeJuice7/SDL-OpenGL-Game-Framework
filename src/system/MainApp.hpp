@@ -5,18 +5,6 @@
 class Scene;
 
 class MainApp {
-    protected:
-        UiManager uiManager;
-        Scene *currScene; // should always exist
-        Scene *nextScene; // Next scene to load. Is a buffer so that a new Scene is not loaded in the middle of updating currScene.
-
-        bool quitFlag;
-
-        void subToMessages();
-        void doTick();
-        void setNextScene(Scene* newScene);
-        void transitScene();
-
     public:
         const float TARGET_FPS;
         const float FPS_UPDATE_RATE; // in seconds
@@ -32,6 +20,18 @@ class MainApp {
 
         // Message/misc commands
         void quit();
+
+    protected:
+        UiManager uiManager;
+        Scene *currScene; // should always exist
+        Scene *nextScene; // Next scene to load. Is a buffer so that a new Scene is not loaded in the middle of updating currScene.
+
+        bool quitFlag;
+
+        void subToMessages();
+        void doTick();
+        void setNextScene(Scene* newScene);
+        void transitScene();
 };
 
 #endif // MAIN_APP_HPP_INCLUDED

@@ -8,22 +8,21 @@
 #include "../Scene/Scene.hpp"
 
 UiManager::UiManager(const char *windowTitle)
-        : shaderProgram()
+        : WINDOW_TITLE(windowTitle)
+        , fps(0)
+        , mainWindow(nullptr)
+        , isFullscreen(false)
+        , shaderProgram()
         , spriteManager()
         , textManager()
         , mouseState()
         , keyboardState()
+        , camera(&_dummy_camera)
         , _dummy_camera(1)
-        , WINDOW_TITLE(windowTitle) {
+        , orthoMode(false)
+        , uiTick(0) {
 
-    mainWindow = nullptr;
-    camera = &_dummy_camera;
-    orthoMode = false;
-    isFullscreen = false;
     setScreenRect(1, 1);
-
-    uiTick = 0;
-    fps = 0;
 }
 UiManager::~UiManager() {}
 

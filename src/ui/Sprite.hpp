@@ -7,15 +7,6 @@
 #include "Texture.hpp"
 
 class Sprite {
-    protected:
-        /**
-         * Allowed to call:
-         * - glDrawArrays, glDrawElements
-         * - Texture bindings and parameters?
-         * (Future: function accepts a UiManager and is allowed to pass arguments to it? Watch for cyclic/recursive definitions)
-         */
-        std::function<void()> drawfunc;
-
     public:
         Sprite(std::function<void()> drawfunc);
         virtual ~Sprite();
@@ -26,19 +17,18 @@ class Sprite {
 
         // Transformations should be set before calling this function
         virtual void draw();
+
+    protected:
+        /**
+         * Allowed to call:
+         * - glDrawArrays, glDrawElements
+         * - Texture bindings and parameters?
+         * (Future: function accepts a UiManager and is allowed to pass arguments to it? Watch for cyclic/recursive definitions)
+         */
+        std::function<void()> drawfunc;
 };
 
 class TexturedSprite : public Sprite {
-    protected:
-        constexpr static GLvertex2 classVertices[] = { {-1,-1}, {1,-1}, {-1,1}, {1,1} };
-        constexpr static GLtexcoord classTexcoords[] = { {0,0}, {1,0}, {0,1}, {1,1} };
-
-        static GLuint classVao; // vertex array
-        static GLuint classVbo; // vertices
-        static GLuint classTvbo; // textures
-
-        Texture texture;
-
     public:
         TexturedSprite();
         virtual ~TexturedSprite();
@@ -50,9 +40,30 @@ class TexturedSprite : public Sprite {
         virtual GLuint getVAO();
 
         void draw();
+
+    protected:
+        constexpr static GLvertex2 classVertices[] = { {-1,-1}, {1,-1}, {-1,1}, {1,1} };
+        constexpr static GLtexcoord classTexcoords[] = { {0,0}, {1,0}, {0,1}, {1,1} };
+
+        static GLuint classVao; // vertex array
+        static GLuint classVbo; // vertices
+        static GLuint classTvbo; // textures
+
+        Texture texture;
 };
 
 class AtlasSprite : public TexturedSprite { // draws one part of a texture atlas
+    public:
+        AtlasSprite();
+        ~AtlasSprite();
+
+        // Doesn't actually override the old init() from TexturedSprite :S (Don't call that!)
+        bool init(const char* filename, unsigned short numOfSpritesX, unsigned short numOfSpritesY);
+
+        GLuint getVAO();
+
+        static void setPhase(bool isLooped, float xPhase, float yPhase);
+
     protected:
          // Arrays now. Convention: y is the big step, x is the small step.
         GLuint *vaos;
@@ -70,26 +81,9 @@ class AtlasSprite : public TexturedSprite { // draws one part of a texture atlas
         static bool isLooped;
         static float xPhase;
         static float yPhase;
-
-    public:
-        AtlasSprite();
-        ~AtlasSprite();
-
-        // Doesn't actually override the old init() from TexturedSprite :S (Don't call that!)
-        bool init(const char* filename, unsigned short numOfSpritesX, unsigned short numOfSpritesY);
-
-        GLuint getVAO();
-
-        static void setPhase(bool isLooped, float xPhase, float yPhase);
 };
 
 class GeometricSprite : public Sprite {
-    protected:
-        GLuint vao;
-        GLuint vbo;
-        GLuint cvbo; // colours
-        //GLuint ibo;
-
     public:
         // vertices and colors should be arrays
         GeometricSprite(std::function<void()> drawfunc);
@@ -107,6 +101,12 @@ class GeometricSprite : public Sprite {
         GLuint getVAO();
 
         void draw();
+
+    protected:
+        GLuint vao;
+        GLuint vbo;
+        GLuint cvbo; // colours
+        //GLuint ibo;
 };
 
 #endif // SPRITE_HPP

@@ -16,13 +16,6 @@ class GlyphTexture : public Texture {
         bool init(const FT_GlyphSlot &glyph);
 };
 class GlyphSprite : public Sprite {
-    protected:
-        GLuint vao;
-        GLuint vbo;
-        GLuint tvbo;
-
-        GlyphTexture texture; // Should convert this sometime to handle a texture atlas
-
     public:
         GlyphSprite();
         ~GlyphSprite();
@@ -33,6 +26,13 @@ class GlyphSprite : public Sprite {
         GLuint getVAO();
 
         void draw();
+
+    protected:
+        GLuint vao;
+        GLuint vbo;
+        GLuint tvbo;
+
+        GlyphTexture texture; // Should convert this sometime to handle a texture atlas
 };
 struct Glyph { // Rasterized glyph
     GlyphSprite sprite;
@@ -52,15 +52,6 @@ struct Font { // Rasterized, i.e. already has a fixed size
 
 
 class TextManager {
-    protected:
-        Font fonts[FONT_ID_COUNT][FONTSIZE_ID_COUNT];
-        FT_UInt fontsizes[FONTSIZE_ID_COUNT]; // Might possibly become different value sets for different fonts
-
-        FontId activeFontId;
-        FontsizeId activeFontsizeId;
-
-        bool initFont(FT_Library ftlib, FontId fontId, const char *filepath);
-
     public:
         TextManager();
         ~TextManager();
@@ -87,6 +78,15 @@ class TextManager {
         // Returns the amount to advance (in the +x direction) to the next position to print the next char
         GLfloat drawChar(char c);
         // Higher UiManager responsible for positioning each char, setting colour etc. (since the uniforms (particularly translations) are handled over there)
+
+    protected:
+        Font fonts[FONT_ID_COUNT][FONTSIZE_ID_COUNT];
+        FT_UInt fontsizes[FONTSIZE_ID_COUNT]; // Might possibly become different value sets for different fonts
+
+        FontId activeFontId;
+        FontsizeId activeFontsizeId;
+
+        bool initFont(FT_Library ftlib, FontId fontId, const char *filepath);
 };
 
 #endif // TEXT_MANAGER_HPP

@@ -4,12 +4,6 @@
 #include "Scene.hpp"
 
 class MenuScene : public Scene {
-    protected:
-        /**  UI  **/
-        Widget *pauseDisplayWidget;
-
-        void loadWidgets();
-
     public:
         MenuScene();
         ~MenuScene();
@@ -23,6 +17,12 @@ class MenuScene : public Scene {
         /**  Model  **/
         virtual void pause();
         virtual void unpause();
+
+    protected:
+        /**  UI  **/
+        Widget *pauseDisplayWidget;
+
+        void loadWidgets();
 };
 
 #endif // MENU_SCENE_HPP

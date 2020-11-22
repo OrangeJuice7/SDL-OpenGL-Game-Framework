@@ -4,16 +4,6 @@
 #include <GL/glew.h>
 
 class Texture {
-	protected:
-		int width,
-		    height;
-		int numOfChannels;
-		GLenum pixelFormat;
-
-		GLuint id;
-
-		bool initBlank();
-
     public:
 		static Texture blankTexture;
 
@@ -28,6 +18,16 @@ class Texture {
 
         void bind();
         static void unbind();
+
+	protected:
+		int width,
+		    height;
+		int numOfChannels;
+		GLenum pixelFormat;
+
+		GLuint id;
+
+		bool initBlank();
 };
 
 #endif // TEXTURE_HPP_INCLUDED

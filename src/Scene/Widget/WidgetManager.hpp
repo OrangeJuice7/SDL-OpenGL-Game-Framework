@@ -6,10 +6,6 @@ class UiManager;
 class Widget;
 
 class WidgetManager {
-    protected:
-        std::vector<Widget*> widgets;
-        Widget* selectedWidget;
-
     public:
         WidgetManager();
         ~WidgetManager();
@@ -24,6 +20,10 @@ class WidgetManager {
         bool releaseMouse();
 
         void draw(UiManager &uiManager); // Updates cached Widget data as well
+
+    protected:
+        std::vector<Widget*> widgets;
+        Widget* selectedWidget;
 };
 
 #endif // WIDGET_MANAGER_HPP

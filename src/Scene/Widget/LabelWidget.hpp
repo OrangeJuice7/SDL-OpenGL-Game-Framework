@@ -11,20 +11,6 @@
  *  The text is rendered on top of the regular draw function.
  */
 class LabelWidget : public Widget {
-    protected:
-        std::string rawText;
-        std::list<std::string> textLines; // cached list of lines to print, updated on draw()
-        bool isTextProcessed;
-
-        FontId fontId;
-        FontsizeId fontsizeId;
-        HorizontalAlignment textHorzAlign;
-        VerticalAlignment textVertAlign;
-        GLcolorRGB textColor; // Some time in the future: rich text will let this colour change dynamically...?
-
-        void splitRawTextIntoTextLines(const UiManager &uiManager);
-        void renderTextLines(UiManager &uiManager) const;
-
     public:
         LabelWidget(
             const SDL_Rect& rect,
@@ -40,6 +26,20 @@ class LabelWidget : public Widget {
         void update(const SDL_Rect &psRect, const UiManager &uiManager);
 
         void draw(UiManager &uiManager) const;
+
+    protected:
+        std::string rawText;
+        std::list<std::string> textLines; // cached list of lines to print, updated on draw()
+        bool isTextProcessed;
+
+        FontId fontId;
+        FontsizeId fontsizeId;
+        HorizontalAlignment textHorzAlign;
+        VerticalAlignment textVertAlign;
+        GLcolorRGB textColor; // Some time in the future: rich text will let this colour change dynamically...?
+
+        void splitRawTextIntoTextLines(const UiManager &uiManager);
+        void renderTextLines(UiManager &uiManager) const;
 };
 
 #endif // LABEL_WIDGET_HPP

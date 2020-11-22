@@ -21,12 +21,6 @@ class SettingBase {
 
 template<typename T>
 class Setting : public SettingBase {
-    protected:
-        T value;
-        std::function<bool(const T&)> isValid;
-        std::function<T(const std::string&)> parseFromString;
-        std::function<std::string(const T&)> convertToString;
-
     public:
         // Even if the specified default value that fails the validity predicate, it will still be used.
         // Maybe useful for const/readonly Settings?
@@ -64,6 +58,12 @@ class Setting : public SettingBase {
         std::string getValueAsString() {
             return convertToString(value);
         }
+
+    protected:
+        T value;
+        std::function<bool(const T&)> isValid;
+        std::function<T(const std::string&)> parseFromString;
+        std::function<std::string(const T&)> convertToString;
 };
 
 class BoolSetting : public Setting<bool> {
@@ -93,21 +93,6 @@ struct STRING_COMPARATOR {
     }
 };
 class Settings {
-    private:
-        // Singleton
-        static Settings* instance;
-
-        // List of settings for easy lookup when reading from file
-        // (The explicit settings are still kept separate for easy access and compile-time checking within the program)
-        // The second template param is supposed to be a pointer to a Setting, just that Settings need a type to be instantiated first
-        std::map<std::string, SettingBase*, STRING_COMPARATOR> settingsLookup;
-
-        template<typename T>
-        void addSettingToLookup(Setting<T>& setting);
-
-        Settings();
-        ~Settings();
-
     public:
         // Place Setting members here
         // Remember to init them and add them to the map in the constructor too!
@@ -124,6 +109,21 @@ class Settings {
         // Returns true iff all settings could be saved successfully
         static void save(); // Saves settings to the default filepath
         static void saveToFile(const char* filepath);
+
+    private:
+        // Singleton
+        static Settings* instance;
+
+        // List of settings for easy lookup when reading from file
+        // (The explicit settings are still kept separate for easy access and compile-time checking within the program)
+        // The second template param is supposed to be a pointer to a Setting, just that Settings need a type to be instantiated first
+        std::map<std::string, SettingBase*, STRING_COMPARATOR> settingsLookup;
+
+        template<typename T>
+        void addSettingToLookup(Setting<T>& setting);
+
+        Settings();
+        ~Settings();
 };
 
 #endif // SETTINGS_HPP

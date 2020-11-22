@@ -9,16 +9,6 @@ class UiManager;
 class ModelManager;
 
 class Scene {
-    protected:
-        WidgetManager widgetManager;
-        ModelManager* modelManager;
-
-        bool paused;
-
-        // Returns true if the Widgets intercept the mouse (and thus control should not be passed to the model stage)
-        virtual bool updateWidgetsFromMouse(const SDL_Rect &screenRect, const MouseState &mouseState);
-        virtual void updateModelFromMouse(const SDL_Rect &screenRect, const MouseState &mouseState);
-
     public:
         // modelManager should be a new ModelManager, created when constructing Scene's derived class
         Scene(ModelManager* modelManager);
@@ -49,6 +39,16 @@ class Scene {
 
         virtual void pause();
         virtual void unpause();
+
+    protected:
+        WidgetManager widgetManager;
+        ModelManager* modelManager;
+
+        bool paused;
+
+        // Returns true if the Widgets intercept the mouse (and thus control should not be passed to the model stage)
+        virtual bool updateWidgetsFromMouse(const SDL_Rect &screenRect, const MouseState &mouseState);
+        virtual void updateModelFromMouse(const SDL_Rect &screenRect, const MouseState &mouseState);
 };
 
 #endif // SCENE_HPP

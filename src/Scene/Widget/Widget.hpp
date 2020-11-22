@@ -21,34 +21,6 @@ const WidgetDrawFunc EMPTY_WIDGET_DRAW_FUNC = [](const Widget&, UiManager&){};
  *  Can also be used to align text and such.
  */
 class Widget : public GuiRegion {
-	protected:
-		// If a Widget is inactive, then it's neither drawn nor clickable, nor are any of its children active
-		bool active;
-
-		bool clickable;
-		// The function that this widget executes on click.
-		WidgetClickFunc funcOnClick;
-		// The function that this widget executes on mouse button release.
-		WidgetClickFunc funcOnRelease;
-
-		// Whether this widget can be dragged around on mouse hold
-		// bool draggable;
-
-		// Whether this Widget is drawn
-		bool visible;
-		// The function that this widget executes on draw
-		WidgetDrawFunc drawFunc;
-
-		WidgetUpdateFunc updateFunc;
-
-		// Whether this Widget is selected (e.g. if the mouse is over it) (just to help cosmetic purposes)
-		bool selected;
-
-		// Child widgets
-		// Note: Child widgets should lie fully within the bounds of their parents. Otherwise, they should be separate widgets.
-		// Note: Children are only destroyed when the parents are; no way to delete them individually yet
-		std::forward_list<Widget*> children;
-
     public:
         Widget(
 			const SDL_Rect& rect,
@@ -100,6 +72,34 @@ class Widget : public GuiRegion {
 		void renderText(UiManager &uiManager, float x, float y, const char *text) const;
 
         virtual void draw(UiManager &uiManager) const;
+
+	protected:
+		// If a Widget is inactive, then it's neither drawn nor clickable, nor are any of its children active
+		bool active;
+
+		bool clickable;
+		// The function that this widget executes on click.
+		WidgetClickFunc funcOnClick;
+		// The function that this widget executes on mouse button release.
+		WidgetClickFunc funcOnRelease;
+
+		// Whether this widget can be dragged around on mouse hold
+		// bool draggable;
+
+		// Whether this Widget is drawn
+		bool visible;
+		// The function that this widget executes on draw
+		WidgetDrawFunc drawFunc;
+
+		WidgetUpdateFunc updateFunc;
+
+		// Whether this Widget is selected (e.g. if the mouse is over it) (just to help cosmetic purposes)
+		bool selected;
+
+		// Child widgets
+		// Note: Child widgets should lie fully within the bounds of their parents. Otherwise, they should be separate widgets.
+		// Note: Children are only destroyed when the parents are; no way to delete them individually yet
+		std::forward_list<Widget*> children;
 };
 
 #endif // WIDGET_HPP

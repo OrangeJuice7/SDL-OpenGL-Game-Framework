@@ -152,7 +152,7 @@ The `ModelManager` is a base class that tracks timing information about the game
 	- The main source file should `#include` the corresponding header file on its very first line, followed by a blank line.
 	- All `#include`s must go at the beginning of the file. In header files, they come right after the header guard. In .cpp files, they come right after the main class `#include`.
 	- `#include`s are arranged in order: STL; 3rd party dependencies; internal dependencies.
-	- Classes should define `protected` members first, then `public` members. ((!)Might change)
+	- Classes should define `public` members first, then `protected` and `private` members.
 	- All classes should have an explicit constructor and destructor.
 	- The constructor and destructor should be public, unless the class follows a singleton pattern.
 - All `switch` statements should have a `default` case.
